@@ -1,15 +1,12 @@
 package com.duyhk.clothing_ecommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Entity

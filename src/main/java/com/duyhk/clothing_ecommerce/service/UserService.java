@@ -5,12 +5,10 @@ import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchUserDTO;
 import com.duyhk.clothing_ecommerce.entity.Users;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     Users convertToEntity(UserDTO userDTO);
 
     UserDTO convertToDto(Users user);

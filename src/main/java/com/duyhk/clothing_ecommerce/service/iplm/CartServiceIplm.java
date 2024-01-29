@@ -1,8 +1,10 @@
 package com.duyhk.clothing_ecommerce.service.iplm;
 
-import com.duyhk.clothing_ecommerce.dto.*;
+import com.duyhk.clothing_ecommerce.dto.CartDTO;
+import com.duyhk.clothing_ecommerce.dto.CartDetailDTO;
+import com.duyhk.clothing_ecommerce.dto.PageDTO;
+import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.entity.Cart;
-import com.duyhk.clothing_ecommerce.entity.CartDetail;
 import com.duyhk.clothing_ecommerce.reponsitory.CartDetailReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.CartReponsitory;
 import com.duyhk.clothing_ecommerce.service.CartService;
@@ -10,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +21,6 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceIplm implements CartService {
     private static final String HASH_KEY = "Cart";
-
-    @Autowired
-    private RedisTemplate template;
     @Autowired
     private CartReponsitory cartRepo;
 
@@ -78,7 +76,6 @@ public class CartServiceIplm implements CartService {
 
     @Override
     public void create(CartDTO cartDTO) {
-        template.opsForHash().put(HASH_KEY, UUID.randomUUID(), cartDTO);
         cartRepo.save(convertToEntity(cartDTO));
     }
 

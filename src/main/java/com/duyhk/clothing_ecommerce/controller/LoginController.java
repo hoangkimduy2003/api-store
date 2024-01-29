@@ -1,6 +1,5 @@
 package com.duyhk.clothing_ecommerce.controller;
 
-import com.duyhk.clothing_ecommerce.config.JwtService;
 import com.duyhk.clothing_ecommerce.dto.LoginDTO;
 import com.duyhk.clothing_ecommerce.dto.ResponseDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
@@ -8,10 +7,6 @@ import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,24 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account")
 public class LoginController {
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtService jwtService;
-
-    @Autowired
     private UserService userService;
 
     @PostMapping("/login")
     public ResponseDTO<String> login(@RequestBody @Valid LoginDTO loginDTO) {
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginDTO.getPhoneNumber(),loginDTO.getPassword())
-        );
         Users user = userService.findByPhoneNumber(loginDTO.getPhoneNumber());
         return ResponseDTO.<String>builder()
                 .status(200)
                 .msg("Đăng nhập thành công")
-                .data(jwtService.generateToken(user))
                 .build();
     }
     @PostMapping("/register")

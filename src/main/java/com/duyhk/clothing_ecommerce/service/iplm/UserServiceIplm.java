@@ -4,29 +4,25 @@ import com.duyhk.clothing_ecommerce.dto.PageDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchUserDTO;
-import com.duyhk.clothing_ecommerce.entity.*;
+import com.duyhk.clothing_ecommerce.entity.Cart;
+import com.duyhk.clothing_ecommerce.entity.Favourite;
+import com.duyhk.clothing_ecommerce.entity.Role;
+import com.duyhk.clothing_ecommerce.entity.Users;
+import com.duyhk.clothing_ecommerce.exception.CustomValidationException;
 import com.duyhk.clothing_ecommerce.reponsitory.CartReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.FavouriteReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.UserReponsitory;
 import com.duyhk.clothing_ecommerce.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceIplm implements UserService, UserDetailsService {
+public class UserServiceIplm implements UserService {
     @Autowired
     private UserReponsitory userRepo;
 
@@ -88,13 +84,13 @@ public class UserServiceIplm implements UserService, UserDetailsService {
 
     @Override
     public Users findByPhoneNumber(String phoneNumber) {
-        return userRepo.findByPhoneNumber(phoneNumber).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepo.findByPhoneNumber(phoneNumber).orElseThrow(() -> new CustomValidationException("User not found"));
     }
 
     @Override
     public void create(UserDTO userDTO) {
         Users users = convertToEntity(userDTO);
-        users.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        users.setPassword((userDTO.getPassword()));
         users.setFavourite(new Favourite());
         if (users.getRole() == null || "".equals(users.getRole())) {
             users.setRole(Role.CUSTOMER);
@@ -121,13 +117,8 @@ public class UserServiceIplm implements UserService, UserDetailsService {
         }
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByPhoneNumber(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
     public Users convertEndecorUser(Users user, UserDTO userDTO) {
-        user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        user.setPassword((userDTO.getPassword()));
         user.setImage(user.getImage());
         user.setFullName(userDTO.getFullName());
         user.setPhoneNumber(user.getPhoneNumber());

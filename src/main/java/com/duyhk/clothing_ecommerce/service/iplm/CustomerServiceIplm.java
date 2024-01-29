@@ -8,6 +8,7 @@ import com.duyhk.clothing_ecommerce.entity.Cart;
 import com.duyhk.clothing_ecommerce.entity.Favourite;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
+import com.duyhk.clothing_ecommerce.exception.CustomValidationException;
 import com.duyhk.clothing_ecommerce.reponsitory.CartReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.UserReponsitory;
 import com.duyhk.clothing_ecommerce.service.CustomerService;
@@ -15,8 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -87,13 +86,13 @@ public class CustomerServiceIplm implements CustomerService {
 
     @Override
     public Users findByPhoneNumber(String phoneNumber) {
-        return userRepo.findByPhoneNumber(phoneNumber).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepo.findByPhoneNumber(phoneNumber).orElseThrow(() -> new CustomValidationException("User not found"));
     }
 
     @Override
     public void create(UserDTO userDTO) {
         Users users = convertToEntity(userDTO);
-        users.setPassword(new BCryptPasswordEncoder().encode("123"));
+        users.setPassword(("123"));
         users.setFavourite(new Favourite());
         users.setUserType(0);
         users.setTotalInvoice(0L);
