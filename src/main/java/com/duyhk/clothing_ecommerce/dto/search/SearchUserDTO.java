@@ -7,8 +7,12 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@ToString
 public class SearchUserDTO {
     private String phoneNumber;
+    private String fullName;
+    private Integer status;
     private Integer page;
     private Integer size;
 }

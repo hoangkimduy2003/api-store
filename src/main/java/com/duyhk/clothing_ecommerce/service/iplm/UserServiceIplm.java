@@ -48,7 +48,7 @@ public class UserServiceIplm implements UserService {
     public PageDTO<List<UserDTO>> getByPageRequest(PageRequestDTO pageRequestDTO) {
         pageRequestDTO.setPage(pageRequestDTO.getPage() == null ? 0 : pageRequestDTO.getPage());
         pageRequestDTO.setSize(pageRequestDTO.getSize() == null ? 5 : pageRequestDTO.getSize());
-        Page<Users> pageEntity = userRepo.findAll(
+        Page<Users> pageEntity = userRepo.getNhanVien(
                 PageRequest.of(
                         pageRequestDTO.getPage(),
                         pageRequestDTO.getSize()));
@@ -66,6 +66,24 @@ public class UserServiceIplm implements UserService {
         searchUserDTO.setSize(searchUserDTO.getSize() == null ? 5 : searchUserDTO.getSize());
         Page<Users> pageEntity = userRepo.getCustomer(
                 searchUserDTO.getPhoneNumber(),
+                PageRequest.of(
+                        searchUserDTO.getPage(),
+                        searchUserDTO.getSize()));
+        List<UserDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<UserDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public PageDTO<List<UserDTO>> searchStaff(SearchUserDTO searchUserDTO) {
+        searchUserDTO.setPage(searchUserDTO.getPage() == null ? 0 : searchUserDTO.getPage());
+        searchUserDTO.setSize(searchUserDTO.getSize() == null ? 5 : searchUserDTO.getSize());
+        Page<Users> pageEntity = userRepo.findByFullNameAndStatus(
+                "%"+searchUserDTO.getFullName()+"%",
+                searchUserDTO.getStatus(),
                 PageRequest.of(
                         searchUserDTO.getPage(),
                         searchUserDTO.getSize()));
@@ -120,8 +138,10 @@ public class UserServiceIplm implements UserService {
     public Users convertEndecorUser(Users user, UserDTO userDTO) {
         user.setPassword((userDTO.getPassword()));
         user.setImage(user.getImage());
+        user.setEmail(userDTO.getEmail());
+        user.setStatus(userDTO.getStatus());
         user.setFullName(userDTO.getFullName());
-        user.setPhoneNumber(user.getPhoneNumber());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setFavourite(new Favourite());
         return user;
     }

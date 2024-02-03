@@ -22,6 +22,13 @@
                         <label for="email" class="form-label">Email</label>
                         <input class="form-control" name="email" id="email" aria-describedby="emailHelp">
                     </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select class="form-select" name="status" id="status" aria-label="Default select example">
+                            <option value="1" selected>Đang làm</option>
+                            <option value="0">Đã nghỉ</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -54,11 +61,12 @@
         }
         document.getElementById("frmAction").submit();
     }
-    var preAction = function (id,userCode,fullName,phoneNUmber,email){
+    var preAction = function (id,userCode,fullName,phoneNUmber,email,status){
         document.getElementById("id").value = id;
         document.getElementById("userCode").value = userCode;
         document.getElementById("fullName").value = fullName;
         document.getElementById("phoneNumber").value = phoneNUmber;
         document.getElementById("email").value = email;
+        document.getElementById("status").value = status;
     }
 </script>
