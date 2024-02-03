@@ -19,7 +19,7 @@ public interface UserService {
 
     PageDTO<List<UserDTO>> searchCustomer(SearchUserDTO searchUserDTO);
 
-
+    PageDTO<List<UserDTO>> searchStaff(SearchUserDTO searchUserDTO);
     UserDTO getById(Long id);
 
     Users findByPhoneNumber(String phoneNumber);

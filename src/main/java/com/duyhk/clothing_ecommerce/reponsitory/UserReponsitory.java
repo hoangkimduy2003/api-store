@@ -13,6 +13,12 @@ public interface UserReponsitory extends JpaRepository<Users, Long> {
     @Query("select u from Users u where u.phoneNumber = :phoneNumber")
     Optional<Users> findByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
+    @Query("select u from Users u where (:fullName is null or u.fullName like :fullName)" +
+            "and u.status = :status")
+    Page<Users> findByFullNameAndStatus
+            ( @Param("fullName") String fullName, @Param("status") Integer status, Pageable pageable);
+
+
     @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.CUSTOMER " +
             "and (:phoneNumber is null or u.phoneNumber like :phoneNumber)")
     Page<Users> getCustomer(@Param("phoneNumber") String phoneNumber, Pageable pageable);
@@ -20,4 +26,7 @@ public interface UserReponsitory extends JpaRepository<Users, Long> {
     @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.STAFF " +
             "and (:phoneNumber is null or u.phoneNumber like :phoneNumber)")
     Page<Users> getStaff(@Param("phoneNumber") String phoneNumber, Pageable pageable);
+
+    @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.STAFF ")
+    Page<Users> getNhanVien(Pageable pageable);
 }

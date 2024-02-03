@@ -21,9 +21,9 @@ public class UserDTO extends TimeAuditableDTO implements Serializable {
     private String fullName;
     private String password;
     private String email;
+    private Integer status;
     private String image;
     private Role role;
-    private Integer status;
     private Double totalInvoiceValue;
     private Long totalInvoice;
     private Integer userType;
