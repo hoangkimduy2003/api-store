@@ -21,7 +21,7 @@ public interface BillService {
 
     BillDTO getById(Long id);
 
-    void createAtStore(BillDTO billDTO);
+    Bill createAtStore(BillDTO billDTO);
 
     void updateSellAtStoreFinal(BillDTO billDTO);
 

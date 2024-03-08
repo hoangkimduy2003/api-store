@@ -11,6 +11,8 @@
           crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://rawgit.com/cozmo/jsQR/master/dist/jsQR.js"></script>
     <title>Hello, world!</title>
     <style type="text/css">
         body {

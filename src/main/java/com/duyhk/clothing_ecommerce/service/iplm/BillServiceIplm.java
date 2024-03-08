@@ -127,7 +127,7 @@ public class BillServiceIplm implements BillService {
     }
 
     @Override
-    public void createAtStore(BillDTO billDTO) {
+    public Bill createAtStore(BillDTO billDTO) {
         Bill bill = convertToEntity(billDTO);
         bill.setStatus(1);
         bill.setTotalMoney(0.0);
@@ -135,7 +135,7 @@ public class BillServiceIplm implements BillService {
         bill.setBillType(1);
         bill.setBillCode(generateRandomString());
         bill.setOrderDate(bill.getCreatedAt());
-        billReponsitory.save(bill);
+        return billReponsitory.save(bill);
     }
 
     @Override

@@ -41,6 +41,7 @@
         .sidebar li.active a {
             color: #000;
         }
+
         .sidebar li a {
             color: #fff;
         }
@@ -64,17 +65,18 @@
                 <li class="">
                     <a href="/thong-ke" class="text-decoration-none px-3 py-2 my-2 d-block">Thống kê</a>
                 </li>
-                <li class="">
+                <li class="active">
                     <a href="/tai-quay" class="text-decoration-none px-3 py-2 my-2 d-block">Bán hàng tại quầy</a>
                 </li>
                 <li class="">
                     <a href="/don-hang" class="text-decoration-none px-3 py-2 my-2 d-block">Tất cả đơn hàng</a>
                 </li>
-                <li class="active">
+                <li class="">
                     <a href="/san-pham" class="text-decoration-none px-3 py-2 my-2 d-block">Sản phẩm</a>
                 </li>
                 <li class="dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Thuộc tính sản phẩm
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -99,8 +101,9 @@
     <div class="content" id="content">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Sản phẩm</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="#">Thêm vào giỏ hàng</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
@@ -109,10 +112,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    var handleOnClickMenu = function(e,content) {
-        document.querySelector("li.active").setAttribute("class","");
-        e.classList.add("active");
-    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
