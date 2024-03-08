@@ -156,14 +156,7 @@ public class ProductServiceIplm implements ProductService {
             productDTO = preCreate(productDTO);
             Product product = convertToEntity(productDTO);
             Product p = productRepo.save(product);
-            List<ProductDetail> list = productDTO.getProductDetails().stream().map(u -> new ModelMapper().map(u, ProductDetail.class)).collect(Collectors.toList());
-            list.stream().forEach(x -> {
-                String productDetailCode = generateRandomString();
-                BarcodeService.generateAndSaveBarcode(productDetailCode);
-                x.setProductDetailCode(productDetailCode);
-                x.setProduct(p);
-            });
-            productDetailRepo.saveAll(list);
+
         }
     }
 
@@ -206,14 +199,6 @@ public class ProductServiceIplm implements ProductService {
                         searchProductDTO.getPage(),
                         searchProductDTO.getSize()));
         List<ProductDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
-
-        listDto.stream().forEach(p -> {
-            List<ProductDetailDTO> listDetailDto =
-                    productDetailRepo.findByProduct(p.getId())
-                            .stream().map(detail -> new ModelMapper().map(detail, ProductDetailDTO.class))
-                            .collect(Collectors.toList());
-            p.setProductDetails(listDetailDto);
-        });
         return PageDTO.<List<ProductDTO>>builder()
                 .data(listDto)
                 .totalElements(pageEntity.getTotalElements())
@@ -228,39 +213,14 @@ public class ProductServiceIplm implements ProductService {
         if (productDTO.getCategory().getId() == -1) {
             throw new CustomValidationException("Vui lòng chọn loại sản phẩm");
         }
-        if (productDTO.getProductDetails().size() == 0) {
-            throw new CustomValidationException("Vui lòng thêm thông tin chi tiết sản phẩm");
-        }
-        for (ProductDetailDTO x : productDTO.getProductDetails()) {
-            if (x.getColor().getId() == -1) {
-                throw new CustomValidationException("Vui lòng chọn màu sắc");
-            }
-            if (x.getSize().getId() == -1) {
-                throw new CustomValidationException("Vui lòng chọn kích cỡ");
-            }
-            if (x.getQuantity() < 1) {
-                throw new CustomValidationException("Vui lòng nhập số lượng");
-            }
-        }
         return true;
     }
 
     public ProductDTO preCreate(ProductDTO productDTO) {
         productDTO.setTotalQuantitySold(0L);
-        productDTO.setTotalQuantity(
-                productDTO.getProductDetails()
-                        .stream()
-                        .map(ProductDetailDTO::getQuantity)
-                        .reduce(0L, Long::sum));
+        productDTO.setTotalQuantity(0l);
         productDTO.setPriceSale(productDTO.getPrice());
-        for (ProductDetailDTO x : productDTO.getProductDetails()) {
-            x.setName(productDTO.getName());
-            x.setPrice(productDTO.getPrice());
-            x.setPriceSale(productDTO.getPriceSale());
-            x.setQuantitySold(0L);
-            x.setAveragedReview(0.0);
-            x.setStatus(productDTO.getStatus());
-        }
+        productDTO.setStatus(0);
         return productDTO;
     }
 

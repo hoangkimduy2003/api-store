@@ -16,6 +16,7 @@ public interface ProductDetailService {
 
     List<ProductDetailDTO> getAll();
 
+    PageDTO<List<ProductDetailDTO>> getByIdSp(PageRequestDTO pageRequestDTO, Long id);
     PageDTO<List<ProductDetailDTO>> getByPageRequest(PageRequestDTO pageRequestDTO);
 
     PageDTO<List<ProductDetailDTO>> search(SearchProductDTO searchProductDTO);
@@ -23,7 +24,7 @@ public interface ProductDetailService {
     ProductDetailDTO findProductDetailByProductDetailCode(String productDetailCode);
     ProductDetailDTO getById(Long id);
 
-    void create(ProductDetailDTO productDetailDTO);
+    String create(ProductDetailDTO productDetailDTO);
 
     void update(ProductDetailDTO productDetailDTO);
 

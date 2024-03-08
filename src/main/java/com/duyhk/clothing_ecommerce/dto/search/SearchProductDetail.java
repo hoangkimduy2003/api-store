@@ -7,14 +7,13 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchProductDTO {
+public class SearchProductDetail {
     private String name;
     private String productDetailCode;
-    private Long brandId;
-    private Integer status;
     private Long categoryId;
-    private Long sizeId;
+    private Long brandId;
     private Long colorId;
+    private Long sizeId;
     private Integer page;
     private Integer size;
 }

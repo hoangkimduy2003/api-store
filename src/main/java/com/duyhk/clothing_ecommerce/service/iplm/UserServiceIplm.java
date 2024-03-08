@@ -84,7 +84,12 @@ public class UserServiceIplm implements UserService {
 
     @Override
     public Users findByPhoneNumber(String phoneNumber) {
-        return userRepo.findByPhoneNumber(phoneNumber).orElseThrow(() -> new CustomValidationException("User not found"));
+        return userRepo.findByPhoneNumber(phoneNumber).orElse(null);
+    }
+
+    @Override
+    public Users login(String phoneNumber,String pass) {
+        return userRepo.login(phoneNumber,pass).orElse(null);
     }
 
     @Override

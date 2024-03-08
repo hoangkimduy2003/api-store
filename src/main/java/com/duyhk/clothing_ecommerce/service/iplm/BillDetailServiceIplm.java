@@ -107,6 +107,8 @@ public class BillDetailServiceIplm implements BillDetailService {
         }else{
             productDetailOld = productDetailRepo.findById(billDetailDTO.getProductDetail().getId()).orElse(null);
         }
+        billDetailDTO.setPrice(productDetailOld.getPriceSale());
+        billDetailDTO.setTotalPrice(billDetailDTO.getPrice() * billDetailDTO.getQuantity());
         BillDetail billDetailCompe = convertToEntity(billDetailDTO);
         for (BillDetail billDetail : listAllBillDetailByBill) {
             if (billDetail.getProductDetail().getId() == billDetailDTO.getProductDetail().getId()) {

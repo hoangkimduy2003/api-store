@@ -18,7 +18,7 @@ public interface ProductReponsitory extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.name like :name " +
             "and (:brandId is null or :brandId = -1L or p.brand.id = :brandId)" +
             "and (:status is null or :status = -1 or p.status = :status)" +
-            "and (:categoryId is null or :categoryId = -1L or p.category.id = :categoryId)")
+            "and (:categoryId is null or :categoryId = -1L or p.category.id = :categoryId) order by p.updatedAt desc ")
     Page<Product> search(@Param("name") String name,
                          @Param("brandId") Long brandId,
                          @Param("status") Integer status,
