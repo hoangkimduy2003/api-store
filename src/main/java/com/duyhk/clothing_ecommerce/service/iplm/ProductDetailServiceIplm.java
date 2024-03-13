@@ -105,7 +105,11 @@ public class ProductDetailServiceIplm implements ProductDetailService {
 
     @Override
     public ProductDetailDTO getById(Long id) {
-        return convertToDto(productDetailRepo.findById(id).orElseThrow(IllegalArgumentException::new));
+        ProductDetail productDetail =productDetailRepo.findById(id).orElse(null);
+        if(productDetail != null){
+            return convertToDto(productDetail);
+        }
+        return null;
     }
 
     @Override

@@ -53,10 +53,12 @@
     <div class="sidebar" id="side_nav">
         <div class="header-box px-2 pt-3 pb-4">
             <h1 class="fs-4">
-                            <span class="bg-white text-dark rounded shadow px-2 ">
-                                O
-                            </span>
-                <span class="text-white">man</span>
+                <a href="/trang-chu" style="text-decoration: none; color: black">
+                    <span class="bg-white text-dark rounded shadow px-2 ">
+                    O
+                </span>
+                    <span class="text-white">man</span>
+                </a>
             </h1>
             <button class="d-md-none d-block btn close-btn px-1 py-0 text-white">
                 <i class="bi bi-list"></i>

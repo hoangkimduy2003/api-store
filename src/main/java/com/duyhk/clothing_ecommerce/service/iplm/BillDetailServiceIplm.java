@@ -138,10 +138,12 @@ public class BillDetailServiceIplm implements BillDetailService {
             productDetail.getProduct().setTotalQuantitySold(productDetail.getProduct().getTotalQuantitySold() - billDetail.getQuantity() + billDetailDTO.getQuantity());
             productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity() - billDetailDTO.getQuantity());
             productDetail.setQuantitySold(productDetail.getQuantitySold() - billDetail.getQuantity() + billDetailDTO.getQuantity());
-            billDetailDTO.setTotalPrice(billDetailDTO.getPrice() * billDetailDTO.getQuantity());
+            billDetailDTO.setTotalPrice(productDetail.getPrice() * billDetailDTO.getQuantity());
             bill.setTotalMoney(billDetailDTO.getTotalPrice() + bill.getTotalMoney() - billDetail.getTotalPrice());
             bill.setTatolProduct(bill.getTatolProduct() + billDetailDTO.getQuantity() - billDetail.getQuantity());
             billDetail = convertToEntity(billDetailDTO);
+            billDetail.setProductDetail(productDetail);
+            billDetail.setPrice(productDetail.getPrice());
             billDetailReponsitory.save(billDetail);
         }
 

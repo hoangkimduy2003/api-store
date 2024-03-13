@@ -46,4 +46,10 @@ public class DanhSachSanPhamTaiQuayController {
         billDetailService.create(billDetailDTO);
         return "redirect:/tai-quay?idBill="+billDetailDTO.getBill().getId();
     }
+
+    @PostMapping("/update")
+    public String update( @ModelAttribute BillDetailDTO billDetailDTO){
+        billDetailService.update(billDetailDTO);
+        return "redirect:/tai-quay?idBill="+billDetailDTO.getBill().getId();
+    }
 }

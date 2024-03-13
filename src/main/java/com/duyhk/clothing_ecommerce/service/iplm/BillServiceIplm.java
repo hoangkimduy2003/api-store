@@ -143,9 +143,7 @@ public class BillServiceIplm implements BillService {
         Bill bill = billReponsitory.findById(billDTO.getId()).orElseThrow(IllegalArgumentException::new);
         if (bill != null) {
             bill.setStatus(billDTO.getStatus());
-            if (!"".equals(billDTO.getUser().getPhoneNumber()) && billDTO.getUser().getPhoneNumber() != null) {
-                bill.setUser(new ModelMapper().map(billDTO.getUser(), Users.class));
-            } else if (!"".equals(billDTO.getUser().getFullName()) && billDTO.getUser().getFullName() != null) {
+            if (billDTO.getUser().getPhoneNumber() == null) {
                 throw new CustomValidationException("Vui lòng nhập số điện thoại");
             }
             Users user = userRepon.findByPhoneNumber(billDTO.getUser().getPhoneNumber()).orElse(null);
@@ -153,13 +151,21 @@ public class BillServiceIplm implements BillService {
                 bill.setUser(user);
                 bill.setPhoneNumber(billDTO.getUser().getPhoneNumber());
             }
-            bill.setPhoneNumber(billDTO.getPhoneNumber() == null ? bill.getUser().getPhoneNumber() : billDTO.getPhoneNumber());
-            bill.setFullName(billDTO.getFullName() == null ? bill.getUser().getFullName() : billDTO.getFullName());
-            bill.setOrderDateFinal(bill.getStatus() == 5 ? new Date() : null);
-            Bill b = billReponsitory.save(bill);
-            if (user == null) {
-                cartRepo.save(new Cart(0L, 0.0, b.getUser()));
+            else{
+                if(billDTO.getUser() == null || billDTO.getUser().getPhoneNumber() == null || "".equals(billDTO.getUser().getPhoneNumber())){
+                    bill.setFullName("Khách lẻ");
+                    billReponsitory.save(bill);
+                }else{
+                    bill.setPhoneNumber(billDTO.getPhoneNumber() == null ? billDTO.getUser().getPhoneNumber() : billDTO.getPhoneNumber());
+                    bill.setFullName(billDTO.getFullName() == null ? billDTO.getUser().getPhoneNumber() : billDTO.getFullName());
+                    bill.setOrderDateFinal(bill.getStatus() == 5 ? new Date() : null);
+                    Bill b = billReponsitory.save(bill);
+                    if (user == null) {
+                        cartRepo.save(new Cart(0L, 0.0, b.getUser()));
+                    }
+                }
             }
+
         }
     }
 

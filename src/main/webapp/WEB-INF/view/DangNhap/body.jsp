@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="container" ng-controller="loginController">
     <div class="row" style="margin-bottom: 24px;">
-        <span><a href="#" style="text-decoration: none; color: black;">TRANG CHỦ</a> | TÀI KHOẢN </span>
+        <span><a href="/trang-chu" style="text-decoration: none; color: black;">TRANG CHỦ</a> | TÀI KHOẢN </span>
     </div>
 
     <div class="container" style="margin-top: 24px;">

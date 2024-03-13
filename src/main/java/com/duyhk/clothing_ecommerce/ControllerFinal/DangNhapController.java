@@ -20,9 +20,16 @@ public class DangNhapController {
     private HttpSession session;
 
     @GetMapping
-    public String home(){
-
+    public String home(Model model){
+        Users users = (Users) session.getAttribute("user");
+        model.addAttribute("isLogin", users == null ? false : true);
         return "DangNhap/DangNhap";
+    }
+
+    @GetMapping("/out")
+    public String logout(){
+        session.setAttribute("user", null);
+        return "redirect:/account/dang-nhap";
     }
 
     @PostMapping
@@ -33,6 +40,6 @@ public class DangNhapController {
             return "DangNhap/DangNhap";
         }
         session.setAttribute("user",user);
-        return "redirect:/tai-quay";
+        return "redirect:/trang-chu";
     }
 }

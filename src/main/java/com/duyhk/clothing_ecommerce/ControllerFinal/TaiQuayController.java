@@ -1,9 +1,6 @@
 package com.duyhk.clothing_ecommerce.ControllerFinal;
 
-import com.duyhk.clothing_ecommerce.dto.BillDTO;
-import com.duyhk.clothing_ecommerce.dto.BillDetailDTO;
-import com.duyhk.clothing_ecommerce.dto.PageDTO;
-import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
+import com.duyhk.clothing_ecommerce.dto.*;
 import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.service.BillDetailService;
 import com.duyhk.clothing_ecommerce.service.BillService;
@@ -49,6 +46,9 @@ public class TaiQuayController {
     @PostMapping("/create")
     public String create(@ModelAttribute BillDTO billDTO){
         Users users = (Users) session.getAttribute("user");
+        if(users == null){
+            return "redirect:/account/dang-nhap";
+        }
         billDTO.setStaff(users.getFullName());
         Long idBill = billService.createAtStore(billDTO).getId();
         return "redirect:/tai-quay?idBill="+idBill;
@@ -65,5 +65,13 @@ public class TaiQuayController {
                                 @PathVariable("idBill") Long idBill){
         billDetailService.delete(idBillDetail);
         return "redirect:/tai-quay?idBill="+ idBill;
+    }
+
+    @PostMapping("/atStore/{id}")
+    public String atStore(@ModelAttribute BillDTO billDTO,
+                                     @PathVariable Long id) {
+        billDTO.setId(id);
+        billService.updateSellAtStoreFinal(billDTO);
+        return "redirect:/tai-quay";
     }
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container m-2">
     <p style="font-size: 12px; color: #cfd3cb"><a style="text-decoration: none; color: #cfd3cb" href="/tai-quay?idBill=${idBill}">Đơn hàng </a>/ Danh sách sản phẩm</p>
     <jsp:include page="modal.jsp"></jsp:include>
@@ -67,6 +68,7 @@
             <th>Màu sắc</th>
             <th>Size</th>
             <th>Số lượng</th>
+            <td>Giá</td>
             <th>Thao tác</th>
         </tr>
         </thead>
@@ -79,7 +81,8 @@
                 <td>${x.product.brand.name}</td>
                 <td>${x.color.name}</td>
                 <td>${x.size.name}</td>
-                <td>${x.quantity}</td>
+                <td><fmt:formatNumber pattern="#,###" value="${x.quantity}" /></td>
+                <td><fmt:formatNumber pattern="#,###" value="${x.priceSale}" /></td>
                 <td>
                     <button class="btn btn-success" onclick="preAction(${x.id},${x.quantity})" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-cart-plus"></i></button>
                 </td>
