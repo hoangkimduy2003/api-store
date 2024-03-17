@@ -2,6 +2,7 @@ package com.duyhk.clothing_ecommerce.ControllerFinal;
 
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.dto.ProductDetailDTO;
+import com.duyhk.clothing_ecommerce.entity.ProductDetail;
 import com.duyhk.clothing_ecommerce.service.ColorService;
 import com.duyhk.clothing_ecommerce.service.ProductDetailService;
 import com.duyhk.clothing_ecommerce.service.SizeService;
@@ -49,6 +50,21 @@ public class ChiTietSanPhamController {
             String _return = productDetailService.create(productDetail);
         }
         return "redirect:/chi-tiet-sp/" + productDetail.getProduct().getId();
+    }
+    //check số lượng khi thêm vào giỏ hàng
+    @GetMapping("/quanlity/{id}/{number}")
+    @ResponseBody
+    public String checkSoLuong(@PathVariable("id") Long id,
+                               @PathVariable("number") Long number){
+        ProductDetailDTO productDetail = productDetailService.getById(id);
+        if(productDetail == null){
+            return "Sản phẩm không tồn tại";
+        }
+        Long quantity = productDetailService.getById(id).getQuantity();
+        if (quantity<number){
+            return "Số lượng chỉ còn "+quantity;
+        }
+        return "";
     }
 
 }

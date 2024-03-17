@@ -105,7 +105,11 @@ public class ProductDetailServiceIplm implements ProductDetailService {
 
     @Override
     public ProductDetailDTO getById(Long id) {
-        return convertToDto(productDetailRepo.findById(id).orElseThrow(IllegalArgumentException::new));
+        ProductDetail productDetail =productDetailRepo.findById(id).orElse(null);
+        if(productDetail != null){
+            return convertToDto(productDetail);
+        }
+        return null;
     }
 
     @Override
@@ -115,7 +119,7 @@ public class ProductDetailServiceIplm implements ProductDetailService {
         product.setStatus(1);
         productDetailDTO.setStatus(1);
         productDetailDTO.setPrice(product.getPrice());
-        productDetailDTO.setPriceSale(productDetailDTO.getPriceSale());
+        productDetailDTO.setPriceSale(product.getPriceSale());
         productDetailDTO.setName(product.getName());
         productDetailDTO.setQuantitySold(0l);
         productDetailDTO.setAveragedReview(5.0);
@@ -141,6 +145,11 @@ public class ProductDetailServiceIplm implements ProductDetailService {
         if (productDetail != null) {
             productDetailRepo.deleteById(id);
         }
+    }
+
+    @Override
+    public List<ProductDetailDTO> searchByColorName(String nameColor, Long idProduct) {
+        return productDetailRepo.searchByColorName(nameColor,idProduct).stream().map(p -> convertToDto(p)).collect(Collectors.toList());
     }
 
     public String generateRandomString() {

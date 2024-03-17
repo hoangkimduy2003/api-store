@@ -43,24 +43,45 @@ public class SanPhamController {
 
     @PostMapping("/action")
     public String action(@ModelAttribute ProductDTO productDTO) throws IOException {
-        List<String> images = new ArrayList<>();
-        if (productDTO.getFilesUpload() != null) {
-            for (MultipartFile multipartFile : productDTO.getFilesUpload()) {
-                String name = multipartFile.getOriginalFilename();
-                images.add(name);
-                String pathFolder = "D:/images";
-                File path = new File(pathFolder);
-                if (!path.exists()) {
-                    path.mkdirs();
+        if(productDTO.getId() == null){
+            List<String> images = new ArrayList<>();
+            if (productDTO.getFilesUpload() != null && !productDTO.getFilesUpload().get(0).getOriginalFilename().equalsIgnoreCase("")) {
+                for (MultipartFile multipartFile : productDTO.getFilesUpload()) {
+                    String name = multipartFile.getOriginalFilename();
+                    images.add(name);
+                    String pathFolder = "D:/images";
+                    File path = new File(pathFolder);
+                    if (!path.exists()) {
+                        path.mkdirs();
+                    }
+                    File fileUpload = new File(pathFolder + "/" + name);
+                    multipartFile.transferTo(fileUpload);
                 }
-                File fileUpload = new File(pathFolder + "/" + name);
-                multipartFile.transferTo(fileUpload);
+            } else {
+                throw new CustomValidationException("Vui lòng chọn ảnh");
             }
-        } else {
-            throw new CustomValidationException("Vui lòng chọn ảnh");
+            productDTO.setImages(images);
+            productService.create(productDTO);
+        }else{
+            List<String> images = null;
+            if (productDTO.getFilesUpload() != null && !productDTO.getFilesUpload().get(0).getOriginalFilename().equalsIgnoreCase("")) {
+                images = new ArrayList<>();
+                for (MultipartFile multipartFile : productDTO.getFilesUpload()) {
+                    String name = multipartFile.getOriginalFilename();
+                    images.add(name);
+                    String pathFolder = "D:/images";
+                    File path = new File(pathFolder);
+                    if (!path.exists()) {
+                        path.mkdirs();
+                    }
+                    File fileUpload = new File(pathFolder + "/" + name);
+                    multipartFile.transferTo(fileUpload);
+                }
+            }
+            productDTO.setImages(images);
+            productService.update(productDTO);
         }
-        productDTO.setImages(images);
-        productService.create(productDTO);
+
         return "redirect:/san-pham";
     }
 

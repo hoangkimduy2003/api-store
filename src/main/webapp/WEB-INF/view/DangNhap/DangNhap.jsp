@@ -16,7 +16,7 @@
     <hr style="margin: 0;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light nav-menu">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="https://bom.so/1YAtAj" alt="#!/home"></a>
+            <a class="navbar-brand" href="/trang-chu"><img src="https://bom.so/1YAtAj" alt="#!/home"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" style="padding: 8px 24px;" href="#!/home">TRANG CHỦ</a>
+                        <a class="nav-link" style="padding: 8px 24px;" href="/trang-chu">TRANG CHỦ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " style="padding: 8px 24px;" href="#!/bestchoice">BÁN CHẠY</a>
@@ -41,8 +41,8 @@
                 </ul>
                 <ul class="d-flex navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a style="padding: 8px 24px;" class="nav-link" ng-if="userToken.id === ''"
-                           href="/account/dang-nhap">ĐĂNG NHẬP</a>
+                        <a style="padding: 8px 24px; ${isLogin ? "display: none" : ""}" class="nav-link" ng-if="userToken.id === ''"
+                           href="/account/dang-nhap" >ĐĂNG NHẬP</a>
                     </li>
                     <li class="nav-item dropdown me-2" ng-if="userToken.id != ''">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -60,18 +60,18 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li ng-click="logout()"><a class="dropdown-item" href="#!/login">Đăng xuất</a></li>
+                            <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/dang-nhap/out">Đăng xuất</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#!/cart"><i class="bi bi-bag" style="position: relative;">
-                                    <span ng-if="quantityGioHang !== 0" style="font-size: 10px;
+                                    <span style="font-size: 10px;
                                         color: white;
                                          position: absolute;
                                          border-radius: 10px;
                                          background-color: #c9ae63  ;
                                          padding: 0px 5px;">
-                                        {{quantityGioHang}}
+
                                     </span>
                         </i>
                         </a>

@@ -23,9 +23,6 @@
 </div>
 <script>
     var handleOnAction = function (){
-        if(!confirm("Bạn có muốn thao tác không?")){
-            return false;
-        }
         if(document.getElementById("quantity").value == "" || document.getElementById("quantity").value == null
             || document.getElementById("quantity").value < 1){
             alert("Vui lòng nhập số lượng");

@@ -38,4 +38,6 @@ public interface ProductDetailReponsitory extends JpaRepository<ProductDetail, L
                                Pageable pageable);
 
     ProductDetail findProductDetailByProductDetailCode(String productDetailCode);
+    @Query("select p from ProductDetail p where p.color.name = :colorName and p.product.id = :idProduct and p.quantity > 0 and p.status = 1")
+    List<ProductDetail> searchByColorName(@Param("colorName") String colorName,@Param("idProduct") Long idProduct);
 }

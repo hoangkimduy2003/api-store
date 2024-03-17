@@ -29,4 +29,6 @@ public interface ProductDetailService {
     void update(ProductDetailDTO productDetailDTO);
 
     void delete(Long id);
+
+    List<ProductDetailDTO> searchByColorName(String nameColor, Long idProduct);
 }
