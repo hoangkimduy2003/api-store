@@ -24,4 +24,6 @@ public interface CartDetailService {
     CartDetailDTO update(CartDetailDTO cartDetailDTO);
 
     void delete(Long id);
+
+    CartDetailDTO findByCartIdAndProductDetailId(Long cartId, Long productDetailId);
 }

@@ -38,13 +38,17 @@
                     <button type="button"  onclick="handleOnActionUpdate()" class="btn btn-primary">Đồng ý</button>
                 </div>
             </form>
+            <input type="number" hidden id="quantityProduct">
+            <input type="number" hidden id="quantityOld">
         </div>
     </div>
 </div>
 <script>
-    function preActionUpdate(quantity, id){
+    function preActionUpdate(quantity, id, quantityProduct){
         document.getElementById("idBillDetail").value = id;
         document.getElementById("quantity").value = quantity;
+        document.getElementById("quantityOld").value = quantity;
+        document.getElementById("quantityProduct").value = quantityProduct;
     }
     function handleOnAction(){
         // if(document.getElementById("phoneNumber").value == "" ||
@@ -61,6 +65,10 @@
         console.log(document.getElementById("quantity").value);
         if(document.getElementById("quantity").value <= 0){
             alert("Số lượng phải lớn hơn 0");
+            return false;
+        }
+        if(+document.getElementById("quantity").value > (+document.getElementById("quantityProduct").value + (+document.getElementById("quantityOld").value))){
+            alert("Số lượng chỉ còn: "+(+document.getElementById("quantityProduct").value + (+document.getElementById("quantityOld").value)));
             return false;
         }
         document.getElementById("frmActionUpdate").submit();

@@ -14,6 +14,8 @@
                 <th scope="col">Mã chi tiết</th>
                 <th scope="col">Màu sắc</th>
                 <th scope="col">Kích cỡ</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Số lượng</th>
                 <th scope="col">Thao tác</th>
             </tr>
             </thead>
@@ -24,6 +26,8 @@
                     <td>${x.productDetailCode}</td>
                     <td>${x.color.name}</td>
                     <td>${x.size.name}</td>
+                    <td>${x.priceSale}</td>
+                    <td>${x.quantity}</td>
                     <td>
                         <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.name}',${x.status})"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">

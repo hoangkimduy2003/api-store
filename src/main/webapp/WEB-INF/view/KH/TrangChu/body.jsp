@@ -126,7 +126,7 @@
         <div class="wrapper">
             <div class="services row">
                 <c:forEach items="${listBestSell.data}" var="x">
-                    <a href="#" class="col-md-3 col-xs-6 col-6 d-block">
+                    <a href="/CTSP?productDetailId=${x.id}" class="col-md-3 col-xs-6 col-6 d-block">
                         <span class="single-img img-all" style="background-image: url('/san-pham/img?fileName=${x.images[0]}')">
                             <span class="img-text">
                                 <h6>
@@ -150,7 +150,7 @@
         <div class="wrapper">
             <div class="services row">
                 <c:forEach items="${listNew.data}" var="x">
-                    <a href="#" class="col-md-3 col-xs-6 col-6 d-block">
+                    <a href="/CTSP?productDetailId=${x.id}" class="col-md-3 col-xs-6 col-6 d-block">
                         <span class="single-img img-all" style="background-image: url('/san-pham/img?fileName=${x.images[0]}')">
                             <span class="img-text">
                                 <h6>

@@ -33,7 +33,9 @@ public class TrangChuController {
         Users users = (Users) session.getAttribute("user");
         model.addAttribute("isLogin", users == null ? false : true);
         if(users != null){
-            Long size = cartService.getByUserId(users.getId()).getTotalProduct();
+            CartDTO cart = cartService.getByUserId(users.getId());
+            Long size = cart.getTotalProduct();
+            session.setAttribute("cartId",cart.getId());
             model.addAttribute("sizeCart",size);
             model.addAttribute("isAdmin",(users.getRole() == Role.ADMIN) ? true : false);
         }

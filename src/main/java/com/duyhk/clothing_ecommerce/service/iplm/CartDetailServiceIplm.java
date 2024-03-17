@@ -5,9 +5,12 @@ import com.duyhk.clothing_ecommerce.dto.PageDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.entity.Cart;
 import com.duyhk.clothing_ecommerce.entity.CartDetail;
+import com.duyhk.clothing_ecommerce.entity.ProductDetail;
 import com.duyhk.clothing_ecommerce.reponsitory.CartDetailReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.CartReponsitory;
+import com.duyhk.clothing_ecommerce.reponsitory.ProductDetailReponsitory;
 import com.duyhk.clothing_ecommerce.service.CartDetailService;
+import com.duyhk.clothing_ecommerce.service.ProductDetailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +27,9 @@ public class CartDetailServiceIplm implements CartDetailService {
 
     @Autowired
     private CartReponsitory cartRepo;
+
+    @Autowired
+    private ProductDetailReponsitory productDetailRepo;
 
     @Override
     public CartDetail convertToEntity(CartDetailDTO cartDetailDTO) {
@@ -64,9 +70,16 @@ public class CartDetailServiceIplm implements CartDetailService {
     @Override
     public CartDetailDTO create(CartDetailDTO cartDetail) {
         Cart cart = cartRepo.findById(cartDetail.getCart().getId()).orElse(null);
-        if (cart != null) {
-            cart.setTotalProduct(cart.getTotalProduct() + 1);
-            cart.setTotalMoney(cart.getTotalMoney() + cartDetail.getProductDetail().getPriceSale() * cartDetail.getQuantity());
+        ProductDetail productDetail = productDetailRepo.findById(cartDetail.getProductDetail().getId()).orElse(null);
+        List<CartDetail> cartDetails = cartDetailRepo.findByCartIdAndProductDetailId(cartDetail.getCart().getId(), cartDetail.getProductDetail().getId());
+        if (cart != null && productDetail != null) {
+            if (cartDetails.isEmpty()) {
+                cart.setTotalProduct(cart.getTotalProduct() + 1);
+                cart.setTotalMoney(cart.getTotalMoney() + productDetail.getPriceSale() * cartDetail.getQuantity());
+            } else {
+                cartDetail.setQuantity(cartDetail.getQuantity() + cartDetails.get(0).getQuantity());
+                cartDetail.setId(cartDetails.get(0).getId());
+            }
         }
         return convertToDto(cartDetailRepo.save(convertToEntity(cartDetail)));
     }
@@ -95,5 +108,10 @@ public class CartDetailServiceIplm implements CartDetailService {
             cart.setTotalMoney(cart.getTotalMoney() - (cartDetail.getQuantity() * cartDetail.getProductDetail().getPriceSale()));
             cartDetailRepo.deleteById(id);
         }
+    }
+
+    @Override
+    public CartDetailDTO findByCartIdAndProductDetailId(Long cartId, Long productDetailId) {
+        return convertToDto(cartDetailRepo.findByCartIdAndProductDetailId(cartId,productDetailId).get(0));
     }
 }

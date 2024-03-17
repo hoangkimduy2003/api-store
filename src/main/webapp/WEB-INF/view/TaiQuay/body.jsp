@@ -46,7 +46,6 @@
                 <button class="btn btn-dark " onclick="handleCreateBill()">Tạo hoá đơn</button>
             </li>
             <c:forEach items="${listBill.data}" var="x">
-                &nbsp;
                 <li class="nav-item fs-6 ">
                     <a class=" billCode btn ${x.id == bill.id ? "btn-secondary" : ""}"
                        style="color:black; text-decoration: none">
@@ -95,10 +94,10 @@
                     <td>${x.productDetail.color.name}</td>
                     <td><fmt:formatNumber pattern="#,###" value="${x.quantity}" /></td>
                     <td><fmt:formatNumber pattern="#,###" value="${x.price}" /></td>
-                    <td><fmt:formatNumber pattern="#,###" value="${x.totalPrice}" />/td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.totalPrice}" /></td>
                     <td>
                         <button type="button" class="btn btn-warning"
-                                onclick="preActionUpdate(${x.quantity}, ${x.id})"
+                                onclick="preActionUpdate(${x.quantity}, ${x.id}, ${x.productDetail.quantity})"
                                 data-bs-toggle="modal" data-bs-target="#sua-gio-hang">
                             Sửa
                         </button>
@@ -110,15 +109,20 @@
             </tbody>
         </table>
     </div>
-    <ul class="pagination">
-        <c:forEach begin="1" end="${list.totalPages}" varStatus="loop">
-            <li class="page-item">
-                <a class="page-link" href="/tai-quay?page=${loop.begin + loop.count -2}&idBill=${bill.id}">
-                        ${loop.begin + loop.count -1}
-                </a>
-            </li>
-        </c:forEach>
-    </ul>
+    <div class="row">
+        <div class="col-6">
+            <ul class="pagination">
+                <c:forEach begin="1" end="${list.totalPages}" varStatus="loop">
+                    <li class="page-item">
+                        <a class="page-link" href="/tai-quay?page=${loop.begin + loop.count -2}&idBill=${bill.id}">
+                                ${loop.begin + loop.count -1}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+
+    </div>
 </div>
 <script>
 

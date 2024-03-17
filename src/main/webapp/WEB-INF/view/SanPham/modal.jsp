@@ -13,7 +13,7 @@
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tên sản phẩm</label>
-                                <input class="form-control" onchange="handleOnChange(this)" name="name" id="name">
+                                <input class="form-control"  name="name" id="name">
                             </div>
                             <div class="mb-3">
                                 <label for="filesUpload" class="form-label">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="importPrice" class="form-label">Giá nhập</label>
-                                <input class="form-control" type="number" onchange="handleOnChange(this)" name="importPrice"
+                                <input class="form-control" type="number" name="importPrice"
                                        id="importPrice">
                             </div>
                             <div class="mb-3">
@@ -38,9 +38,9 @@
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="brand" class="form-label">Thương hiệu</label>
-                                <select class="form-select" name="brand.id" id="brand" onchange="handleOnChange(this)"
+                                <select class="form-select" name="brand.id" id="brand"
                                         aria-label="Default select example">
-                                    <option value="-1" selected>--Thương hiệu--</option>
+                                    <option value="-1">--Thương hiệu--</option>
                                     <c:forEach items="${brands}" var="x">
                                         <option value="${x.id}">${x.name}</option>
                                     </c:forEach>
@@ -51,7 +51,7 @@
                                 <select class="form-select" name="category.id" id="category"
                                         onchange="handleOnChange(this)"
                                         aria-label="Default select example">
-                                    <option value="-1" selected>--Loại sản phẩm--</option>
+                                    <option value="-1">--Loại sản phẩm--</option>
                                     <c:forEach items="${categories}" var="x">
                                         <option value="${x.id}">${x.name}</option>
                                     </c:forEach>
@@ -76,15 +76,9 @@
 <script>
 
     var handleOnAction = function () {
-
-
         if (!confirm("Bạn có muốn thao tác không?")) {
             return false;
         }
-        // if (document.getElementById("name").value == "" || document.getElementById("name").value == null) {
-        //     alert("Tên không được để trống");
-        //     return false;
-        // }
         document.getElementById("frmAction").submit();
     }
 
@@ -92,10 +86,15 @@
     //     product = {...product, [e.name]: e.value};
     // }
 
-    var preAction = function (id, name, status) {
+    var preAction = function (id, name, brandId, categoryId, price, priceImport, description, files) {
         document.getElementById("id").value = id;
         document.getElementById("name").value = name;
-        document.getElementById("status").value = status;
+        document.getElementById("description").value = description;
+        document.getElementById("brand").value = brandId;
+        document.getElementById("category").value = categoryId;
+        document.getElementById("price").value = price;
+        document.getElementById("importPrice").value = priceImport;
+        document.getElementById("filesUpload").value = files;
     }
 
     var handleOnChangeFile = function (e) {

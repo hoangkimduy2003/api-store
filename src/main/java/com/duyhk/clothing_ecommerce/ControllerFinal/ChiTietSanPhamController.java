@@ -51,7 +51,7 @@ public class ChiTietSanPhamController {
         }
         return "redirect:/chi-tiet-sp/" + productDetail.getProduct().getId();
     }
-
+    //check số lượng khi thêm vào giỏ hàng
     @GetMapping("/quanlity/{id}/{number}")
     @ResponseBody
     public String checkSoLuong(@PathVariable("id") Long id,

@@ -76,7 +76,7 @@
         <c:forEach items="${list.data}" var="x">
             <tr>
                 <td>${x.productDetailCode}</td>
-                <td>${x.name}</td>
+                <td>${x.product.name}</td>
                 <td>${x.product.category.name}</td>
                 <td>${x.product.brand.name}</td>
                 <td>${x.color.name}</td>

@@ -28,4 +28,8 @@ public class ProductDetailDTO implements Serializable {
     private ColorDTO color;
     private Integer status;
     private ProductDTO product;
+
+    public ProductDetailDTO(Long id) {
+        this.id = id;
+    }
 }

@@ -165,14 +165,24 @@ public class ProductServiceIplm implements ProductService {
         if (validate(productDTO)) {
             Product product = productRepo.findById(productDTO.getId()).orElseThrow(IllegalArgumentException::new);
             productDTO.setImages(productDTO.getImages() == null ? product.getImages() : productDTO.getImages());
+            Product p = null;
             if (product != null) {
-                productDTO = preUpdate(productDTO);
+                productDTO.setTotalQuantity(product.getTotalQuantity());
+                productDTO.setTotalQuantitySold(product.getTotalQuantitySold());
+                productDTO.setStatus(product.getStatus());
+                productDTO.setPriceSale(productDTO.getPrice());
                 product = convertToEntity(productDTO);
-                Product p = productRepo.save(product);
-                List<ProductDetail> list = productDTO.getProductDetails().stream().map(u -> new ModelMapper().map(u, ProductDetail.class)).collect(Collectors.toList());
-                list.stream().forEach(x -> x.setProduct(p));
-                productDetailRepo.saveAll(list);
+                p = productRepo.save(product);
             }
+            List<ProductDetail> productDetails = productDetailRepo.findByProduct(product.getId());
+            Product finalProduct = p;
+            productDetails.stream().forEach(pd -> {
+                pd.setPrice(finalProduct.getPrice());
+                pd.setPriceSale(finalProduct.getPriceSale());
+                pd.setName(finalProduct.getName());
+                pd.setProduct(finalProduct);
+            });
+            productDetailRepo.saveAll(productDetails);
         }
     }
 
@@ -223,31 +233,6 @@ public class ProductServiceIplm implements ProductService {
         productDTO.setStatus(0);
         return productDTO;
     }
-
-    public ProductDTO preUpdate(ProductDTO productDTO) {
-        productDTO.setTotalQuantitySold(0L);
-        productDTO.setTotalQuantity(
-                productDTO.getProductDetails()
-                        .stream()
-                        .map(ProductDetailDTO::getQuantity)
-                        .reduce(0L, Long::sum));
-        productDTO.setTotalQuantitySold(
-                productDTO.getProductDetails()
-                        .stream()
-                        .map(ProductDetailDTO::getQuantitySold)
-                        .reduce(0L, Long::sum));
-
-        productDTO.setPriceSale(productDTO.getPrice());
-
-        for (ProductDetailDTO x : productDTO.getProductDetails()) {
-            x.setName(productDTO.getName());
-            x.setPrice(productDTO.getPrice());
-            x.setPriceSale(productDTO.getPriceSale());
-            x.setStatus(productDTO.getStatus());
-        }
-        return productDTO;
-    }
-
     public String generateRandomString() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
