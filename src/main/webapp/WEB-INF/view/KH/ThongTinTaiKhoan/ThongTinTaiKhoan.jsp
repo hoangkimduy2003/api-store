@@ -51,7 +51,7 @@
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#!/user">
+                            <li><a class="dropdown-item" href="/thong-tin-tai-khoan">
                                 Thông tin tài khoản
                             </a>
                             </li>

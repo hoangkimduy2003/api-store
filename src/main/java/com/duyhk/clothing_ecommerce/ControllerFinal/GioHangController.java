@@ -1,9 +1,11 @@
 package com.duyhk.clothing_ecommerce.ControllerFinal;
 
+import com.duyhk.clothing_ecommerce.dto.BillDTO;
 import com.duyhk.clothing_ecommerce.dto.CartDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
+import com.duyhk.clothing_ecommerce.service.BillService;
 import com.duyhk.clothing_ecommerce.service.CartDetailService;
 import com.duyhk.clothing_ecommerce.service.CartService;
 import com.duyhk.clothing_ecommerce.service.ProductService;
@@ -11,9 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/gio-hang")
@@ -21,6 +21,9 @@ public class GioHangController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private BillService billService;
 
     @Autowired
     private CartDetailService cartDetailService;
@@ -54,5 +57,16 @@ public class GioHangController {
     public String deleteById(@PathVariable("cartDetailId") Long cartDetailId){
         cartDetailService.delete(cartDetailId);
         return "redirect:/gio-hang";
+    }
+
+    @PostMapping("/order")
+    public String order(@ModelAttribute BillDTO billDTO){
+        Long cartId = (Long) session.getAttribute("cartId");
+        if(cartId == null){
+            return "redirect:/account/dang-nhap";
+        }
+        billDTO.setCartId(cartId);
+        billService.createBillOnline(billDTO);
+        return "redirect:/trang-chu";
     }
 }

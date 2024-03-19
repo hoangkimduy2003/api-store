@@ -4,10 +4,7 @@ import com.duyhk.clothing_ecommerce.dto.*;
 import com.duyhk.clothing_ecommerce.dto.search.SearchBillDTO;
 import com.duyhk.clothing_ecommerce.entity.*;
 import com.duyhk.clothing_ecommerce.exception.CustomValidationException;
-import com.duyhk.clothing_ecommerce.reponsitory.BillDetailReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.BillReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.CartReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.UserReponsitory;
+import com.duyhk.clothing_ecommerce.reponsitory.*;
 import com.duyhk.clothing_ecommerce.service.BillService;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -35,6 +32,9 @@ public class BillServiceIplm implements BillService {
 
     @Autowired
     private CartReponsitory cartRepo;
+
+    @Autowired
+    private CartDetailReponsitory cartDetailRepo;
 
     @Override
     public Bill convertToEntity(BillDTO billDTO) {
@@ -80,6 +80,28 @@ public class BillServiceIplm implements BillService {
                 searchBillDTO.getDateEnd(),
                  searchBillDTO.getStaff(),
                 searchBillDTO.getPhoneNumber());
+        List<BillDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<BillDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public PageDTO<List<BillDTO>> searchAtStore(SearchBillDTO searchBillDTO) {
+        searchBillDTO.setPage(searchBillDTO.getPage() == null ? 0 : searchBillDTO.getPage());
+        searchBillDTO.setSize(searchBillDTO.getSize() == null ? 5 : searchBillDTO.getSize());
+        Page<Bill> pageEntity = billReponsitory.searchAtStore(
+                PageRequest.of(
+                        searchBillDTO.getPage(),
+                        searchBillDTO.getSize()),
+                searchBillDTO.getStatus(),
+                searchBillDTO.getDateStart(),
+                searchBillDTO.getDateEnd(),
+                "%"+(searchBillDTO.getStaff() == null ? "" : searchBillDTO.getStaff()) +"%",
+                "%"+(searchBillDTO.getPhoneNumber() == null ? "" : searchBillDTO.getPhoneNumber())+"%",
+                searchBillDTO.getBillType());
         List<BillDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
         return PageDTO.<List<BillDTO>>builder()
                 .data(listDto)
@@ -143,6 +165,9 @@ public class BillServiceIplm implements BillService {
         Bill bill = billReponsitory.findById(billDTO.getId()).orElseThrow(IllegalArgumentException::new);
         if (bill != null) {
             bill.setStatus(billDTO.getStatus());
+            bill.setFullName(billDTO.getFullName());
+            bill.setPhoneNumber(billDTO.getPhoneNumber());
+            bill.setAddressDetail(billDTO.getAddressDetail());
             if (billDTO.getUser().getPhoneNumber() == null) {
                 throw new CustomValidationException("Vui lòng nhập số điện thoại");
             }
@@ -150,6 +175,7 @@ public class BillServiceIplm implements BillService {
             if (user != null) {
                 bill.setUser(user);
                 bill.setPhoneNumber(billDTO.getUser().getPhoneNumber());
+                billReponsitory.save(bill);
             }
             else{
                 if(billDTO.getUser() == null || billDTO.getUser().getPhoneNumber() == null || "".equals(billDTO.getUser().getPhoneNumber())){
@@ -160,8 +186,16 @@ public class BillServiceIplm implements BillService {
                     bill.setFullName(billDTO.getFullName() == null ? billDTO.getUser().getPhoneNumber() : billDTO.getFullName());
                     bill.setOrderDateFinal(bill.getStatus() == 5 ? new Date() : null);
                     Bill b = billReponsitory.save(bill);
-                    if (user == null) {
-                        cartRepo.save(new Cart(0L, 0.0, b.getUser()));
+                    if (user == null && !"".equals(billDTO.getUser().getPhoneNumber()) && billDTO.getUser().getPhoneNumber() != null) {
+                        Users users = new Users();
+                        users.setPhoneNumber(billDTO.getUser().getPhoneNumber());
+                        users.setRole(Role.CUSTOMER);
+                        users.setStatus(1);
+                        users.setTotalInvoiceValue(b.getTotalMoney());
+                        users.setUserCode("KH" + generateRandomString());
+                        users.setTotalInvoice(1L);
+                        Users u = userRepon.save(users);
+                        cartRepo.save(new Cart(0L, 0.0, u));
                     }
                 }
             }
@@ -177,6 +211,33 @@ public class BillServiceIplm implements BillService {
             bill.setStatus(status);
             billReponsitory.save(bill);
         }
+    }
+
+    @Override
+    public void createBillOnline(BillDTO billDTO) {
+        List<CartDetail> cartDetails = cartDetailRepo.findByCartId(billDTO.getCartId());
+        Cart cart = cartRepo.findById(billDTO.getCartId()).orElse(null);
+        Users users = userRepon.findByPhoneNumber(billDTO.getUser().getPhoneNumber()).orElse(null);
+        Bill bill = new Bill();
+        if(users != null) {
+            bill.setUser(users);
+        }else{
+            Users user = new Users();
+            user.setPhoneNumber(billDTO.getUser().getPhoneNumber());
+            user.setRole(Role.CUSTOMER);
+            user.setStatus(1);
+            user.setTotalInvoiceValue(cart.getTotalMoney());
+            user.setUserCode("KH" + generateRandomString());
+            user.setTotalInvoice(1l);
+            users = userRepon.save(user);
+            cartRepo.save(new Cart(0L, 0.0,users));
+        }
+        bill.setBillCode(generateRandomString());
+        bill.setStatus(1);
+        bill.setPhoneNumber(users.getPhoneNumber());
+        bill.setFullName(users.getFullName());
+        bill.setAddressDetail(billDTO.getAddressDetail());
+
     }
 
     @Override
