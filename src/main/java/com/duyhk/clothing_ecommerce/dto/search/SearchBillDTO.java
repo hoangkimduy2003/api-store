@@ -15,6 +15,10 @@ public class SearchBillDTO {
     private Integer status;
     private String phoneNumber;
     private String staff;
+    private Integer billType;
     private Integer size;
     private Integer page;
+    private String strDateStart;
+    private String strDateEnd;
+
 }

@@ -39,7 +39,7 @@
     </div>
 </div>
 <script>
-    var handleOnAction = function (){
+    var handleOnAction = async function (){
         if(!confirm("Bạn có muốn thao tác không?")){
             return false;
         }
@@ -55,7 +55,16 @@
             alert("Vui lòng nhập số lượng");
             return false;
         }
-        document.getElementById("frmAction").submit();
+        //
+        await axios.get('/chi-tiet-sp/api/' + code.data)
+            .then(response => {
+                if(response.data){
+                    document.getElementById("frmAction").submit();
+                }else {
+                    // al
+                }
+            })
+
     }
     var preAction = function (id,quantity,size,color){
         document.getElementById("id").value = id;

@@ -73,7 +73,6 @@
     </div>
     <div class="row">
         <div class="col-md-9 col-xs-12">
-
             <table class="table">
                 <thead>
                 <tr>
@@ -130,12 +129,11 @@
                         </p>
                     </div>
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-6"><a href="/trang-chu" class="btn btn-light w-75">TIẾP TỤC MUA HÀNG</a></div>
-                <div class="col-6" ng-if="cart.totalProduct != 0"><a style="float: right;" href="#!/pay"
-                                                                     class="btn btn-dark w-75">THANH TOÁN</a></div>
+                <div class="col-6" style="${sizeCart == 0 ? "display: none" : ""}"><button style="float: right;" data-bs-toggle="modal" data-bs-target="#thanhtoan"
+                                                                     class="btn btn-dark w-75">THANH TOÁN</button></div>
             </div>
 
         </div>
@@ -197,6 +195,7 @@
     </div>
     <br/>
 </div>
+<jsp:include page="modal.jsp"/>
 <script>
     var handleOnClickAction = function (action){
         if(action == "D"){

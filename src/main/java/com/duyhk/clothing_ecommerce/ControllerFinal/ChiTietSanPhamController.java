@@ -67,4 +67,11 @@ public class ChiTietSanPhamController {
         return "";
     }
 
+    @GetMapping("/check/{idProduct}/{mau}/{size}")
+    @ResponseBody
+    public boolean isExist(){
+        //ss
+        return false;
+    }
+
 }

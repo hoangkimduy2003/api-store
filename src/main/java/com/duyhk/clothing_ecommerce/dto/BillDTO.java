@@ -31,4 +31,5 @@ public class BillDTO extends TimeAuditableDTO implements Serializable {
     private UserDTO user;
     private String staff;
     private Integer billType;
+    private Long cartId;
 }

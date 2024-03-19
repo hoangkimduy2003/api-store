@@ -16,6 +16,9 @@ public interface BillService {
     PageDTO<List<BillDTO>> getByPageRequest(PageRequestDTO pageRequestDTO);
 
     PageDTO<List<BillDTO>> search(SearchBillDTO searchBillDTO);
+
+    PageDTO<List<BillDTO>> searchAtStore(SearchBillDTO searchBillDTO);
+
     PageDTO<List<BillDTO>> getSellAtStore(PageRequestDTO pageRequestDTO);
     PageDTO<List<BillDTO>> getByStatus(PageRequestDTO pageRequestDTO, Integer status);
 
@@ -26,6 +29,8 @@ public interface BillService {
     void updateSellAtStoreFinal(BillDTO billDTO);
 
     void updateStatusById(Long id, Integer status);
+
+    void createBillOnline(BillDTO billDTO);
 
     void delete(Long id);
 

@@ -32,4 +32,19 @@ public interface BillReponsitory extends JpaRepository<Bill, Long> {
                       @Param("endDate")Date endDate,
                       @Param("staff")String staff,
                       @Param("phoneNumber")String phoneNumber);
+
+    @Query("select b from Bill b where 1 = 1 " +
+            "and (:status is null or :status = -1 or b.status = :status) " +
+            "and (:startDate is null or b.createdAt >= :startDate) " +
+            "and (:endDate is null or b.createdAt <= :endDate) " +
+            "and (:staff is null or :staff = '%%' or b.staff like :staff) " +
+            "and (:phoneNumber is null or :phoneNumber = '%%' or b.phoneNumber like :phoneNumber) " +
+            "and (:billType is null or :billType = -1 or b.billType = :billType) order by b.createdAt desc")
+    Page<Bill> searchAtStore(Pageable pageable,
+                      @Param("status") Integer status,
+                      @Param("startDate")Date startDate,
+                      @Param("endDate")Date endDate,
+                      @Param("staff")String staff,
+                      @Param("phoneNumber")String phoneNumber,
+                             @Param("billType")Integer billType);
 }

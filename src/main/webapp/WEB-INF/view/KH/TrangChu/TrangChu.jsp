@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Owen</title>
 </head>
 
@@ -50,7 +51,7 @@
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#!/user">
+                            <li><a class="dropdown-item" href="/thong-tin-tai-khoan">
                                 Thông tin tài khoản
                             </a>
                             </li>

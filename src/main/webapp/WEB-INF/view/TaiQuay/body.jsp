@@ -62,7 +62,7 @@
         <div>
             <button class="btn btn-dark" onclick="toggleCamera()">Quét QR</button>
             <a class="btn btn-dark" href="/danh-sach-san-pham/${bill.id}">Tìm sản phẩm</a>&nbsp;
-            <button data-bs-toggle="modal" data-bs-target="#thanhtoan" class="btn btn-dark">Thanh toán</button>
+            <button data-bs-toggle="modal" data-bs-target="#thanhtoan" onclick="preActionThanhToan()" class="btn btn-dark">Thanh toán</button>
         </div>
         <div>
             <video id="qr-video" width="240" height="160" style="display: none" autoplay></video>
@@ -110,7 +110,7 @@
         </table>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-8">
             <ul class="pagination">
                 <c:forEach begin="1" end="${list.totalPages}" varStatus="loop">
                     <li class="page-item">
@@ -121,7 +121,9 @@
                 </c:forEach>
             </ul>
         </div>
-
+        <div class="col-4">
+            Tổng tiền: <fmt:formatNumber pattern="#,###" value="${bill.totalMoney}" /> VND
+        </div>
     </div>
 </div>
 <script>

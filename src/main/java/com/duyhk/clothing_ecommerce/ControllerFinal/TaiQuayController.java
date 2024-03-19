@@ -32,6 +32,12 @@ public class TaiQuayController {
     @GetMapping("")
     public String home(Model model,@RequestParam(required = false, name = "page") Integer pageDetail,
                        @RequestParam(name = "idBill",required = false) Long idBill) {
+        Users users = (Users) session.getAttribute("user");
+        boolean isLogin = users == null ? false : true;
+        model.addAttribute("isLogin", isLogin);
+        if(!isLogin){
+            return "redirect:/account/dang-nhap";
+        }
         PageDTO<List<BillDTO>> pageDTO = billService.getSellAtStore(new PageRequestDTO(0, 5 ));
         Long finalIdBill = idBill;
         BillDTO bill = idBill == null ? (pageDTO.getData().size() > 0 ? pageDTO.getData().get(0) : null) : pageDTO.getData().stream().filter(billDTO -> billDTO.getId() == finalIdBill).findFirst().get();

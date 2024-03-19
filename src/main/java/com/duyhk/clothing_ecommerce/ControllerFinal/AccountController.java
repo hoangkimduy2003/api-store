@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/account/dang-nhap")
-public class DangNhapController {
+public class AccountController {
 
     @Autowired
     private UserService userService;
