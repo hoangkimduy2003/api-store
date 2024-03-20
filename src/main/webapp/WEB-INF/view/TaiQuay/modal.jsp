@@ -8,9 +8,12 @@
                 <input class="form-control" name="id" id="id" style="display: none" aria-describedby="emailHelp">
                 <div class="modal-body">
                     <div class="mb-3">
+                        <p>Tên KH: <span id="customerName"></span></p>
+                    </div>
+                    <div class="mb-3">
                         <label for="phoneNumber" class="form-label">Số điện thoại:</label>
                         <input class="form-control" name="user.phoneNumber" id="phoneNumber"
-                               aria-describedby="emailHelp">
+                               aria-describedby="emailHelp" onchange="handleOnChangeSdt(this)">
                         <input class="form-control" name="status" value="5" hidden id="status"
                                aria-describedby="emailHelp">
                     </div>
@@ -27,7 +30,7 @@
                         <input class="form-control" type="number" id="moneyCustomer"
                                onchange="handleOnChangeInputMoney(this)" aria-describedby="emailHelp">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" style="display: none">
                         <label for="htnh" class="form-label">Hình thức nhận hàng</label>
                         <select id="htnh" class="form-select" onchange="handleOnChangeHtnn(this)">
                             <option value="1" selected>Tại quầy</option>
@@ -75,6 +78,14 @@
     </div>
 </div>
 <script>
+
+    async function handleOnChangeSdt(e){
+        var value = e.value;
+        await axios.get('/tai-quay/getFullName/' + value)
+            .then(response => {
+                document.getElementById("customerName").innerHTML = response.data;
+            })
+    }
 
     function handleOnChangeHtnn(e) {
         var value = e.value;

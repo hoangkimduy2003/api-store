@@ -5,6 +5,7 @@ import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.service.BillDetailService;
 import com.duyhk.clothing_ecommerce.service.BillService;
 import com.duyhk.clothing_ecommerce.service.ProductDetailService;
+import com.duyhk.clothing_ecommerce.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,8 @@ import java.util.List;
 @RequestMapping("/tai-quay")
 public class TaiQuayController {
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private BillService billService;
 
@@ -79,5 +82,16 @@ public class TaiQuayController {
         billDTO.setId(id);
         billService.updateSellAtStoreFinal(billDTO);
         return "redirect:/tai-quay";
+    }
+
+    @GetMapping("/getFullName/{sdt}")
+    @ResponseBody
+    public String getFullName(@PathVariable("sdt") String sdt){
+        Users user = userService.findByPhoneNumber(sdt);
+        if(user == null){
+            return "";
+        }else{
+            return user.getFullName();
+        }
     }
 }

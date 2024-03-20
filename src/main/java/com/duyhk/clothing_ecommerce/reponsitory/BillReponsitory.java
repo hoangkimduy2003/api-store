@@ -34,6 +34,7 @@ public interface BillReponsitory extends JpaRepository<Bill, Long> {
                       @Param("phoneNumber")String phoneNumber);
 
     @Query("select b from Bill b where 1 = 1 " +
+            "and not (b.billType = 1 and b.status = 1) " +
             "and (:status is null or :status = -1 or b.status = :status) " +
             "and (:startDate is null or b.createdAt >= :startDate) " +
             "and (:endDate is null or b.createdAt <= :endDate) " +

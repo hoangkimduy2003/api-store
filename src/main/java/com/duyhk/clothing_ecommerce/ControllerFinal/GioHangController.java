@@ -3,6 +3,7 @@ package com.duyhk.clothing_ecommerce.ControllerFinal;
 import com.duyhk.clothing_ecommerce.dto.BillDTO;
 import com.duyhk.clothing_ecommerce.dto.CartDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
+import com.duyhk.clothing_ecommerce.dto.UserDTO;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.service.BillService;
@@ -62,10 +63,12 @@ public class GioHangController {
     @PostMapping("/order")
     public String order(@ModelAttribute BillDTO billDTO){
         Long cartId = (Long) session.getAttribute("cartId");
+        Users users = (Users) session.getAttribute("user");
         if(cartId == null){
             return "redirect:/account/dang-nhap";
         }
         billDTO.setCartId(cartId);
+        billDTO.setUser(new UserDTO(users.getId()));
         billService.createBillOnline(billDTO);
         return "redirect:/trang-chu";
     }

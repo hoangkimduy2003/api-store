@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -217,27 +218,34 @@ public class BillServiceIplm implements BillService {
     public void createBillOnline(BillDTO billDTO) {
         List<CartDetail> cartDetails = cartDetailRepo.findByCartId(billDTO.getCartId());
         Cart cart = cartRepo.findById(billDTO.getCartId()).orElse(null);
-        Users users = userRepon.findByPhoneNumber(billDTO.getUser().getPhoneNumber()).orElse(null);
+        Users users = userRepon.findById(billDTO.getUser().getId()).orElse(null);
         Bill bill = new Bill();
         if(users != null) {
+            users.setTotalInvoiceValue(users.getTotalInvoiceValue() + cart.getTotalMoney());
+            users.setTotalInvoice(users.getTotalInvoice() + 1l);
             bill.setUser(users);
-        }else{
-            Users user = new Users();
-            user.setPhoneNumber(billDTO.getUser().getPhoneNumber());
-            user.setRole(Role.CUSTOMER);
-            user.setStatus(1);
-            user.setTotalInvoiceValue(cart.getTotalMoney());
-            user.setUserCode("KH" + generateRandomString());
-            user.setTotalInvoice(1l);
-            users = userRepon.save(user);
-            cartRepo.save(new Cart(0L, 0.0,users));
         }
         bill.setBillCode(generateRandomString());
         bill.setStatus(1);
         bill.setPhoneNumber(users.getPhoneNumber());
-        bill.setFullName(users.getFullName());
+        bill.setFullName(billDTO.getFullName());
         bill.setAddressDetail(billDTO.getAddressDetail());
-
+        bill.setBillType(2);
+        bill.setTatolProduct(cart.getTotalProduct());
+        bill.setTotalMoney(cart.getTotalMoney());
+        Bill billSave = billReponsitory.save(bill);
+        List<BillDetail> billDetailLists = new ArrayList<>();
+        cartDetails.forEach(x ->{
+            BillDetail billDetail = new BillDetail();
+            billDetail.setPrice(x.getProductDetail().getPriceSale());
+            billDetail.setBill(billSave);
+            billDetail.setQuantity(x.getQuantity());
+            billDetail.setProductDetail(x.getProductDetail());
+            billDetail.setTotalPrice(x.getProductDetail().getPriceSale() * x.getQuantity());
+            billDetailLists.add(billDetail);
+        });
+        billDetailRepo.saveAll(billDetailLists);
+        cartDetailRepo.deleteAll(cartDetails);
     }
 
     @Override
