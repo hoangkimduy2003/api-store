@@ -2,6 +2,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container" ng-controller="detailController" style="margin-bottom: 36px;">
     <jsp:include page="modal..jsp"></jsp:include>
     <div class="row" style="margin-bottom: 24px;">
@@ -37,8 +38,9 @@
                 </div>
                 <div class="row">
                     <p style="color: gray;">
-                        ${product.price} đ
+                        <fmt:formatNumber pattern="#,###" value="${product.price}" /> VND
                     </p>
+                    <p style=" font-size: 12px">Số lượng: <span id="quantityView"></span></p>
                 </div>
                 <div class="row">
                     <h6>Màu sắc: </h6>
@@ -86,6 +88,7 @@
             var arrValue = value.split("|");
             var quantity = arrValue[1];
             var productDetailId = arrValue[2];
+            document.getElementById("quantityView").innerHTML = quantity;
             document.getElementById("quantityOld").value = quantity;
             document.getElementById("productDetailId").value = productDetailId;
             console.log(quantity);
@@ -98,6 +101,7 @@
         var colorName = e.value;
         var divSize = document.getElementById("divSize");
         document.getElementById("productDetailId").value = "";
+        document.getElementById("quantityView").innerHTML = "";
         divSize.innerHTML = "";
         axios.get(`/CTSP/getByColor/`+ colorName+ `/`+${product.id})
             .then(function (response) {

@@ -28,4 +28,8 @@ public class UserDTO extends TimeAuditableDTO implements Serializable {
     private Long totalInvoice;
     private Integer userType;
     private FavouriteDTO favourite;
+
+    public UserDTO(Long id){
+        this.id = id;
+    }
 }
