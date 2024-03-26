@@ -33,4 +33,5 @@ public interface ProductService {
 
     PageDTO<List<ProductDTO>> search(SearchProductDTO searchProductDTO);
 
+    PageDTO<List<ProductDTO>> searchOnline(SearchProductDTO searchProductDTO);
 }

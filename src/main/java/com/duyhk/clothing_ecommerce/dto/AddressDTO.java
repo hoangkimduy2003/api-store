@@ -22,7 +22,6 @@ public class AddressDTO extends TimeAuditableDTO  implements Serializable {
     @NotNull(message = "Số điện thoại không được để trống")
     @NotBlank(message = "Địa chỉ không được để trống")
     private String phoneNumber;
-
     private Integer city;
     private Integer district;
     private Integer ward;

@@ -61,7 +61,7 @@
     <div id="slide_event" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <a href="">
+                <a href="/tat-ca-sp">
                     <img src="https://bom.so/4DOZnf" class="d-block w-100" alt="...">
                 </a>
             </div>
@@ -83,17 +83,17 @@
 
     <div class="row" style="margin-top: 24px;">
         <div class="col-md-4 col-xs-12">
-            <a href="">
+            <a href="/tat-ca-sp">
                 <img src="https://bom.so/KX9SWH" alt="" class="d-block w-100">
             </a>
         </div>
         <div class="col-md-4 col-xs-12">
-            <a href="">
+            <a href="tat-ca-sp">
                 <img src="https://bom.so/pTVrDK" alt="" class="d-block w-100">
             </a>
         </div>
         <div class="col-md-4 col-xs-12">
-            <a href="">
+            <a href="tat-ca-sp">
                 <img src="https://bom.so/Z60o3u" alt="" class="d-block w-100">
             </a>
         </div>

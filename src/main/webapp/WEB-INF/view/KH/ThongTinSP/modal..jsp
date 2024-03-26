@@ -24,7 +24,7 @@
     var handleOnAction = async function (){
         if(document.getElementById("quantity").value == "" || document.getElementById("quantity").value == null
             || document.getElementById("quantity").value < 1){
-            alert("Vui lòng nhập số lượng");
+            toastr.error("Vui lòng nhập số lượng");
             return false;
         }
         await axios.get('/CTSP/checkQuantity/'+ document.getElementById("productDetailId").value)
@@ -33,7 +33,7 @@
                 var quantity = document.getElementById("quantity").value;
                 var quantityReal = +document.getElementById("quantityOld").value;
                 if((+quantity + (+response.data)) > +quantityReal){
-                    alert("Số lượng chỉ còn: " + quantityReal +", hiện tại trong giỏ hàng của bạn đang có " + response.data + " sản phẩm");
+                    toastr.error("Số lượng chỉ còn: " + quantityReal +", hiện tại trong giỏ hàng của bạn đang có " + response.data + " sản phẩm");
                     return false;
                 }
                 var formCreate = document.getElementById("frmAction");

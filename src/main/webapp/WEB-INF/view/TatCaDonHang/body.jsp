@@ -29,7 +29,6 @@
                         <option value="-1" ${searchBillDTO.status == (-1) ? "selected" : ""}>--Tất cả--</option>
                         <option value="0" ${searchBillDTO.status == (0) ? "selected" : ""}>Đã huỷ</option>
                         <option value="1" ${searchBillDTO.status == (1) ? "selected" : ""}>Đang chờ</option>
-                        <option value="2" ${searchBillDTO.status == (2) ? "selected" : ""}>Đang xử lý</option>
                         <option value="3" ${searchBillDTO.status == (3) ? "selected" : ""}>Chờ lấy hàng</option>
                         <option value="4" ${searchBillDTO.status == (4) ? "selected" : ""}>Đang giao</option>
                         <option value="5" ${searchBillDTO.status == (5) ? "selected" : ""}>Đã hoàn thành</option>
@@ -59,7 +58,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Tên người nhận</th>
                 <th scope="col">Số điện thoại</th>
-                <th scope="col">Địa chỉ</th>
+<%--                <th scope="col">Địa chỉ</th>--%>
                 <th scope="col">Tổng sản phẩm</th>
                 <th scope="col">Tổng tiền</th>
                 <th scope="col">Ngày tạo</th>
@@ -73,19 +72,28 @@
                     <td>${loopStatus.index + 1}</td>
                     <td>${bill.fullName}</td>
                     <td>${bill.phoneNumber}</td>
-                    <td>${bill.addressDetail}</td>
+<%--                    <td>${bill.addressDetail}</td>--%>
                     <td><fmt:formatNumber pattern="#,###" value="${bill.tatolProduct}"/></td>
                     <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></td>
                     <td>${bill.orderDate}</td>
                     <td>
-                        ${bill.status == 1 ? "Đang chờ" : (bill.status == 2 ? "Đang xử lý" :
+                        ${bill.status == 1 ? "Chờ xác nhận" : (bill.status == 2 ? "Đang xử lý" :
                                 bill.status == 3 ? "Chờ lấy hàng" : ( bill.status ==  4 ? "Đang giao" :
                                         (bill.status == 5 ? (bill.billType==1?"Đã hoàn thành" :"Đã giao") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ"))))}
                     </td>
                     <td>
-                        <button style="color: aliceblue;" class="btn btn-info" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal" >Chi tiết
-                        </button>
+                        <a style="color: aliceblue;" class="btn btn-info" href="/don-hang/chi-tiet/${bill.id}" ><i class="bi bi-eye"></i>
+                        </a>
+                        <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnClickXacNhan()">Xác nhận</button>
+                        <a class="btn btn-dark"
+                           id="xacNhanAll"
+                           style="display: none"
+                           href="/don-hang/updateStatus/${bill.id}/3/3"
+                        >Xác nhận</a>
+                        <a class="btn btn-dark"
+                           style="${(bill.status != 3) ? "display: none" : ""}"
+                           href="/don-hang/updateStatus/${bill.id}/4/3"
+                        >Giao hàng</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -113,6 +121,23 @@
         //     document.getElementById("dateStart").value = null;
         // }
         document.getElementById("searchForm").submit();
+    }
+    function handleOnClickXacNhan(){
+        var a = document.getElementById("xacNhanAll");
+        var _href = a.href;
+        var quantity = prompt("Nhập phí ship: ")
+        console.log(quantity);
+        if(quantity == null || quantity == "" || quantity <= 0){
+            toastr.error("Vui lòng nhập phí ship!");
+            return false;
+        }
+        if(isNaN(quantity)){
+            toastr.error("Phí ship phải là số");
+            return false;
+        }
+        _href = _href + "?ship=" + quantity;
+        a.setAttribute("href", _href);
+        a.click();
     }
 
 </script>

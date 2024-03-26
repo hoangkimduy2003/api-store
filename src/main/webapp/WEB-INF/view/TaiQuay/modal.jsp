@@ -158,7 +158,7 @@
             if (document.getElementById("htnh").value == 1) {
                 value = (+value);
                 // moneyTransfers
-                var frmMoney = (+${bill.totalMoney} -value);
+                var frmMoney = (value - +${bill.totalMoney});
                 var valueNew = new Intl.NumberFormat('en-US').format(frmMoney);
                 document.getElementById("moneyTransfers").innerHTML = valueNew;
             } else {
