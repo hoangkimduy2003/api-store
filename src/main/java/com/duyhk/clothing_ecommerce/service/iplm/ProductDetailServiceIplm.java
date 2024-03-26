@@ -151,6 +151,10 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     public List<ProductDetailDTO> searchByColorName(String nameColor, Long idProduct) {
         return productDetailRepo.searchByColorName(nameColor,idProduct).stream().map(p -> convertToDto(p)).collect(Collectors.toList());
     }
+    @Override
+    public ProductDetail searchBySizeAndColor(Long idProduct, Long idColor,Long idSize) {
+        return productDetailRepo.searchBySizeAndColor(idProduct, idColor,idSize);
+    }
 
     public String generateRandomString() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

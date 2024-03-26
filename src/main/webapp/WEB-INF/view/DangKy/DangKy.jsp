@@ -89,6 +89,8 @@
             ĐÂY</a></b></p>
     </div>
     <jsp:include page="body.jsp"></jsp:include>
+
+<%-- ------Bootom-------%>
     <hr style="margin: 0;">
     <div class="container-fluid container-position" style="background-color: #fafafa; margin-bottom: 36px;">
         <div class="container">
