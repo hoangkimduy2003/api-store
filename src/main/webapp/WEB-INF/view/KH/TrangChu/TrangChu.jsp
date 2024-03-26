@@ -63,6 +63,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/changePassword">Đổi mật khẩu</a></li>
                             <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/dang-nhap/out">Đăng xuất</a></li>
                         </ul>
                     </li>

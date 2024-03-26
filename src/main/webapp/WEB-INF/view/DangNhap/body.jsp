@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${not empty tb}">
+    <script>
+        alert("${tb}")
+    </script>
+</c:if>
+
 <div class="container" ng-controller="loginController">
     <div class="row" style="margin-bottom: 24px;">
         <span><a href="/trang-chu" style="text-decoration: none; color: black;">TRANG CHỦ</a> | TÀI KHOẢN </span>
@@ -33,9 +40,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <a href="#!/createAccount">
-                                        <button style="height: 50px; margin-top: 64px;"
-                                                class="btn btn-outline-secondary w-100 ">TẠO TÀI KHOẢN</button>
+                                    <a href="/account/createAccount">
+                                        <p style="height: 50px; margin-top: 64px;"
+                                                class="btn btn-outline-secondary w-100 ">TẠO TÀI KHOẢN</p>
                                     </a>
                                 </div>
                             </div>

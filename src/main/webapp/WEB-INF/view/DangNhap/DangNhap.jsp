@@ -57,9 +57,11 @@
                             <li><a class="dropdown-item" href="#!/order">Đơn hàng của
                                 tôi</a>
                             </li>
+                            <li style="${isAdmin ? "" : "display: none"}"><a class="dropdown-item" href="/tai-quay">Quản lý đơn hàng</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/changePassword">Đổi mật khẩu</a></li>
                             <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/dang-nhap/out">Đăng xuất</a></li>
                         </ul>
                     </li>

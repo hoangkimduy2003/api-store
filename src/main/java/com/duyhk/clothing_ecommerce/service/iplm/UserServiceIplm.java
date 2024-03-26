@@ -2,6 +2,7 @@ package com.duyhk.clothing_ecommerce.service.iplm;
 
 import com.duyhk.clothing_ecommerce.dto.PageDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
+import com.duyhk.clothing_ecommerce.dto.RegisterDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchUserDTO;
 import com.duyhk.clothing_ecommerce.entity.Cart;
@@ -37,6 +38,11 @@ public class UserServiceIplm implements UserService {
     @Override
     public UserDTO convertToDto(Users user) {
         return new ModelMapper().map(user, UserDTO.class);
+    }
+
+    @Override
+    public UserDTO convertToUserDto(RegisterDTO registerDTO) {
+        return new ModelMapper().map(registerDTO, UserDTO.class);
     }
 
     @Override
@@ -124,9 +130,10 @@ public class UserServiceIplm implements UserService {
 
     public Users convertEndecorUser(Users user, UserDTO userDTO) {
         user.setPassword((userDTO.getPassword()));
+        user.setEmail((userDTO.getEmail()));
         user.setImage(user.getImage());
         user.setFullName(userDTO.getFullName());
-        user.setPhoneNumber(user.getPhoneNumber());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setFavourite(new Favourite());
         return user;
     }

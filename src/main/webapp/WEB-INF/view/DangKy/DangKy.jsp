@@ -7,16 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css   ">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <title>Owen</title>
 </head>
 
 <body >
 <div class="container-fluid" style="padding: 0;">
     <hr style="margin: 0;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light nav-menu fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light nav-menu">
         <div class="container">
             <a class="navbar-brand" href="/trang-chu"><img src="https://bom.so/1YAtAj" alt="#!/home"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -33,10 +31,10 @@
                         <a class="nav-link " style="padding: 8px 24px;" href="#!/bestchoice">BÁN CHẠY</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="padding: 8px 24px;" href="/tat-ca-sp?order=p.createAt+desc">HÀNG MỚI</a>
+                        <a class="nav-link" style="padding: 8px 24px;" href="#!/newProducts">HÀNG MỚI</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="padding: 8px 24px;" href="/tat-ca-sp">SẢN PHẨM</a>
+                        <a class="nav-link" style="padding: 8px 24px;" href="#!/allProduct">SẢN PHẨM</a>
                     </li>
 
 
@@ -52,11 +50,11 @@
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/thong-tin-tai-khoan">
+                            <li><a class="dropdown-item" href="#!/user">
                                 Thông tin tài khoản
                             </a>
                             </li>
-                            <li><a class="dropdown-item" href="/my-order">Đơn hàng của
+                            <li><a class="dropdown-item" href="#!/order">Đơn hàng của
                                 tôi</a>
                             </li>
                             <li style="${isAdmin ? "" : "display: none"}"><a class="dropdown-item" href="/tai-quay">Quản lý đơn hàng</a></li>
@@ -68,14 +66,14 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/gio-hang"><i class="bi bi-bag" style="position: relative;">
+                        <a class="nav-link" href="#!/cart"><i class="bi bi-bag" style="position: relative;">
                                     <span style="font-size: 10px;
                                         color: white;
                                          position: absolute;
                                          border-radius: 10px;
                                          background-color: #c9ae63  ;
                                          padding: 0px 5px;">
-                                        ${sizeCart == null ? "" : sizeCart}
+
                                     </span>
                         </i>
                         </a>
@@ -90,7 +88,9 @@
                                                                                                             style="color: gray;text-decoration: none;">Ở
             ĐÂY</a></b></p>
     </div>
-    <div style="margin-top: 56px"><jsp:include page="body.jsp"></jsp:include></div>
+    <jsp:include page="body.jsp"></jsp:include>
+
+<%-- ------Bootom-------%>
     <hr style="margin: 0;">
     <div class="container-fluid container-position" style="background-color: #fafafa; margin-bottom: 36px;">
         <div class="container">
@@ -161,7 +161,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </body>
 </html>

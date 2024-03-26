@@ -18,7 +18,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="size" class="form-label">Kích cỡ</label>
-                        <select class="form-select" name="size.id" id="size" aria-label="Default select example">
+                        <select class="form-select" name="size.id" id="size" aria-label="Default select example" >
                             <option value="-1" selected>--Kích cỡ--</option>
                             <c:forEach items="${sizes}" var="x">
                                 <option value="${x.id}">${x.name}</option>
@@ -40,6 +40,8 @@
 </div>
 <script>
     var handleOnAction = async function (){
+        var color = document.getElementById("color").value;
+        var size = document.getElementById("size").value;
         if(!confirm("Bạn có muốn thao tác không?")){
             return false;
         }
@@ -51,17 +53,24 @@
             alert("Vui lòng chọn kích cỡ");
             return false;
         }
-        if(document.getElementById("quantity").value == "" || document.getElementById("quantity").value < 1){
+        if(document.getElementById("quantity").value == "" ){
             alert("Vui lòng nhập số lượng");
             return false;
         }
-        //
-        await axios.get('/chi-tiet-sp/api/' + code.data)
-            .then(response => {
-                if(response.data){
+        if(document.getElementById("quantity").value < 1){
+            console.log(typeof color);
+            console.log(color);
+            alert("Số lượng phải lớn hơn 0");
+            return false;
+        }
+        // document.getElementById("frmAction").submit();
+        await axios.get(`/chi-tiet-sp/check?idProduct=${idSp}`+`&`+`idColor=`+color+`&`+`idSize=`+ size)
+            .then(function (response) {
+                console.log(response.data)
+                if(response.data===-1){
                     document.getElementById("frmAction").submit();
                 }else {
-                    // al
+                    alert("Chi  tiết sản phẩm đã tồn tại");
                 }
             })
 

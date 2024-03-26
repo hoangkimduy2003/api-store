@@ -2,6 +2,7 @@ package com.duyhk.clothing_ecommerce.service;
 
 import com.duyhk.clothing_ecommerce.dto.PageDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
+import com.duyhk.clothing_ecommerce.dto.RegisterDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchUserDTO;
 import com.duyhk.clothing_ecommerce.entity.Users;
@@ -12,6 +13,8 @@ public interface UserService {
     Users convertToEntity(UserDTO userDTO);
 
     UserDTO convertToDto(Users user);
+
+    UserDTO convertToUserDto(RegisterDTO registerDTO);
 
     List<UserDTO> getAll();
 

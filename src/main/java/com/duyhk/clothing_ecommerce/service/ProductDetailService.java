@@ -31,4 +31,6 @@ public interface ProductDetailService {
     void delete(Long id);
 
     List<ProductDetailDTO> searchByColorName(String nameColor, Long idProduct);
+
+    ProductDetail searchBySizeAndColor(Long idProduct, Long idColor,Long idSize);
 }

@@ -14,6 +14,7 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tên sản phẩm</label>
                                 <input class="form-control"  name="name" id="name">
+                                <label id="nameErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
                                 <label for="filesUpload" class="form-label">
@@ -24,15 +25,18 @@
                                 </label>
                                 <input class="form-control" style="display: none" type="file" name="filesUpload"
                                        id="filesUpload" multiple onchange="handleOnChangeFile(this)">
+                                <label id="filesUploadErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
                                 <label for="importPrice" class="form-label">Giá nhập</label>
                                 <input class="form-control" type="number" name="importPrice"
                                        id="importPrice">
+                                <label id="importPriceErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
                                 <label for="price" class="form-label">Giá bán</label>
-                                <input class="form-control" type="number" onchange="handleOnChange(this)" name="price" id="price">
+                                <input class="form-control" type="number" name="price" id="price">
+                                <label id="priceErr" style="color: red "></label>
                             </div>
                         </div>
                         <div class="col-6">
@@ -45,6 +49,7 @@
                                         <option value="${x.id}">${x.name}</option>
                                     </c:forEach>
                                 </select>
+                                <label id="brandErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
                                 <label for="category" class="form-label">Loại sản phẩm</label>
@@ -56,10 +61,12 @@
                                         <option value="${x.id}">${x.name}</option>
                                     </c:forEach>
                                 </select>
+                                <label id="categoryErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả sản phẩm</label>
                                 <textarea class="form-control" name="description" id="description"></textarea>
+                                <label id="descriptionErr" style="color: red "></label>
                             </div>
                         </div>
                     </div>
@@ -77,6 +84,50 @@
 
     var handleOnAction = function () {
         if (!confirm("Bạn có muốn thao tác không?")) {
+            return false;
+        }
+        if(document.getElementById("name").value == "" ){
+            var errorMessage = document.getElementById("nameErr");
+            errorMessage.innerText = "Vui lòng điền tên ";
+            return false;
+        }
+        if(document.getElementById("filesUpload").value == null ){
+            var errorMessage = document.getElementById("filesUploadErr");
+            errorMessage.innerText = "Vui lòng chọn ảnh cho sản phẩm";
+            return false;
+        }
+        if(document.getElementById("importPrice").value == "" ){
+            var errorMessage = document.getElementById("importPriceErr");
+            errorMessage.innerText = "Vui lòng điền giá nhập ";
+            return false;
+        }else if(document.getElementById("importPrice").value <=0){
+            var errorMessage = document.getElementById("importPriceErr");
+            errorMessage.innerText = "Giá nhập phải lớn hơn 0 ";
+            return false;
+        }
+        if(document.getElementById("price").value == ""){
+            var errorMessage = document.getElementById("priceErr");
+            errorMessage.innerText = "Vui lòng điền giá bán ";
+            return false;
+        }else if(document.getElementById("price").value <=0 ||
+            document.getElementById("price").value <= document.getElementById("importPrice").value){
+            var errorMessage = document.getElementById("priceErr");
+            errorMessage.innerText = "Giá bán phải lớn hơn giá nhập ";
+            return false;
+        }
+        if(document.getElementById("brand").value == -1 ){
+            var errorMessage = document.getElementById("brandErr");
+            errorMessage.innerText = "Vui lòng chọn thương hiệu ";
+            return false;
+        }
+        if(document.getElementById("category").value == -1 ){
+            var errorMessage = document.getElementById("categoryErr");
+            errorMessage.innerText = "Vui lòng chọn loại sản phẩm";
+            return false;
+        }
+        if(document.getElementById("description").value == ""){
+            var errorMessage = document.getElementById("descriptionErr");
+            errorMessage.innerText = "Vui lòng điền mô tả";
             return false;
         }
         document.getElementById("frmAction").submit();
