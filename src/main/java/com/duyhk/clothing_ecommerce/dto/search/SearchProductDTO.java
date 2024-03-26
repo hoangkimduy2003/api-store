@@ -17,4 +17,5 @@ public class SearchProductDTO {
     private Long colorId;
     private Integer page;
     private Integer size;
+    private String order;
 }

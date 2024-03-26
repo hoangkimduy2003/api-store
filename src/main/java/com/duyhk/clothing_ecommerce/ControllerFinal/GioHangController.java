@@ -1,9 +1,7 @@
 package com.duyhk.clothing_ecommerce.ControllerFinal;
 
-import com.duyhk.clothing_ecommerce.dto.BillDTO;
-import com.duyhk.clothing_ecommerce.dto.CartDTO;
-import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
-import com.duyhk.clothing_ecommerce.dto.UserDTO;
+import com.duyhk.clothing_ecommerce.dto.*;
+import com.duyhk.clothing_ecommerce.entity.Cart;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.service.BillService;
@@ -71,5 +69,18 @@ public class GioHangController {
         billDTO.setUser(new UserDTO(users.getId()));
         billService.createBillOnline(billDTO);
         return "redirect:/trang-chu";
+    }
+    @PostMapping("/update")
+    public String update(@ModelAttribute CartDetailDTO cartDetailDTO){
+        Long cartId = (Long) session.getAttribute("cartId");
+        Users users = (Users) session.getAttribute("user");
+        if(cartId == null){
+            return "redirect:/account/dang-nhap";
+        }
+        CartDTO cart = new CartDTO();
+        cart.setId(cartId);
+        cartDetailDTO.setCart(cart);
+        cartDetailService.update(cartDetailDTO);
+        return "redirect:/gio-hang";
     }
 }

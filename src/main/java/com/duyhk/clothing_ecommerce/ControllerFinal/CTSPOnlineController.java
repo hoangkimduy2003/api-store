@@ -95,7 +95,11 @@ public class CTSPOnlineController {
         Users users = (Users) session.getAttribute("user");
         if(users != null){
             CartDTO cart = cartService.getByUserId(users.getId());
-            return cartDetailService.findByCartIdAndProductDetailId(cart.getId(),productDetailId).getQuantity();
+            try{
+                return cartDetailService.findByCartIdAndProductDetailId(cart.getId(),productDetailId).getQuantity();
+            }catch (Exception e){
+                return 0l;
+            }
         }
         return -1l;
     }

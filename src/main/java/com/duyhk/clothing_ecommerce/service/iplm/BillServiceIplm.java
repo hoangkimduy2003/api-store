@@ -1,6 +1,7 @@
 package com.duyhk.clothing_ecommerce.service.iplm;
 
 import com.duyhk.clothing_ecommerce.dto.*;
+import com.duyhk.clothing_ecommerce.dto.search.SearchBillCustomerDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchBillDTO;
 import com.duyhk.clothing_ecommerce.entity.*;
 import com.duyhk.clothing_ecommerce.exception.CustomValidationException;
@@ -36,6 +37,12 @@ public class BillServiceIplm implements BillService {
 
     @Autowired
     private CartDetailReponsitory cartDetailRepo;
+
+    @Autowired
+    private ProductReponsitory productRepo;
+
+    @Autowired
+    private ProductDetailReponsitory productDetailRepo;
 
     @Override
     public Bill convertToEntity(BillDTO billDTO) {
@@ -211,6 +218,42 @@ public class BillServiceIplm implements BillService {
             bill.setOrderDateFinal(status == 5 ? new Date() : null);
             bill.setStatus(status);
             billReponsitory.save(bill);
+            if(status == 0){
+                List<BillDetail> billDetails = billDetailRepo.findByBillId(bill.getId());
+                billDetails.stream().forEach(x -> {
+                    ProductDetail productDetail = productDetailRepo.findById(x.getProductDetail().getId()).orElse(null);
+                    productDetail.setQuantitySold(productDetail.getQuantitySold() - x.getQuantity());
+                    productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+                    Product product = productRepo.findById(productDetail.getProduct().getId()).orElse(null);
+                    product.setTotalQuantitySold(product.getTotalQuantitySold() - x.getQuantity());
+                    product.setTotalQuantity(product.getTotalQuantity() + x.getQuantity());
+                    productDetailRepo.save(productDetail);
+                    productRepo.save(product);
+                });
+            }
+        }
+    }
+    @Override
+    public void updateStatusById(Long id, Integer status, Long quantity) {
+        Bill bill = billReponsitory.findById(id).orElse(null);
+        if (bill != null) {
+            bill.setTotalMoney(bill.getTotalMoney() + quantity);
+            bill.setOrderDateFinal(status == 5 ? new Date() : null);
+            bill.setStatus(status);
+            billReponsitory.save(bill);
+            if(status == 0){
+                List<BillDetail> billDetails = billDetailRepo.findByBillId(bill.getId());
+                billDetails.stream().forEach(x -> {
+                    ProductDetail productDetail = productDetailRepo.findById(x.getProductDetail().getId()).orElse(null);
+                    productDetail.setQuantitySold(productDetail.getQuantitySold() - x.getQuantity());
+                    productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+                    Product product = productRepo.findById(productDetail.getProduct().getId()).orElse(null);
+                    product.setTotalQuantitySold(product.getTotalQuantitySold() - x.getQuantity());
+                    product.setTotalQuantity(product.getTotalQuantity() + x.getQuantity());
+                    productDetailRepo.save(productDetail);
+                    productRepo.save(product);
+                });
+            }
         }
     }
 
@@ -225,11 +268,15 @@ public class BillServiceIplm implements BillService {
             users.setTotalInvoice(users.getTotalInvoice() + 1l);
             bill.setUser(users);
         }
+        String addressDetail = billDTO.getAddressDetail()
+                + ", " + billDTO.getWard().split("\\|")[1]
+                + ", " + billDTO.getDistrict().split("\\|")[1]
+                + ", " + billDTO.getCity().split("\\|")[1];
         bill.setBillCode(generateRandomString());
         bill.setStatus(1);
         bill.setPhoneNumber(users.getPhoneNumber());
         bill.setFullName(billDTO.getFullName());
-        bill.setAddressDetail(billDTO.getAddressDetail());
+        bill.setAddressDetail(addressDetail);
         bill.setBillType(2);
         bill.setTatolProduct(cart.getTotalProduct());
         bill.setTotalMoney(cart.getTotalMoney());
@@ -243,9 +290,20 @@ public class BillServiceIplm implements BillService {
             billDetail.setProductDetail(x.getProductDetail());
             billDetail.setTotalPrice(x.getProductDetail().getPriceSale() * x.getQuantity());
             billDetailLists.add(billDetail);
+            ProductDetail productDetail = x.getProductDetail();
+            Product product = productDetail.getProduct();
+            productDetail.setQuantity(productDetail.getQuantity() - x.getQuantity());
+            product.setTotalQuantity(product.getTotalQuantity() - x.getQuantity());
+            productDetail.setQuantitySold(productDetail.getQuantitySold() + x.getQuantity());
+            product.setTotalQuantitySold(product.getTotalQuantitySold() + x.getQuantity());
+            productRepo.save(product);
+            productDetailRepo.save(productDetail);
         });
         billDetailRepo.saveAll(billDetailLists);
         cartDetailRepo.deleteAll(cartDetails);
+        cart.setTotalProduct(0L);
+        cart.setTotalMoney(0d);
+        cartRepo.save(cart);
     }
 
     @Override
@@ -270,6 +328,35 @@ public class BillServiceIplm implements BillService {
             product.setTotalQuantity(product.getTotalQuantity() + billDetail.getQuantity());
         });
         billReponsitory.save(bill);
+    }
+
+    @Override
+    public void updateAddress(BillDTO billDTO) {
+        Bill bill = billReponsitory.findById(billDTO.getId()).orElse(null);
+        if(bill != null){
+            bill.setAddressDetail(billDTO.getAddressDetail());
+            bill.setFullName(billDTO.getFullName());
+            bill.setPhoneNumber(billDTO.getUser().getPhoneNumber());
+            billReponsitory.save(bill);
+        }
+    }
+
+    @Override
+    public PageDTO<List<BillDTO>> searchByCustomer(SearchBillCustomerDTO searchBillCustomerDTO) {
+        searchBillCustomerDTO.setPage(searchBillCustomerDTO.getPage() == null ? 0 : searchBillCustomerDTO.getPage());
+        searchBillCustomerDTO.setSize(searchBillCustomerDTO.getSize() == null ? 5 : searchBillCustomerDTO.getSize());
+        Page<Bill> pageEntity = billReponsitory.searchByCustomer(
+                PageRequest.of(
+                        searchBillCustomerDTO.getPage(),
+                        searchBillCustomerDTO.getSize()),
+                searchBillCustomerDTO.getUserId(),
+                searchBillCustomerDTO.getStatus());
+        List<BillDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<BillDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
     }
 
     //utils

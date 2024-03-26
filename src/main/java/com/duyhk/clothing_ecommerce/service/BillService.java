@@ -1,6 +1,7 @@
 package com.duyhk.clothing_ecommerce.service;
 
 import com.duyhk.clothing_ecommerce.dto.*;
+import com.duyhk.clothing_ecommerce.dto.search.SearchBillCustomerDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchBillDTO;
 import com.duyhk.clothing_ecommerce.entity.Bill;
 
@@ -30,10 +31,16 @@ public interface BillService {
 
     void updateStatusById(Long id, Integer status);
 
+
+    void updateStatusById(Long id, Integer status, Long quantity);
+
     void createBillOnline(BillDTO billDTO);
 
     void delete(Long id);
 
     void cancelBill(Long id);
 
+    void updateAddress(BillDTO billDTO);
+
+    PageDTO<List<BillDTO>> searchByCustomer(SearchBillCustomerDTO searchBillCustomerDTO);
 }

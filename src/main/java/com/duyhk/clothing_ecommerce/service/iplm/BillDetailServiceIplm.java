@@ -160,7 +160,7 @@ public class BillDetailServiceIplm implements BillDetailService {
             productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity() );
             productDetail.setQuantitySold(productDetail.getQuantitySold() - billDetail.getQuantity());
             bill.setTotalMoney(bill.getTotalMoney() - billDetail.getTotalPrice());
-            bill.setTatolProduct(bill.getTatolProduct() - billDetail.getQuantity());
+            bill.setTatolProduct(bill.getTatolProduct() - 1);
             
             billDetailReponsitory.deleteById(id);
         }

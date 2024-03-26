@@ -91,7 +91,7 @@ public class CartDetailServiceIplm implements CartDetailService {
             Cart cart = cartDetail.getCart();
             cart.setTotalMoney(
                     (cart.getTotalMoney() - cartDetail.getProductDetail().getPriceSale() * cartDetail.getQuantity())
-                            + cartDetailDTO.getProductDetail().getPriceSale() * cartDetailDTO.getQuantity()
+                            + cartDetail.getProductDetail().getPriceSale() * cartDetailDTO.getQuantity()
             );
             cartDetail = convertToEntity(cartDetailDTO);
             return convertToDto(cartDetailRepo.save(cartDetail));

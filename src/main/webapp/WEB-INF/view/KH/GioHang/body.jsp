@@ -103,7 +103,7 @@
                             </a>
                         </td>
                         <td>
-                            <a class="btn btn-danger" href="/gio-hang/delete/${cartDetail.id}" onclick="handleOnClickAction('D')"><i class="bi bi-trash3"></i></a>
+                            <a class="btn btn-danger" href="/gio-hang/delete/${cartDetail.id}" onclick="return confirm('Bạn có chắc chắn muốn xóa?');"><i class="bi bi-trash3"></i></a>
                         </td>
                         <td><fmt:formatNumber pattern="#,###" value="${cartDetail.quantity}"/></td>
                         <td>
@@ -111,7 +111,7 @@
                         </td>
                         <td><fmt:formatNumber pattern="#,###" value="${cartDetail.productDetail.priceSale * cartDetail.quantity}"/></td>
                         <td>
-                            <button class="btn btn-warning">
+                            <button class="btn btn-warning" onclick="handleOnClickChange('${cartDetail.id}','${cartDetail.productDetail.id}','${cartDetail.productDetail.quantity}','${cartDetail.quantity}')" data-bs-toggle="modal" data-bs-target="#sua-gio-hang">
                                 <i class="bi bi-pencil"></i>
                             </button>
                         </td>
@@ -132,8 +132,9 @@
             </div>
             <div class="row">
                 <div class="col-6"><a href="/trang-chu" class="btn btn-light w-75">TIẾP TỤC MUA HÀNG</a></div>
-                <div class="col-6" style="${sizeCart == 0 ? "display: none" : ""}"><button style="float: right;" data-bs-toggle="modal" data-bs-target="#thanhtoan"
-                                                                     class="btn btn-dark w-75">THANH TOÁN</button></div>
+<%--                <div class="col-6" style="${sizeCart == 0 ? "display: none" : ""}"><button style="float: right;" data-bs-toggle="modal" data-bs-target="#thanhtoan"--%>
+<%--                                                                     class="btn btn-dark w-75">THANH TOÁN</button></div>--%>
+                <div class="col-6" style="${sizeCart == 0 ? "display: none" : ""}"><a href="/dat-hang" style="float: right;" class="btn btn-dark w-75">ĐẶT HÀNG</a></div>
             </div>
 
         </div>
@@ -198,12 +199,24 @@
 <jsp:include page="modal.jsp"/>
 <script>
     var handleOnClickAction = function (action){
+        console.log(action + "pre");
         if(action == "D"){
             if(!confirm("Bạn có muốn xoá sản phẩm khỏi giỏ hàng không?")){
+                console.log(action);
                 return false;
             }
             return true;
         }
     }
+
+    var handleOnClickChange = function (cartDetailId, productDetailId, quantityOld, quantity){
+        console.log("cart: " + cartDetailId + "; product: "+ productDetailId);
+        document.getElementById("idBillDetail").value = cartDetailId;
+        document.getElementById("productDetail").value = productDetailId;
+        document.getElementById("quantityOld").value = quantityOld;
+        document.getElementById("quantity").value = quantity;
+    }
 </script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 

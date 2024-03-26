@@ -216,6 +216,45 @@ public class ProductServiceIplm implements ProductService {
                 .build();
     }
 
+    @Override
+    public PageDTO<List<ProductDTO>> searchOnline(SearchProductDTO searchProductDTO) {
+        searchProductDTO.setPage(searchProductDTO.getPage() == null ? 0 : searchProductDTO.getPage());
+        searchProductDTO.setSize(searchProductDTO.getSize() == null ? 5 : searchProductDTO.getSize());
+        searchProductDTO.setOrder(("no".equals(searchProductDTO.getOrder()) || searchProductDTO.getOrder() == null) ? "null" : searchProductDTO.getOrder());
+        Page<Product> pageEntity = null;
+        if (searchProductDTO.getOrder().contains("desc")) {
+            pageEntity = productRepo.searchOnlineDescending(
+                    "%" + (searchProductDTO.getName() != null ? searchProductDTO.getName() : "") + "%",
+                    searchProductDTO.getBrandId(),
+                    searchProductDTO.getStatus(),
+                    searchProductDTO.getCategoryId(),
+                    searchProductDTO.getSizeId(),
+                    searchProductDTO.getColorId(),
+                    searchProductDTO.getOrder(),
+                    PageRequest.of(
+                            searchProductDTO.getPage(),
+                            searchProductDTO.getSize()));
+        }else {
+            pageEntity = productRepo.searchOnlineUpDescending(
+                    "%" + (searchProductDTO.getName() != null ? searchProductDTO.getName() : "") + "%",
+                    searchProductDTO.getBrandId(),
+                    searchProductDTO.getStatus(),
+                    searchProductDTO.getCategoryId(),
+                    searchProductDTO.getSizeId(),
+                    searchProductDTO.getColorId(),
+                    searchProductDTO.getOrder(),
+                    PageRequest.of(
+                            searchProductDTO.getPage(),
+                            searchProductDTO.getSize()));
+        }
+        List<ProductDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<ProductDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
     public boolean validate(ProductDTO productDTO) {
         if (productDTO.getBrand().getId() == -1) {
             throw new CustomValidationException("Vui lòng chọn thương hiệu");

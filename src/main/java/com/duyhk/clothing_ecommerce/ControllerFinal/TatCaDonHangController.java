@@ -1,16 +1,17 @@
 package com.duyhk.clothing_ecommerce.ControllerFinal;
 
+import com.duyhk.clothing_ecommerce.dto.BillDTO;
+import com.duyhk.clothing_ecommerce.dto.BillDetailDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchBillDTO;
+import com.duyhk.clothing_ecommerce.entity.Bill;
 import com.duyhk.clothing_ecommerce.entity.Users;
+import com.duyhk.clothing_ecommerce.service.BillDetailService;
 import com.duyhk.clothing_ecommerce.service.BillService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,9 @@ public class TatCaDonHangController {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    private BillDetailService billDetailService;
+
     @GetMapping
     public String home(Model model, @ModelAttribute SearchBillDTO searchBillDTO) {
 //        Users users = (Users) session.getAttribute("user");
@@ -35,10 +39,10 @@ public class TatCaDonHangController {
 //        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            if(!"".equals(searchBillDTO.getStrDateStart()) && searchBillDTO.getStrDateStart() != null){
+            if (!"".equals(searchBillDTO.getStrDateStart()) && searchBillDTO.getStrDateStart() != null) {
                 searchBillDTO.setDateStart(sdf.parse(searchBillDTO.getStrDateStart()));
             }
-            if(!"".equals(searchBillDTO.getStrDateEnd()) && searchBillDTO.getStrDateEnd() != null){
+            if (!"".equals(searchBillDTO.getStrDateEnd()) && searchBillDTO.getStrDateEnd() != null) {
                 searchBillDTO.setDateEnd(sdf.parse(searchBillDTO.getStrDateEnd()));
             }
         } catch (ParseException e) {
@@ -47,5 +51,66 @@ public class TatCaDonHangController {
         model.addAttribute("bills", billService.searchAtStore(searchBillDTO));
         model.addAttribute("searchBillDTO", searchBillDTO);
         return "TatCaDonHang/TatCaDonHang";
+    }
+
+    @GetMapping("/chi-tiet/{id}")
+    public String detail(Model model, @PathVariable("id") Long billId) {
+        model.addAttribute("bill", billService.getById(billId));
+        model.addAttribute("billDetails", billDetailService.getAllByBillId(billId));
+        return "TatCaDonHang/ChiTietDonHang/ChiTietDonHang";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(@ModelAttribute BillDTO billDTO, @PathVariable("id") Long id) {
+        billDTO.setId(id);
+        billService.updateAddress(billDTO);
+        return "redirect:/don-hang/chi-tiet/" + id;
+    }
+
+    @GetMapping("/checkSize/{id}")
+    @ResponseBody
+    public boolean update(@PathVariable("id") Long id) {
+        return !(billDetailService.getAllByBillId(id).size() == 1l);
+    }
+
+    @GetMapping("/updateStatus/{billId}/{status}/{action}")
+    public String xacNhan(@PathVariable("billId") Long billId,
+                          @PathVariable("status") int status,
+                          @PathVariable("action") int action,
+                          @RequestParam(name = "ship", required = false) Long quantity) {
+        if(quantity == null) {
+            billService.updateStatusById(billId, status);
+        }else{
+            billService.updateStatusById(billId, status, quantity);
+
+        }
+        if(action == 1){
+            return "redirect:/don-hang/chi-tiet/" + billId;
+        } else if (action == 2) {
+            return "redirect:/my-order?status=" + status;
+        }
+        return "redirect:/don-hang";
+    }
+
+    @GetMapping("/delete/{detailId}/{billId}")
+    public String delete(@PathVariable("detailId") Long detailId,
+                         @PathVariable("billId")Long billId){
+
+        billDetailService.delete(detailId);
+        return "redirect:/don-hang/chi-tiet/" + billId;
+    }
+
+    @GetMapping("/update/{detailId}/{billId}/{quantityNew}")
+    public String update(@PathVariable("detailId") Long detailId,
+                         @PathVariable("billId")Long billId,
+                         @PathVariable("quantityNew") Long quantity){
+        BillDetailDTO billDetailDTO = new BillDetailDTO();
+        BillDTO bill = new BillDTO();
+        bill.setId(billId);
+        billDetailDTO.setBill(bill);
+        billDetailDTO.setId(detailId);
+        billDetailDTO.setQuantity(quantity);
+        billDetailService.update(billDetailDTO);
+        return "redirect:/don-hang/chi-tiet/" + billId;
     }
 }
