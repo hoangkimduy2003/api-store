@@ -7,7 +7,6 @@ import com.duyhk.clothing_ecommerce.entity.ProductDetail;
 import com.duyhk.clothing_ecommerce.reponsitory.ProductDetailReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.ProductReponsitory;
 import com.duyhk.clothing_ecommerce.service.ProductDetailService;
-import com.duyhk.clothing_ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -130,13 +129,14 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     }
 
     @Override
-    public void update(ProductDetailDTO productDetailDTO) {
+    public String update(ProductDetailDTO productDetailDTO) {
         ProductDetail productDetail = productDetailRepo.findById(productDetailDTO.getId()).orElseThrow(IllegalArgumentException::new);
         if (productDetail != null) {
             productDetail = convertToEntity(productDetailDTO);
             productDetailRepo.save(productDetail);
         }
 
+        return null;
     }
 
     @Override

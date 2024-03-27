@@ -34,6 +34,7 @@ public class ChiTietSanPhamController {
         model.addAttribute("list", productDetailService.getByIdSp(new PageRequestDTO(page, 5), idSp));
         model.addAttribute("sizes", sizeService.getAll());
         model.addAttribute("colors", colorService.getAll());
+
         model.addAttribute("idSp", idSp);
         return "ChiTietSanPham/ChiTietSanPham";
     }
@@ -45,7 +46,9 @@ public class ChiTietSanPhamController {
     }
 
     @PostMapping("/action")
-    public String action(@ModelAttribute ProductDetailDTO productDetail) {
+    public String action(@ModelAttribute ProductDetailDTO productDetail, Model model) {
+        model.addAttribute("sizes", sizeService.getAll());
+        model.addAttribute("colors", colorService.getAll());
         if (productDetail.getId() == null) {
             String _return = productDetailService.create(productDetail);
         }

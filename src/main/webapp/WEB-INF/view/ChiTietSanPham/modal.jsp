@@ -58,19 +58,17 @@
             return false;
         }
         if(document.getElementById("quantity").value < 1){
-            console.log(typeof color);
-            console.log(color);
             alert("Số lượng phải lớn hơn 0");
             return false;
         }
-        // document.getElementById("frmAction").submit();
+
         await axios.get(`/chi-tiet-sp/check?idProduct=${idSp}`+`&`+`idColor=`+color+`&`+`idSize=`+ size)
             .then(function (response) {
                 console.log(response.data)
                 if(response.data===-1){
                     document.getElementById("frmAction").submit();
                 }else {
-                    alert("Chi  tiết sản phẩm đã tồn tại");
+                    alert("Chi tiết sản phẩm đã tồn tại");
                 }
             })
 

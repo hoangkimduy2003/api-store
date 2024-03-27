@@ -87,47 +87,38 @@
             return false;
         }
         if(document.getElementById("name").value == "" ){
-            var errorMessage = document.getElementById("nameErr");
-            errorMessage.innerText = "Vui lòng điền tên ";
+            alert("Vui lòng điền tên ");
             return false;
         }
         if(document.getElementById("filesUpload").value == null ){
-            var errorMessage = document.getElementById("filesUploadErr");
-            errorMessage.innerText = "Vui lòng chọn ảnh cho sản phẩm";
+            alert("Vui lòng chọn ảnh cho sản phẩm");
             return false;
         }
         if(document.getElementById("importPrice").value == "" ){
-            var errorMessage = document.getElementById("importPriceErr");
-            errorMessage.innerText = "Vui lòng điền giá nhập ";
+            alert("Vui lòng điền giá nhập");
             return false;
         }else if(document.getElementById("importPrice").value <=0){
-            var errorMessage = document.getElementById("importPriceErr");
-            errorMessage.innerText = "Giá nhập phải lớn hơn 0 ";
+            alert("Giá nhập phải lớn hơn 0");
             return false;
         }
         if(document.getElementById("price").value == ""){
-            var errorMessage = document.getElementById("priceErr");
-            errorMessage.innerText = "Vui lòng điền giá bán ";
+            alert("Vui lòng điền giá bán");
             return false;
         }else if(document.getElementById("price").value <=0 ||
             document.getElementById("price").value <= document.getElementById("importPrice").value){
-            var errorMessage = document.getElementById("priceErr");
-            errorMessage.innerText = "Giá bán phải lớn hơn giá nhập ";
+            alert("Giá bán phải lớn hơn giá nhập");
             return false;
         }
         if(document.getElementById("brand").value == -1 ){
-            var errorMessage = document.getElementById("brandErr");
-            errorMessage.innerText = "Vui lòng chọn thương hiệu ";
+            alert("Vui lòng chọn thương hiệu");
             return false;
         }
         if(document.getElementById("category").value == -1 ){
-            var errorMessage = document.getElementById("categoryErr");
-            errorMessage.innerText = "Vui lòng chọn loại sản phẩm";
+            alert("Vui lòng chọn loại sản phẩm");
             return false;
         }
         if(document.getElementById("description").value == ""){
-            var errorMessage = document.getElementById("descriptionErr");
-            errorMessage.innerText = "Vui lòng điền mô tả";
+            alert("Vui lòng điền mô tả");
             return false;
         }
         document.getElementById("frmAction").submit();

@@ -2,7 +2,6 @@ package com.duyhk.clothing_ecommerce.service;
 
 import com.duyhk.clothing_ecommerce.dto.PageDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
-import com.duyhk.clothing_ecommerce.dto.ProductDTO;
 import com.duyhk.clothing_ecommerce.dto.ProductDetailDTO;
 import com.duyhk.clothing_ecommerce.dto.search.SearchProductDTO;
 import com.duyhk.clothing_ecommerce.entity.ProductDetail;
@@ -26,7 +25,7 @@ public interface ProductDetailService {
 
     String create(ProductDetailDTO productDetailDTO);
 
-    void update(ProductDetailDTO productDetailDTO);
+    String update(ProductDetailDTO productDetailDTO);
 
     void delete(Long id);
 
