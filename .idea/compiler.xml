@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-clothing-store-main" />
         <module name="clothing_ecommerce" />
+        <module name="datn" />
       </profile>
     </annotationProcessing>
   </component>
@@ -16,6 +17,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-clothing-store-main" options="-parameters" />
       <module name="clothing_ecommerce" options="-parameters" />
+      <module name="datn" options="-parameters" />
     </option>
   </component>
 </project>
