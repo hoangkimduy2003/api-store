@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container m-2">
-    <p style="font-size: 12px; color: #cfd3cb"><a style="text-decoration: none; color: #cfd3cb" href="/tai-quay?idBill=${idBill}">Đơn hàng </a>/ Danh sách sản phẩm</p>
+    <p style="font-size: 12px; color: #cfd3cb"><a style="text-decoration: none; color: #cfd3cb" href="" id="donHangA" onclick="handleOnHref(this)">Đơn hàng </a>/ Danh sách sản phẩm</p>
     <jsp:include page="modal.jsp"></jsp:include>
     <form id="searchForm" action="/danh-sach-san-pham/${idBill}" method="get">
         <div class="row">
@@ -101,6 +101,11 @@
     </ul>
 </div>
 <script>
+    function handleOnHref(e){
+        var a = document.getElementById("donHangA");
+        a.setAttribute("href", ${billType == 1 ? '/tai-quay?idBill=' : '/don-hang/chi-tiet/' } + ${idBill});
+        a.click();
+    }
     function changePage(pageNumber) {
         var form = document.getElementById("searchForm");
         var action = form.getAttribute("action");

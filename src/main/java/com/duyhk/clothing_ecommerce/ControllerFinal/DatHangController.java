@@ -61,6 +61,6 @@ public class DatHangController {
         billDTO.setCartId(cartId);
         billDTO.setUser(new UserDTO(users.getId()));
         billService.createBillOnline(billDTO);
-        return "redirect:/trang-chu";
+        return "redirect:/my-order";
     }
 }

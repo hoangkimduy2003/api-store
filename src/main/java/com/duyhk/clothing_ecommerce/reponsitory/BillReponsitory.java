@@ -50,7 +50,7 @@ public interface BillReponsitory extends JpaRepository<Bill, Long> {
                              @Param("phoneNumber") String phoneNumber,
                              @Param("billType") Integer billType);
 
-    @Query("select b from Bill b where 1 = 1 and b.user.id = :id and (:status is null or b.status = :status) order by b.createdAt desc")
+    @Query("select b from Bill b where 1 = 1 and b.billType = 2 and b.user.id = :id and (:status is null or b.status = :status) order by b.createdAt desc")
     Page<Bill> searchByCustomer(Pageable pageable,
                                 @Param("id") Long id,
                                 @Param("status") Integer status);

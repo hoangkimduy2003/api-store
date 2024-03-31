@@ -11,6 +11,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillFinal {
-    private Date date;
+    private String date;
     private Long totalMoney;
 }

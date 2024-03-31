@@ -88,6 +88,11 @@
             margin-left: 0;
         }
 
+        #page-content-wrapper1 {
+            min-width: 0;
+            width: 100%;
+        }
+
         #page-content-wrapper {
             min-width: 0;
             width: 100%;
@@ -98,109 +103,149 @@
         }
     }
 </style>
-<div class="container m-2">
-    <div id="page-content-wrapper">
-        <div class="container-fluid px-4">
-            <div class="row g-3 my-2">
-                <div class="col-md-3">
-                    <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                        <div>
-                            <h3 class="fs-2">720</h3>
-                            <p class="fs-5">Tổng hoá đơn</p>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a href="/thong-ke" class="nav-link active" id="nav-home-tab" aria-selected="true">Tổng</a>
+        <a href="/thong-ke/doanh-thu" class="nav-link" id="nav-profile-tab" aria-selected="false">Doanh thu</a>
+        <a href="/thong-ke/don-hang" class="nav-link" id="nav-contact-tab"  aria-selected="false">Hoá đơn</a>
+        <a href="/thong-ke/san-pham" class="nav-link" id="nav-prodcut-tab"  aria-selected="false">Sản phẩm</a>
+    </div>
+</nav>
+    <div>
+        <div class="container m-2">
+            <div id="page-content-wrapper">
+                <div class="container-fluid px-4">
+                    <div class="row g-3 my-2">
+                        <div class="col-md-3">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###" value="${rate.totalMoneyBill}" /></h3>
+                                    <p class="fs-6" style="margin: 0px">Doanh thu (VND)</p>
+                                </div>
+                                <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            </div>
                         </div>
-                        <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+
+                        <div class="col-md-3">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###" value="${rate.totalBill}" /></h3>
+                                    <p class="fs-6" style="margin: 0px">Hoá đơn</p>
+                                </div>
+                                <i
+                                        class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###" value="${rate.totalProductSold}" /></h3>
+                                    <p class="fs-6" style="margin: 0px">Sản phẩm đã bán</p>
+                                </div>
+                                <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###" value="${rate.totalUser}" /></h3>
+                                    <p class="fs-6" style="margin: 0px">Khách hàng</p>
+                                </div>
+                                <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###.##" value="${rate.completionRate}" /> %</h3>
+                                    <p class="fs-6" style="margin: 0px">Tỉ lệ hoàn thành</p>
+                                </div>
+                                <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###.##" value="${rate.cancelRate}" /> %</h3>
+                                    <p class="fs-6" style="margin: 0px">Tỉ lệ huỷ</p>
+                                </div>
+                                <i style="background-color: red !important;" class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full  p-3"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                                <div>
+                                    <h3 class="fs-3"><fmt:formatNumber pattern="#,###.##" value="${rate.buyRate}" /> %</h3>
+                                    <p class="fs-6" style="margin: 0px">Tỉ lệ người dùng mua hàng</p>
+                                </div>
+                                <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                        <div>
-                            <h3 class="fs-2">4920</h3>
-                            <p class="fs-5">Sales</p>
-                        </div>
-                        <i
-                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <h6>Top 5 hoá đơn mới</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Mã</th>
+                            <th scope="col">Tên khách hàng</th>
+                            <th scope="col">Số điện thoại</th>
+                            <th scope="col">Tổng tiền</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Hình thức</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${rate.billNews}" var="bill">
+                                <tr>
+                                    <td>${bill.billCode}</td>
+                                    <td>${bill.fullName}</td>
+                                    <td>${bill.phoneNumber}</td>
+                                    <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}" /></td>
+                                    <td>${(bill.status == 1 && bill.billType == 1) ? "Đang chờ" : ((bill.status == 1 && bill.billType == 2) ? "Chờ xác nhận" : (bill.status == 2 ? "Đang xử lý" :
+                                            bill.status == 3 ? "Chờ lấy hàng" : ( bill.status ==  4 ? "Đang giao" :
+                                                    (bill.status == 5 ? (bill.billType==1?"Đã hoàn thành" :"Đã giao") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ")))))}</td>
+                                    <td>${bill.billType == 1 ? " Tại quầy" : "Online"}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                        <div>
-                            <h3 class="fs-2">3899</h3>
-                            <p class="fs-5">Delivery</p>
-                        </div>
-                        <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                        <div>
-                            <h3 class="fs-2">%25</h3>
-                            <p class="fs-5">Increase</p>
-                        </div>
-                        <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                    </div>
+                <div class="col-6">
+                    <h6>Top 5 sản phẩm bán chạy</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Đã bán</th>
+                            <th scope="col">Còn lại</th>
+                            <th scope="col">Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${rate.productSale}" var="product">
+                            <tr>
+                                <td>${product.name}</td>
+                                <td><fmt:formatNumber pattern="#,###" value="${product.priceSale}" /></td>
+                                <td><fmt:formatNumber pattern="#,###" value="${product.totalQuantitySold}" /></td>
+                                <td><fmt:formatNumber pattern="#,###" value="${product.totalQuantity}" /></td>
+                                <td>${product.status == 0 ? "Không hoạt động" : "Hoạt động"}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <div style="width: 50%">
-        <canvas id="myChart" width="400" height="400"></canvas>
-    </div>
-</div>
 <script>
-    var dataArr = [];
-    var dataLabels = [];
-    var dataValues = [];
-
-    axios.get("/thong-ke/getSumFinal")
-        .then(function(response) {
-            console.log(response);
-            response.data.forEach(function(x) {
-                dataLabels.push(x.date);
-                dataValues.push(x.totalMoney);
-            });
-
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: dataLabels,
-                    datasets: [{
-                        label: 'Doanh thu',
-                        data: dataValues,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
-        })
-        .catch(function(error) {
-            console.error('Error fetching data:', error);
-        });
 </script>

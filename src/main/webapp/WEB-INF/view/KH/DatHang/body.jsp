@@ -100,6 +100,8 @@
                                 Tổng sản phẩm: <fmt:formatNumber pattern="#,###"
                                                                  value="${cart.totalProduct}"/><br>
                                 Tạm tính: <fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/> VND
+                                <br/>
+                                <span style="color: red; font-size: 12px">Đơn hàng chưa bao gồm phí ship</span>
                             </p>
                         </div>
                     </div>

@@ -43,7 +43,6 @@
                     <th scope="col">#</th>
                     <th scope="col">Tên người nhận</th>
                     <th scope="col">Số điện thoại</th>
-                    <%--                <th scope="col">Địa chỉ</th>--%>
                     <th scope="col">Tổng sản phẩm</th>
                     <th scope="col">Tổng tiền</th>
                     <th scope="col">Ngày tạo</th>
@@ -57,7 +56,6 @@
                         <td>${loopStatus.index + 1}</td>
                         <td>${bill.fullName}</td>
                         <td>${bill.phoneNumber}</td>
-                            <%--                    <td>${bill.addressDetail}</td>--%>
                         <td><fmt:formatNumber pattern="#,###" value="${bill.tatolProduct}"/></td>
                         <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></td>
                         <td>${bill.orderDate}</td>
@@ -67,7 +65,7 @@
                                                 (bill.status == 5 ? (bill.billType==1?"Đã hoàn thành" :"Đã giao") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ"))))}
                         </td>
                         <td>
-                            <a style="color: aliceblue;" class="btn btn-info" href="/don-hang/chi-tiet/${bill.id}" ><i class="bi bi-eye"></i>
+                            <a style="color: aliceblue;" class="btn btn-info" href="/CTDH/${bill.id}" ><i class="bi bi-eye"></i>
                             </a>
                             <a class="btn btn-dark"
                                style="${(bill.status != 4) ? "display: none" : ""}"
@@ -79,6 +77,12 @@
                                style="display: none"
                                href="/don-hang/updateStatus/${bill.id}/0/2"
                             >Huỷ</a>
+                            <a class="btn btn-dark"
+                               id="khongnhanhang"
+                               style="${(bill.status != 4) ? "display: none" : ""}"
+                               href="/don-hang/updateStatus/${bill.id}/0/2"
+                               onclick="return confirm('Bạn có muốn trả hàng không ?')"
+                            >Hoàn trả</a>
                         </td>
                     </tr>
                 </c:forEach>

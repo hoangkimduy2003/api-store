@@ -61,7 +61,7 @@
     <div class="d-flex justify-content-between">
         <div>
             <button class="btn btn-dark" onclick="toggleCamera()">Quét QR</button>
-            <a class="btn btn-dark" href="/danh-sach-san-pham/${bill.id}">Tìm sản phẩm</a>&nbsp;
+            <a class="btn btn-dark" href="/danh-sach-san-pham/${bill.id}/${bill.billType}">Tìm sản phẩm</a>&nbsp;
             <button data-bs-toggle="modal" data-bs-target="#thanhtoan" onclick="preActionThanhToan()" class="btn btn-dark">Thanh toán</button>
         </div>
         <div>
