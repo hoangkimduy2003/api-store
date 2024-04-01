@@ -51,6 +51,84 @@ public class BillServiceIplm implements BillService {
     public List<BillDTO> getAll() {
         return billReponsitory.findAll().stream().map(u -> convertToDto(u)).collect(Collectors.toList());
     }
+    // tong hoa don
+    @Override
+    public Long SoLuongBill() {
+        return billReponsitory.count();
+    }
+    // tong doanh thu
+    @Override
+    public Double doanhThuBill() {
+        return billReponsitory.getTotalMoney();
+    }
+    // tong san pham da ban
+    @Override
+    public Integer sanPhamDaBanBill() {
+        return billReponsitory.gettotalSanPhamDaBan();
+    }
+    // sap xep bill
+    @Override
+    public PageDTO<List<BillDTO>> getCreaterBill(PageRequestDTO pageRequestDTO) {
+        pageRequestDTO.setPage(pageRequestDTO.getPage() == null ? 0 : pageRequestDTO.getPage());
+        pageRequestDTO.setSize(pageRequestDTO.getSize() == null ? 5 : pageRequestDTO.getSize());
+        Page<Bill> pageEntity = billReponsitory.getCreaterBill(
+                PageRequest.of(
+                        pageRequestDTO.getPage(),
+                        pageRequestDTO.getSize()));
+        List<BillDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<BillDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public Long pendingInvoice() {
+        return billReponsitory.pendingInvoice();
+    }
+
+    @Override
+    public Long billTransacted() {
+        return billReponsitory.billTransacted();
+    }
+
+    @Override
+    public Long billCancelled() {
+        return billReponsitory.billCancelled();
+    }
+
+    @Override
+    public Double revenueDay(int day, int month, int year) {
+        return billReponsitory.revenueDay(day,month,year);
+    }
+
+    @Override
+    public Double revenueMonth(int month, int year) {
+        return billReponsitory.revenueMonth(month, year);
+    }
+
+    @Override
+    public Double revenueYear(int year) {
+        return billReponsitory.revenueYear(year);
+    }
+
+    // bieu do
+    @Override
+    public List<BillDTO> chartbyYear(int year) {
+        return billReponsitory.chartbyYear(year).stream().map(u->convertToDto(u)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArrayList<Integer>> getMonth(int year) {
+        return billReponsitory.getMonth(year);
+    }
+
+    @Override
+    public List<ArrayList<Integer>> getMoney(int year) {
+        return billReponsitory.getMoney(year);
+    }
+
 
     @Override
     public PageDTO<List<BillDTO>> getByPageRequest(PageRequestDTO pageRequestDTO) {
@@ -271,6 +349,8 @@ public class BillServiceIplm implements BillService {
         });
         billReponsitory.save(bill);
     }
+
+
 
     //utils
     public String generateRandomString() {

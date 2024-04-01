@@ -215,6 +215,16 @@ public class ProductServiceIplm implements ProductService {
                 .totalPages(pageEntity.getTotalPages())
                 .build();
     }
+// tong san pham da ban
+    @Override
+    public Long totalProductSold() {
+        return productRepo.totalProducStold();
+    }
+// san pham con
+    @Override
+    public Long totalProductExist() {
+        return productRepo.totalProductexist();
+    }
 
     public boolean validate(ProductDTO productDTO) {
         if (productDTO.getBrand().getId() == -1) {

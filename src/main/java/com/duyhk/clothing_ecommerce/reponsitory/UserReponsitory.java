@@ -22,4 +22,7 @@ public interface UserReponsitory extends JpaRepository<Users, Long> {
     @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.STAFF " +
             "and (:phoneNumber is null or u.phoneNumber like :phoneNumber)")
     Page<Users> getStaff(@Param("phoneNumber") String phoneNumber, Pageable pageable);
+
+    @Query("select count(u.id)from Users u where (u.status=1)")
+    Long getTotalCustomers();
 }

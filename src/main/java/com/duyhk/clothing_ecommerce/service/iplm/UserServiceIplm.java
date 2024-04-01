@@ -122,6 +122,12 @@ public class UserServiceIplm implements UserService {
         }
     }
 
+    // tong khach hang
+    @Override
+    public Long totalCustomers() {
+        return userRepo.getTotalCustomers();
+    }
+
     public Users convertEndecorUser(Users user, UserDTO userDTO) {
         user.setPassword((userDTO.getPassword()));
         user.setImage(user.getImage());

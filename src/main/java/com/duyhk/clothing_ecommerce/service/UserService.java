@@ -31,4 +31,6 @@ public interface UserService {
     void update(UserDTO userDTO);
 
     void delete(Long id);
+
+    Long totalCustomers();
 }

@@ -1,6 +1,5 @@
 package com.duyhk.clothing_ecommerce.reponsitory;
 
-import com.duyhk.clothing_ecommerce.entity.BillDetail;
 import com.duyhk.clothing_ecommerce.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductReponsitory extends JpaRepository<Product, Long> {
-    @Query("select p from Product p where p.status = 1 and p.totalQuantity > 0  order by p.totalQuantitySold desc ")
+    @Query("select p from Product p where p.status = 1 and p.totalQuantity >= 0  order by p.totalQuantitySold desc ")
     Page<Product> getByBestSeller(Pageable pageable);
 
     @Query("select p from Product p where p.status = 1 and p.totalQuantity > 0 order by p.createdAt desc ")
@@ -24,4 +23,12 @@ public interface ProductReponsitory extends JpaRepository<Product, Long> {
                          @Param("status") Integer status,
                          @Param("categoryId") Long categoryId,
                          Pageable pageable);
+
+    // tong san pham da ban
+    @Query("select sum(p.totalQuantitySold) from Product p ")
+    Long totalProducStold();
+    // con ton
+    @Query("select sum(p.totalQuantity) from Product p ")
+    Long totalProductexist();
+
 }

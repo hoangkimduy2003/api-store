@@ -33,4 +33,7 @@ public interface ProductService {
 
     PageDTO<List<ProductDTO>> search(SearchProductDTO searchProductDTO);
 
+    Long totalProductSold();
+
+    Long totalProductExist();
 }
