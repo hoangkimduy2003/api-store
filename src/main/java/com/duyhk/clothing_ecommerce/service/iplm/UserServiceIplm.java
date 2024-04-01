@@ -71,7 +71,24 @@ public class UserServiceIplm implements UserService {
         searchUserDTO.setPage(searchUserDTO.getPage() == null ? 0 : searchUserDTO.getPage());
         searchUserDTO.setSize(searchUserDTO.getSize() == null ? 5 : searchUserDTO.getSize());
         Page<Users> pageEntity = userRepo.getCustomer(
-                searchUserDTO.getPhoneNumber(),
+                "%" + (searchUserDTO.getPhoneNumber() == null ? "" : searchUserDTO.getPhoneNumber()) + "%",
+                PageRequest.of(
+                        searchUserDTO.getPage(),
+                        searchUserDTO.getSize()));
+        List<UserDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<UserDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public PageDTO<List<UserDTO>> searchStaff(SearchUserDTO searchUserDTO) {
+        searchUserDTO.setPage(searchUserDTO.getPage() == null ? 0 : searchUserDTO.getPage());
+        searchUserDTO.setSize(searchUserDTO.getSize() == null ? 5 : searchUserDTO.getSize());
+        Page<Users> pageEntity = userRepo.getStaff(
+                "%" + (searchUserDTO.getPhoneNumber() == null ? "" : searchUserDTO.getPhoneNumber()) + "%",
                 PageRequest.of(
                         searchUserDTO.getPage(),
                         searchUserDTO.getSize()));
@@ -106,6 +123,8 @@ public class UserServiceIplm implements UserService {
         if (users.getRole() == null || "".equals(users.getRole())) {
             users.setRole(Role.CUSTOMER);
         }
+        users.setTotalInvoice(0l);
+        users.setTotalInvoiceValue(0d);
         Users u = userRepo.save(users);
         cartRepo.save(new Cart(0L, 0.0, u));
     }
@@ -135,6 +154,7 @@ public class UserServiceIplm implements UserService {
         user.setFullName(userDTO.getFullName());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setFavourite(new Favourite());
+        user.setStatus(userDTO.getStatus());
         return user;
     }
 }

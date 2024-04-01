@@ -16,10 +16,10 @@ public interface UserReponsitory extends JpaRepository<Users, Long> {
     @Query("select u from Users u where u.phoneNumber = :phoneNumber and u.password = :pass")
     Optional<Users> login(@Param("phoneNumber") String phoneNumber,@Param("pass") String pass);
     @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.CUSTOMER " +
-            "and (:phoneNumber is null or u.phoneNumber like :phoneNumber)")
+            "and (:phoneNumber is null or :phoneNumber = '' or u.phoneNumber like :phoneNumber)")
     Page<Users> getCustomer(@Param("phoneNumber") String phoneNumber, Pageable pageable);
 
-    @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.STAFF " +
-            "and (:phoneNumber is null or u.phoneNumber like :phoneNumber)")
+    @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.ADMIN " +
+            "and (:phoneNumber is null or :phoneNumber = '' or u.phoneNumber like :phoneNumber)")
     Page<Users> getStaff(@Param("phoneNumber") String phoneNumber, Pageable pageable);
 }
