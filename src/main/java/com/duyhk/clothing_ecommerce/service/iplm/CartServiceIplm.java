@@ -71,7 +71,13 @@ public class CartServiceIplm implements CartService {
 
     @Override
     public CartDTO getById(Long id) {
-        return convertToDto(cartRepo.findById(id).orElseThrow(IllegalArgumentException::new));
+        CartDTO cartDTO =  convertToDto(cartRepo.findById(id).orElseThrow(IllegalArgumentException::new));
+        cartDTO.setCartDetails(
+                cartDetailRepo.findByCartId(cartDTO.getId())
+                        .stream().map(c -> new ModelMapper().map(c, CartDetailDTO.class))
+                        .collect(Collectors.toList())
+        );
+        return cartDTO;
     }
 
     @Override

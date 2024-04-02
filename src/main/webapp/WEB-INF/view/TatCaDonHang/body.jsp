@@ -59,7 +59,7 @@
                 <th scope="col">Tên người nhận</th>
                 <th scope="col">Số điện thoại</th>
 <%--                <th scope="col">Địa chỉ</th>--%>
-                <th scope="col">Tổng sản phẩm</th>
+<%--                <th scope="col">Tổng sản phẩm</th>--%>
                 <th scope="col">Tổng tiền</th>
                 <th scope="col">Ngày tạo</th>
                 <th scope="col">Trạng thái</th>
@@ -73,27 +73,38 @@
                     <td>${bill.fullName}</td>
                     <td>${bill.phoneNumber}</td>
 <%--                    <td>${bill.addressDetail}</td>--%>
-                    <td><fmt:formatNumber pattern="#,###" value="${bill.tatolProduct}"/></td>
+<%--                    <td><fmt:formatNumber pattern="#,###" value="${bill.tatolProduct}"/></td>--%>
                     <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></td>
                     <td>${bill.orderDate}</td>
                     <td>
                         ${bill.status == 1 ? "Chờ xác nhận" : (bill.status == 2 ? "Đang xử lý" :
                                 bill.status == 3 ? "Chờ lấy hàng" : ( bill.status ==  4 ? "Đang giao" :
-                                        (bill.status == 5 ? (bill.billType==1?"Đã hoàn thành" :"Đã giao") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ"))))}
+                                        (bill.status == 5 ? (bill.billType==1?"Hoàn thành" :"Hoàn thành") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ"))))}
                     </td>
                     <td>
                         <a style="color: aliceblue;" class="btn btn-info" href="/don-hang/chi-tiet/${bill.id}" ><i class="bi bi-eye"></i>
                         </a>
-                        <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnClickXacNhan()">Xác nhận</button>
+                        <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnClickXacNhan('${bill.id}')">Xác nhận</button>
                         <a class="btn btn-dark"
-                           id="xacNhanAll"
+                           id="xacNhanAll${bill.id}"
                            style="display: none"
                            href="/don-hang/updateStatus/${bill.id}/3/3"
                         >Xác nhận</a>
                         <a class="btn btn-dark"
                            style="${(bill.status != 3) ? "display: none" : ""}"
                            href="/don-hang/updateStatus/${bill.id}/4/3"
+                           onclick="return confirm('Xác nhận giao hàng')"
                         >Giao hàng</a>
+                        <a class="btn btn-dark"
+                           style="${(bill.status != 4) ? "display: none" : ""}"
+                           href="/don-hang/updateStatus/${bill.id}/5/3"
+                           onclick="return confirm('Xác nhận giao hàng thành công')"
+                           >Giao hàng thành công</a>
+                        <a class="btn btn-danger"
+                           style="${(bill.status != 4) ? "display: none" : ""}"
+                           href="/don-hang/updateStatus/${bill.id}/5/3"
+                           onclick="return confirm('Xác nhận giao hàng thất bại')"
+                        >Giao hàng thất bại</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -122,12 +133,26 @@
         // }
         document.getElementById("searchForm").submit();
     }
-    function handleOnClickXacNhan(){
-        var a = document.getElementById("xacNhanAll");
+    function handleOnClickXacNhan2(e){
         var _href = a.href;
         var quantity = prompt("Nhập phí ship: ")
         console.log(quantity);
-        if(quantity == null || quantity == "" || quantity <= 0){
+        if(quantity == null || quantity == "" || quantity < 0){
+            toastr.error("Vui lòng nhập phí ship!");
+            return false;
+        }
+        if(isNaN(quantity)){
+            toastr.error("Phí ship phải là số");
+            return false;
+        }
+
+    }
+    function handleOnClickXacNhan(id){
+        var a = document.getElementById("xacNhanAll"+id);
+        var _href = a.href;
+        var quantity = prompt("Nhập phí ship: ")
+        console.log(quantity);
+        if(quantity == null || quantity == "" || quantity < 0){
             toastr.error("Vui lòng nhập phí ship!");
             return false;
         }
@@ -137,7 +162,11 @@
         }
         _href = _href + "?ship=" + quantity;
         a.setAttribute("href", _href);
-        a.click();
+        toastr.success("Xác nhận thành công")
+        setTimeout(function() {
+            a.click();
+        }, 500);
+
     }
 
 </script>

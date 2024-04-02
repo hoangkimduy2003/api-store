@@ -71,9 +71,9 @@
                                style="${(bill.status != 4) ? "display: none" : ""}"
                                href="/don-hang/updateStatus/${bill.id}/5/2"
                             >Đã nhận hàng</a>
-                            <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnHuy()">Huỷ</button>
+                            <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnHuy('${bill.id}')">Huỷ</button>
                             <a class="btn btn-dark"
-                               id="btnHuyOnline"
+                               id="btnHuyOnline${bill.id}"
                                style="display: none"
                                href="/don-hang/updateStatus/${bill.id}/0/2"
                             >Huỷ</a>
@@ -101,9 +101,9 @@
     </div>
 </div>
 <script>
-    function handleOnHuy(){
+    function handleOnHuy(id){
         if(confirm("Bạn có muốn huỷ đơn hàng không")){
-            document.getElementById("btnHuyOnline").click();
+            document.getElementById("btnHuyOnline"+id).click();
         }
     }
 </script>
