@@ -48,7 +48,7 @@
                         <input class="form-control" name="addressDetail" id="addressDetail">
                     </div>
                     <button class="btn btn-dark" type="button" onclick="handleOnOrder()">ĐẶT HÀNG</button>
-                    <a href="/gio-hang" class="btn btn-dark">QUAY LẠI</a>
+                    <a href="/gio-hang" id="aQuayLai" class="btn btn-dark">QUAY LẠI</a>
                 </form>
             </div>
             <div class="col-7">
@@ -213,15 +213,44 @@
             toastr.error("Vui lòng nhập địa chỉ chi tiết");
             return false;
         }
+
         if(!confirm("Xác nhận thông tin nhận hàng đã chính xác")){
             return false;
         }
+
         return true;
     }
 
     function handleOnOrder() {
         if (validate()) {
-            document.getElementById("frmSubmitCreateBill").submit();
+            axios.get('/dat-hang/checkCart').then(
+                (reponse) => {
+                    if(reponse.data){
+                        axios.get('/dat-hang/checkOrder').then(
+                            (reponse) => {
+                                if(reponse.data){
+                                    document.getElementById("frmSubmitCreateBill").submit();
+                                }else{
+                                    toastr.error("Sản phẩm đã hết hoặc số lượng đã thay đổi quay lại giỏ hàng sau 3 giây");
+                                    setTimeout(function() {
+                                        // Lấy phần tử theA và kích hoạt sự kiện click
+                                        document.getElementById("aQuayLai").click();
+                                    }, 2000);
+
+                                }
+                            }
+                        )
+                    }else{
+                        toastr.error("Đơn hàng đã được đặt");
+                        setTimeout(function() {
+                            // Lấy phần tử theA và kích hoạt sự kiện click
+                            document.getElementById("aQuayLai").click();
+                        }, 2000);
+
+                    }
+                }
+            )
+            // document.getElementById("frmSubmitCreateBill").submit();
         }
     }
 </script>

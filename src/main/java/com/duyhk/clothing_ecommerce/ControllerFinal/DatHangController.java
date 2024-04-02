@@ -2,9 +2,12 @@ package com.duyhk.clothing_ecommerce.ControllerFinal;
 
 import com.duyhk.clothing_ecommerce.dto.BillDTO;
 import com.duyhk.clothing_ecommerce.dto.CartDTO;
+import com.duyhk.clothing_ecommerce.dto.CartDetailDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
+import com.duyhk.clothing_ecommerce.entity.CartDetail;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
+import com.duyhk.clothing_ecommerce.reponsitory.CartDetailReponsitory;
 import com.duyhk.clothing_ecommerce.service.BillService;
 import com.duyhk.clothing_ecommerce.service.CartDetailService;
 import com.duyhk.clothing_ecommerce.service.CartService;
@@ -13,10 +16,9 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/dat-hang")
@@ -30,6 +32,9 @@ public class DatHangController {
 
     @Autowired
     private CartDetailService cartDetailService;
+
+    @Autowired
+    private CartDetailReponsitory cartDetailRepo;
 
     @Autowired
     private HttpSession session;
@@ -62,5 +67,28 @@ public class DatHangController {
         billDTO.setUser(new UserDTO(users.getId()));
         billService.createBillOnline(billDTO);
         return "redirect:/my-order";
+    }
+
+    @GetMapping("/checkCart")
+    @ResponseBody
+    public boolean checkCart(){
+        Long cartId = (Long) session.getAttribute("cartId");
+        CartDTO cartDTO = cartService.getById(cartId);
+        return cartDTO.getTotalMoney() > 0;
+    }
+
+    @GetMapping("/checkOrder")
+    @ResponseBody
+    public boolean checkOrder(){
+        Long cartId = (Long) session.getAttribute("cartId");
+        List<CartDetail> carts = cartDetailRepo.findByCartId(cartId);
+        for(CartDetail x: carts){
+             if((x.getQuantity() > x.getProductDetail().getQuantity())){
+                 x.setQuantity(x.getProductDetail().getQuantity());
+                 cartDetailRepo.save(x);
+                 return false;
+             }
+        }
+        return true;
     }
 }
