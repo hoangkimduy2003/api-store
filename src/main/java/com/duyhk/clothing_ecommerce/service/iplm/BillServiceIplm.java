@@ -183,6 +183,7 @@ public class BillServiceIplm implements BillService {
             if (user != null) {
                 bill.setUser(user);
                 bill.setPhoneNumber(billDTO.getUser().getPhoneNumber());
+                bill.setFullName(user.getFullName());
                 billReponsitory.save(bill);
             }
             else{
