@@ -2,8 +2,10 @@ package com.duyhk.clothing_ecommerce.service.iplm;
 
 import com.duyhk.clothing_ecommerce.dto.*;
 import com.duyhk.clothing_ecommerce.dto.search.SearchProductDTO;
+import com.duyhk.clothing_ecommerce.entity.Color;
 import com.duyhk.clothing_ecommerce.entity.Product;
 import com.duyhk.clothing_ecommerce.entity.ProductDetail;
+import com.duyhk.clothing_ecommerce.entity.Size;
 import com.duyhk.clothing_ecommerce.reponsitory.ProductDetailReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.ProductReponsitory;
 import com.duyhk.clothing_ecommerce.service.ProductDetailService;
@@ -133,7 +135,13 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     public void update(ProductDetailDTO productDetailDTO) {
         ProductDetail productDetail = productDetailRepo.findById(productDetailDTO.getId()).orElseThrow(IllegalArgumentException::new);
         if (productDetail != null) {
-            productDetail = convertToEntity(productDetailDTO);
+//            productDetail = convertToEntity(productDetailDTO);
+            productDetail.setQuantity(productDetailDTO.getQuantity());
+            productDetail.setColor(new ModelMapper().map(productDetailDTO.getColor(), Color.class));
+            productDetail.setSize(new ModelMapper().map(productDetailDTO.getSize(), Size.class));
+            Product product = productRepo.findById(productDetailDTO.getProduct().getId()).orElse(null);
+            product.setTotalQuantity(product.getTotalQuantity() - productDetail.getQuantity() + productDetailDTO.getQuantity());
+            productRepo.save(product);
             productDetailRepo.save(productDetail);
         }
 

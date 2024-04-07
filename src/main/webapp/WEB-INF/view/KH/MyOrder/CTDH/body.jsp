@@ -32,26 +32,10 @@
                                     (bill.status == 5 ? (bill.billType==1?"Đã hoàn thành" :"Đã giao") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ"))))}
                 </div>
             </div>
-<%--            <div class="col-3">--%>
-<%--                <div>--%>
-<%--                    <a class="btn btn-dark"--%>
-<%--                       style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}" id="themSP"--%>
-<%--                       href="/danh-sach-san-pham/${bill.id}/2"> <i class="bi bi-plus-circle"></i> Sản phẩm</a>--%>
-<%--                    <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}"--%>
-<%--                            onclick="handleOnClickXacNhan()">Xác nhận--%>
-<%--                    </button>--%>
-<%--                    <a style="display: none" class="btn btn-dark" href="/don-hang/updateStatus/${bill.id}/3/1"--%>
-<%--                       id="aXacNhan">--%>
-<%--                        Xác nhận</a>--%>
-<%--                    <a style="${(bill.status != 3) ? "display: none" : ""}" class="btn btn-dark"--%>
-<%--                       href="/don-hang/updateStatus/${bill.id}/4/1">--%>
-<%--                        Giao hàng</a>--%>
-<%--                </div>--%>
-<%--            </div>--%>
         </div>
         <div class="row">
             <div class="col-5">
-                <form action="/don-hang/edit/${bill.id}" method="post" id="frmSubmitCreateBill"
+                <form action="/don-hang/edit/${bill.id}/2" method="post" id="frmSubmitCreateBill"
                       onsubmit="handleOnOrder()">
                     <div class="mb-3">
                         <label for="fullName" class="form-label">Họ và tên:</label>
@@ -120,21 +104,6 @@
                             <td><span style="font-size: 12px"><fmt:formatNumber pattern="#,###"
                                                                                 value="${cartDetail.productDetail.priceSale * cartDetail.quantity}"/></span>
                             </td>
-<%--                            <td>--%>
-<%--                                <button class="btn btn-danger"--%>
-<%--                                        style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}"--%>
-<%--                                        onclick="handleOnClickCheck()">Xoá--%>
-<%--                                </button>--%>
-<%--                                <a class="btn btn-danger" id="deleteA" style="display: none"--%>
-<%--                                   href="/don-hang/delete/${cartDetail.id}/${bill.id}">Xoá</a>--%>
-<%--                                <a class="btn btn-danger" id="updateA" style="display: none"--%>
-<%--                                   href="/don-hang/update/${cartDetail.id}/${bill.id}">Xoá</a>--%>
-<%--                                <button class="btn btn-warning"--%>
-<%--                                        style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}"--%>
-<%--                                        onclick="handleOnClickSua('${cartDetail.quantity}',${cartDetail.productDetail.quantity})">--%>
-<%--                                    Sửa--%>
-<%--                                </button>--%>
-<%--                            </td>--%>
                         </tr>
                     </c:forEach>
                     </tbody>

@@ -29,7 +29,7 @@
                     <td>${x.priceSale}</td>
                     <td>${x.quantity}</td>
                     <td>
-                        <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.name}',${x.status})"
+                        <button type="button" class="btn btn-warning" onclick="preAction(${x.id},${x.quantity},${x.size.id},${x.color.id})"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Sửa
                         </button>

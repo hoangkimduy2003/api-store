@@ -51,7 +51,7 @@
         </div>
         <div class="row">
             <div class="col-5">
-                <form action="/don-hang/edit/${bill.id}" method="post" id="frmSubmitCreateBill"
+                <form action="/don-hang/edit/${bill.id}/1" method="post" id="frmSubmitCreateBill"
                       onsubmit="handleOnOrder()">
                     <div class="mb-3">
                         <label for="fullName" class="form-label">Họ và tên:</label>

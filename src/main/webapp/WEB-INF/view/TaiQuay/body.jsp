@@ -61,8 +61,10 @@
     <div class="d-flex justify-content-between">
         <div>
             <button class="btn btn-dark" onclick="toggleCamera()">Quét QR</button>
-            <a class="btn btn-dark" href="/danh-sach-san-pham/${bill.id}/${bill.billType}">Tìm sản phẩm</a>&nbsp;
-            <button data-bs-toggle="modal" data-bs-target="#thanhtoan" onclick="preActionThanhToan()" class="btn btn-dark">Thanh toán</button>
+            <button onclick="handleOnClickThemSanPham('${bill.id}')" class="btn btn-dark" >Tìm sản phẩm</button>&nbsp;
+            <a class="btn btn-dark" id="aTimSP" style="display: none" href="/danh-sach-san-pham/${bill.id}/${bill.billType}">Tìm sản phẩm</a>&nbsp;
+            <button class="btn btn-dark" onclick="handleOnClickThanhToan('${bill.id}')">Thanh toán</button>
+            <button data-bs-toggle="modal" id="btnShowTT" style="display: none" data-bs-target="#thanhtoan" onclick="preActionThanhToan()" class="btn btn-dark">Thanh toán</button>
         </div>
         <div>
             <video id="qr-video" width="240" height="160" style="display: none" autoplay></video>
@@ -152,6 +154,22 @@
         }
     }
 
+    function handleOnClickThanhToan(billId){
+        if(billId != null && billId != "" && billId != undefined){
+            document.getElementById("btnShowTT").click();
+        }else{
+            alert("Vui lòng tạo hoá đơn trước");
+        }
+    }
+
+    function handleOnClickThemSanPham(billId){
+        console.log(billId);/**/
+        if(billId != null && billId != "" && billId != undefined){
+            document.getElementById("aTimSP").click();
+        }else{
+            alert("Vui lòng tạo hoá đơn trước");
+        }
+    }
 
     function startCamera() {
         navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}})
