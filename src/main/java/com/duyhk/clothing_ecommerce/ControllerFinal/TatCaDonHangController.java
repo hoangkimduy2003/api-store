@@ -60,11 +60,14 @@ public class TatCaDonHangController {
         return "TatCaDonHang/ChiTietDonHang/ChiTietDonHang";
     }
 
-    @PostMapping("/edit/{id}")
-    public String update(@ModelAttribute BillDTO billDTO, @PathVariable("id") Long id) {
+    @PostMapping("/edit/{id}/{typeRedi}")
+    public String update(@ModelAttribute BillDTO billDTO, @PathVariable("id") Long id, @PathVariable("typeRedi") Long typeRedi) {
         billDTO.setId(id);
         billService.updateAddress(billDTO);
-        return "redirect:/don-hang/chi-tiet/" + id;
+        if(typeRedi == 1){
+            return "redirect:/don-hang/chi-tiet/" + id;
+        }
+        return "redirect:/CTDH/" + id;
     }
 
     @GetMapping("/checkSize/{id}")

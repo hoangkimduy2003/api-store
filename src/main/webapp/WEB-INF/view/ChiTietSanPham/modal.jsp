@@ -66,11 +66,16 @@
         // document.getElementById("frmAction").submit();
         await axios.get(`/chi-tiet-sp/check?idProduct=${idSp}`+`&`+`idColor=`+color+`&`+`idSize=`+ size)
             .then(function (response) {
-                console.log(response.data)
+
                 if(response.data===-1){
                     document.getElementById("frmAction").submit();
                 }else {
-                    alert("Chi  tiết sản phẩm đã tồn tại");
+                    if(!(document.getElementById("id").value != null && document.getElementById("id").value != "")){
+                        alert("Chi  tiết sản phẩm đã tồn tại");
+                        return false;
+                    }else{
+                        document.getElementById("frmAction").submit();
+                    }
                 }
             })
 

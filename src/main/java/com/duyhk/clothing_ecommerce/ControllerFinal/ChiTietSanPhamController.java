@@ -48,6 +48,8 @@ public class ChiTietSanPhamController {
     public String action(@ModelAttribute ProductDetailDTO productDetail) {
         if (productDetail.getId() == null) {
             String _return = productDetailService.create(productDetail);
+        }else {
+            productDetailService.update(productDetail);
         }
         return "redirect:/chi-tiet-sp/" + productDetail.getProduct().getId();
     }

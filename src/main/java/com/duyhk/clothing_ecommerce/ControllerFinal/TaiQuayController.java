@@ -42,8 +42,8 @@ public class TaiQuayController {
             return "redirect:/account/dang-nhap";
         }
         PageDTO<List<BillDTO>> pageDTO = billService.getSellAtStore(new PageRequestDTO(0, 5 ));
-        Long finalIdBill = idBill;
-        BillDTO bill = idBill == null ? (pageDTO.getData().size() > 0 ? pageDTO.getData().get(0) : null) : pageDTO.getData().stream().filter(billDTO -> billDTO.getId() == finalIdBill).findFirst().get();
+        BillDTO bill = idBill == null ? (pageDTO.getData().size() > 0 ? pageDTO.getData().get(0) : null) :
+                pageDTO.getData().stream().filter(billDTO -> billDTO.getId().equals(idBill)).findFirst().orElse(null);
         model.addAttribute("listBill",pageDTO);
         model.addAttribute("bill",bill);
         PageDTO<List<BillDetailDTO>> pageDetailDto = bill == null ? new PageDTO<>() : billDetailService.getByBillId(bill.getId(),new PageRequestDTO(pageDetail, 5));

@@ -212,6 +212,9 @@
                 return false;
             }
         }
+        if(!confirm("Bạn có muốn tiến hành thanh toán không?")){
+            return false;
+        }
         document.getElementById("frmAction").submit();
         // if(document.getElementById("phoneNumber").value == "" ||
         //     document.getElementById("phoneNumber") == null){

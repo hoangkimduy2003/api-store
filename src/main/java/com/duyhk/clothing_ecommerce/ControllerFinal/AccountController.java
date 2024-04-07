@@ -1,11 +1,9 @@
 package com.duyhk.clothing_ecommerce.ControllerFinal;
 
-import com.duyhk.clothing_ecommerce.dto.ChangePasswordDTO;
-import com.duyhk.clothing_ecommerce.dto.LoginDTO;
-import com.duyhk.clothing_ecommerce.dto.RegisterDTO;
-import com.duyhk.clothing_ecommerce.dto.UserDTO;
+import com.duyhk.clothing_ecommerce.dto.*;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
+import com.duyhk.clothing_ecommerce.service.CartService;
 import com.duyhk.clothing_ecommerce.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,9 @@ public class AccountController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private CartService cartService;
 
     @GetMapping("/dang-nhap")
     public String home(Model model) {
@@ -69,6 +70,16 @@ public class AccountController {
             return "DangNhap/DangNhap";
         }
         session.setAttribute("user", user);
+        if(user != null){
+            CartDTO cart = cartService.getByUserId(user.getId());
+            Long size = cart.getTotalProduct();
+            session.setAttribute("cartId",cart.getId());
+            model.addAttribute("sizeCart",size);
+            model.addAttribute("isAdmin",(user.getRole() == Role.ADMIN) ? true : false);
+        }
+        if(user.getRole() == Role.ADMIN){
+            return "redirect:/thong-ke";
+        }
         return "redirect:/trang-chu";
     }
 

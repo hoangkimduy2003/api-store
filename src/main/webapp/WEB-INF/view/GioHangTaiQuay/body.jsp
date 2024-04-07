@@ -2,9 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container m-2">
-    <p style="font-size: 12px; color: #cfd3cb"><a style="text-decoration: none; color: #cfd3cb" href="" id="donHangA" onclick="handleOnHref(this)">Đơn hàng </a>/ Danh sách sản phẩm</p>
+    <a id="donHangA" href="${billType == 1 ? '/tai-quay?idBill=' : '/don-hang/chi-tiet/' } + ${idBill}" style="display:none;"></a>
+    <p style="font-size: 12px; color: #cfd3cb"><a style="text-decoration: none; color: #cfd3cb;" href="${billType == 1 ? '/tai-quay?idBill=' : '/don-hang/chi-tiet/' } + ${idBill}"  >Đơn hàng </a>/ Danh sách sản phẩm</p>
     <jsp:include page="modal.jsp"></jsp:include>
-    <form id="searchForm" action="/danh-sach-san-pham/${idBill}" method="get">
+    <form id="searchForm" action="/danh-sach-san-pham/${idBill}/${billType}" method="get">
         <div class="row">
             <div class="col-1">
                 <label for="productDetailCode" class="form-label">Mã SP</label>
@@ -103,7 +104,6 @@
 <script>
     function handleOnHref(e){
         var a = document.getElementById("donHangA");
-        a.setAttribute("href", ${billType == 1 ? '/tai-quay?idBill=' : '/don-hang/chi-tiet/' } + ${idBill});
         a.click();
     }
     function changePage(pageNumber) {
