@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="container m-2">
     <jsp:include page="modal.jsp"></jsp:include>
-    <button type="button" onclick="preAction(null,null,-1,-1,null,null,null,null)" class="btn btn-dark" data-bs-toggle="modal"
+    <button type="button" onclick="preAction(null,null,-1,-1,null,null,null,null,null)" class="btn btn-dark" data-bs-toggle="modal"
             data-bs-target="#exampleModal">
         Thêm sản phẩm
     </button>
@@ -39,7 +39,7 @@
                             <i class="bi bi-eye"></i>
                         </a>
                         <button type="button" class="btn btn-warning"
-                                onclick="preAction(${x.id},'${x.name}',${x.brand.id}, ${x.category.id}, ${x.price}, ${x.importPrice}, '${x.description}',null)"
+                                onclick="preAction(${x.id},'${x.name}',${x.brand.id}, ${x.category.id}, ${x.price}, ${x.importPrice}, '${x.description}',null, '${x.status}')"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="bi bi-pencil"></i>
                         </button>
