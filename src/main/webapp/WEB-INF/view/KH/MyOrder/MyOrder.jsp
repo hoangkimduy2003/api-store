@@ -18,7 +18,12 @@
     <hr style="margin: 0;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light nav-menu fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/trang-chu"><img src="https://bom.so/1YAtAj" alt="#!/home"></a>
+            <h1 class="fs-3">
+                <a href="/trang-chu" style="text-decoration: none; color: black">
+                    <span class="bg-dark text-white rounded shadow px-2 ">O</span>
+                    <span class="text-dark">man</span>
+                </a>
+            </h1>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -63,6 +68,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/changePassword">Đổi mật khẩu</a></li>
                             <li style="${isLogin ? "" : "display: none"}"><a class="dropdown-item" href="/account/dang-nhap/out">Đăng xuất</a></li>
                         </ul>
                     </li>
@@ -97,7 +103,12 @@
                 <div class="row">
                     <div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 24px;">
                         <div class="row">
-                            <img src="https://bom.so/1YAtAj" style="width: 40%;">
+                            <h1 class="fs-3">
+                                <a href="/trang-chu" style="text-decoration: none; color: black">
+                                    <span class="bg-dark text-white rounded shadow px-2 ">O</span>
+                                    <span class="text-dark">man</span>
+                                </a>
+                            </h1>
                         </div>
                         <div class="row">
                             <b>CÔNG TY CỔ PHẦN THỜI TRANG KOWIL VIỆT NAM
@@ -112,7 +123,7 @@
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6" style="margin-top: 24px;">
                         <div class="row">
-                            <b>GIỚI THIỆU OWEN</b>
+                            <b>GIỚI THIỆU OMAN</b>
                         </div>
                         <div class="row"><a href="">Giới thiệu</a></div>
                         <div class="row"><a href="">Blog</a></div>
