@@ -23,4 +23,5 @@ public class VoucherDTO {
     private Long quantity;
     private Integer voucherType; // 1 phan tram , 2 gia
     private Integer status;
+    private Integer sendType; // 1 chưa gửi , 2 đã gửi
 }
