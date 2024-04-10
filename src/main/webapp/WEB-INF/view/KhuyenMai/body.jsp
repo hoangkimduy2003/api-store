@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container m-2">
     <jsp:include page="modal.jsp"></jsp:include>
-    <button type="button" onclick="preAction(null,null,1)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Thêm
+    <button type="button" onclick="preAction(null,null,1)" style="width: 150px" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Thêm khuyến mại
     </button>
     <div style="min-height: 320px">
         <table class="table">
@@ -18,6 +18,7 @@
                 <th scope="col">Giảm giá tối đa</th>
                 <th scope="col">Ngày bắt đầu</th>
                 <th scope="col">Ngày kết thúc</th>
+                <th scope="col">Số lượng</th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Thao tác</th>
             </tr>
@@ -33,12 +34,14 @@
                     <td><fmt:formatNumber pattern="#,###" value="${x.maximumPromotion}" /></td>
                     <td>${x.dateStart}</td>
                     <td>${x.dateEnd}</td>
+                    <td>${x.quantity}</td>
                     <td>${x.status == 0 ? "Không hoạt động" : "Hoạt động"}</td>
                     <td>
                         <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.name}',${x.status})"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Sửa
                         </button>
+                        <a class="btn btn-dark"><i class="bi bi-envelope-arrow-up-fill"></i></a>
                     </td>
                 </tr>
             </c:forEach>

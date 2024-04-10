@@ -58,6 +58,7 @@ public class AccountController {
     @GetMapping("/dang-nhap/out")
     public String logout() {
         session.setAttribute("user", null);
+        session.setAttribute("cartId",null);
         return "redirect:/account/dang-nhap";
     }
 
