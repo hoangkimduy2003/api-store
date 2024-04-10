@@ -54,6 +54,22 @@ public class VoucherServiceIplm implements VoucherService {
     }
 
     @Override
+    public PageDTO<List<VoucherDTO>> getByKh(PageRequestDTO pageRequestDTO) {
+        pageRequestDTO.setPage(pageRequestDTO.getPage() == null ? 0 : pageRequestDTO.getPage());
+        pageRequestDTO.setSize(pageRequestDTO.getSize() == null ? 5 : pageRequestDTO.getSize());
+        Page<Voucher> pageEntity = voucherRepo.getKh(PageRequest.of(
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize()
+        ));
+        List<VoucherDTO> list = pageEntity.getContent().stream().map(u -> convertToDto(u)).collect(Collectors.toList());
+        return PageDTO.<List<VoucherDTO>>builder()
+                .data(list)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
+    @Override
     public VoucherDTO getById(Long id) {
         return convertToDto(voucherRepo.findById(id).orElse(null));
     }
@@ -75,6 +91,18 @@ public class VoucherServiceIplm implements VoucherService {
     @Override
     public void delete(Long id) {
         voucherRepo.deleteById(id);
+    }
+
+    @Override
+    public void action(VoucherDTO voucherDTO) {
+        Voucher voucher = convertToEntity(voucherDTO);
+        if(voucherDTO.getId() == null){
+            voucher.setDiscount(0d);
+        }
+        if(voucher.getVoucherType() == 2){
+            voucher.setMaximumPromotion(voucher.getPromotionalLevel());
+        }
+        voucherRepo.save(voucher);
     }
 
     @Override

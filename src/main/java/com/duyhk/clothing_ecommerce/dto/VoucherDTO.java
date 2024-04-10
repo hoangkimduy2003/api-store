@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -17,9 +18,9 @@ public class VoucherDTO {
     private Double promotionalLevel;
     private Double minimumInvoice;
     private Double discount;
-    private Date dateStart;
-    private Date dateEnd;
+    private LocalDate dateStart;
+    private LocalDate dateEnd;
     private Long quantity;
-    private Integer voucherType;
+    private Integer voucherType; // 1 phan tram , 2 gia
     private Integer status;
 }

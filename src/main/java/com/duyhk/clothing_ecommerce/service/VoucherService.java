@@ -16,6 +16,8 @@ public interface VoucherService {
 
     PageDTO<List<VoucherDTO>> getByPageRequest(PageRequestDTO pageRequestDTO);
 
+    PageDTO<List<VoucherDTO>> getByKh(PageRequestDTO pageRequestDTO);
+
     VoucherDTO getById(Long id);
 
     void create(VoucherDTO voucherDTO);
@@ -23,6 +25,8 @@ public interface VoucherService {
     void update(VoucherDTO voucherDTO);
 
     void delete(Long id);
+
+    void action(VoucherDTO voucherDTO);
 
     VoucherDTO detail(Long id);
 }
