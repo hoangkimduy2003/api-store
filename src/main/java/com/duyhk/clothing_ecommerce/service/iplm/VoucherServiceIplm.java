@@ -22,6 +22,9 @@ public class VoucherServiceIplm implements VoucherService {
     @Autowired
     private VoucherReponsitory voucherRepo;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     @Override
     public Voucher convertToEntity(VoucherDTO voucherDTO) {
         return new ModelMapper().map(voucherDTO, Voucher.class);
@@ -96,10 +99,12 @@ public class VoucherServiceIplm implements VoucherService {
     @Override
     public void action(VoucherDTO voucherDTO) {
         Voucher voucher = convertToEntity(voucherDTO);
+        voucher.setSendType(1);
         if(voucherDTO.getId() == null){
             voucher.setDiscount(0d);
         }
         if(voucher.getVoucherType() == 2){
+            voucher.setDiscount(0d);
             voucher.setMaximumPromotion(voucher.getPromotionalLevel());
         }
         voucherRepo.save(voucher);

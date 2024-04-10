@@ -33,4 +33,5 @@ public class Voucher extends TimeAuditable implements Serializable {
     private Long quantity;
     private Integer voucherType;
     private Integer status;
+    private Integer sendType;
 }
