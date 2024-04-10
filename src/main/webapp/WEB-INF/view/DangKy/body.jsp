@@ -22,7 +22,7 @@
                                 <p id="errSdt" style="color: red;font-size: 12px">${msg}</p>
                             </div>
                             <div class="mb-1">
-                                <label for="email" class="form-label">EMAIL</label>
+                                <label for="email" class="form-label">EMAIL*</label>
                                 <input type="text" class="form-control" id="email" name="email" >
                                 <p style="color: red;font-size: 12px"></p>
                             </div>
@@ -72,7 +72,11 @@
                 return false;
             }
         }
-        if(document.getElementById("email").value!=""){
+        if(document.getElementById("email").value == null){
+
+            alert("Vui lòng nhập email");
+            return false;
+        }else if(document.getElementById("email").value!=""){
             // Biểu thức chính quy kiểm tra định dạng email
             var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

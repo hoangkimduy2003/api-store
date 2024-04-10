@@ -30,10 +30,12 @@
                             <div class="mb-3">
                                 <label for="password" class="form-label">MẬT KHẨU</label>
                                 <input type="password" class="form-control" id="password" name="password">
+                                    <a href="/account/forgotPassword" class="text-decoration-none">Quên mật khẩu</a>
                             </div>
                             <div class="mb-3">
                                 <p style="color: red;font-size: 12px">${msg}</p>
                             </div>
+
                             <div class="row">
                                 <div class="col-12"><button type="submit" style="height: 50px; margin-top: 36px;"
                                                             class="btn btn-dark w-100">ĐĂNG NHẬP</button></div>

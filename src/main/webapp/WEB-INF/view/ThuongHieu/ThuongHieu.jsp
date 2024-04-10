@@ -11,7 +11,7 @@
           crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <title>Hello, world!</title>
+    <title>Oman</title>
     <style type="text/css">
         body {
             background: #eee;

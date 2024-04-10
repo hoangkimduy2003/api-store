@@ -4,12 +4,15 @@ import com.duyhk.clothing_ecommerce.dto.*;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.service.CartService;
+import com.duyhk.clothing_ecommerce.service.SendEmailService;
 import com.duyhk.clothing_ecommerce.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/account")
@@ -24,6 +27,9 @@ public class AccountController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private SendEmailService sendEmailService;
+
     @GetMapping("/dang-nhap")
     public String home(Model model) {
         Users users = (Users) session.getAttribute("user");
@@ -37,6 +43,14 @@ public class AccountController {
         model.addAttribute("isLogin", users == null ? false : true);
         return "DangKy/DangKy";
     }
+
+    @GetMapping("/forgotPassword")
+    public String viewForgot(Model model) {
+        Users users = (Users) session.getAttribute("user");
+        model.addAttribute("isLogin", users == null ? false : true);
+        return "ForgotPassword/Forgot";
+    }
+
 
     @GetMapping("/changePassword")
     public String viewChangePassword(Model model) {
@@ -109,7 +123,32 @@ public class AccountController {
             session.setAttribute("user", null);
             return "DangNhap/DangNhap";
         }
-//        return "redirect:/account/changePassword";
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@ModelAttribute ForgotPasswordDTO forgotPasswordDTO, Model model){
+        //Lấy user bằng email
+        Users user = userService.findByPhoneNumber(forgotPasswordDTO.getPhoneNumber());
+        //kiểm tra user có tồn tại hay không?
+        if(user==null){
+            model.addAttribute("msg","Số điện thoại này chưa được đăng ký. Vui lòng nhập lại");
+            return "ForgotPassword/Forgot";
+        }
+
+        //tạo mật khẩu mới ngẫu nhiên
+        UUID uuid = UUID.randomUUID();
+        String passwordNew = uuid.toString();
+        String password= passwordNew.substring(0, 8);
+        //Update mật khẩu mới vào db
+        user.setPassword(password);
+        userService.update(userService.convertToDto(user));
+        //Gửi mật khẩu mới qua email cho user
+        sendEmailService.sendSimpleMessage
+                (user.getEmail(),
+                        "[Oman] Thay đổi mật khẩu",
+                        "Mật khẩu mới của bạn là: " +password);
+        model.addAttribute("tb","Thành công! Vui lòng đăng nhập lại");
+        return "DangNhap/DangNhap";
     }
 
     @PostMapping("/createAccount")
@@ -120,6 +159,7 @@ public class AccountController {
             return "DangKy/DangKy";
         }
         if (registerDTO.getPhoneNumber() == null || registerDTO.getFullName() == null
+                || registerDTO.getEmail().equals("")
                 || registerDTO.getPassword().equals("")
                 || !(registerDTO.getPasswordConfirm().equals(registerDTO.getPassword()))) {
             return "redirect:/account/createAccount";

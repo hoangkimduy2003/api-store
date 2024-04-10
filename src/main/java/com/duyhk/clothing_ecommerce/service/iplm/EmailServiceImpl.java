@@ -1,12 +1,13 @@
 package com.duyhk.clothing_ecommerce.service.iplm;
 
+import com.duyhk.clothing_ecommerce.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmailServiceImpl{
+public class EmailServiceImpl implements SendEmailService {
     @Autowired
     private JavaMailSender emailSender;
 

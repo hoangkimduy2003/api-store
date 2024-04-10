@@ -56,7 +56,7 @@ public class ThongTinTaiKhoanController {
             model.addAttribute("msg", "Số điện thoại đã được đăng ký");
             return "KH/ThongTinTaiKhoan/ThongTinTaiKhoan";
         }
-        if (userDTO.getPhoneNumber().equals("") || userDTO.getFullName().equals("")) {
+        if (userDTO.getPhoneNumber().isEmpty() || userDTO.getFullName().isEmpty() || userDTO.getEmail().isEmpty()) {
             return "redirect:/thong-tin-tai-khoan";
         }else {
             // Kiểm tra số điện thoại hợp lệ
@@ -65,8 +65,6 @@ public class ThongTinTaiKhoanController {
                 model.addAttribute("msg", "Số điện thoại không hợp lệ. Vui lòng nhập lại.");
                 return "KH/ThongTinTaiKhoan/ThongTinTaiKhoan";
             }
-        }
-        if(!userDTO.getEmail().equals("")){
             //Kiểm tra email
             String emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
             if(!userDTO.getEmail().matches(emailPattern)){
@@ -74,6 +72,8 @@ public class ThongTinTaiKhoanController {
                 return "KH/ThongTinTaiKhoan/ThongTinTaiKhoan";
             }
         }
+
+
         if(users.getId()!=null){
             userService.update(userDTO);
             UserDTO users2 =  userService.getById(userDTO.getId());

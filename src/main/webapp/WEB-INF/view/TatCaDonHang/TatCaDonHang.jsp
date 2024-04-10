@@ -12,7 +12,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <title>Hello, world!</title>
+    <title>Oman</title>
     <style type="text/css">
         body {
             background: #eee;
