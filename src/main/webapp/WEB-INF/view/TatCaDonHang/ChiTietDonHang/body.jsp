@@ -34,11 +34,13 @@
             </div>
             <div class="col-3">
                 <div>
+                    <button class="btn btn-dark" style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}" onclick="handleOnClickThemSP('${bill.id}')"
+                    ><i class="bi bi-plus-circle"></i> Sản phẩm</button>
                     <a class="btn btn-dark"
-                       style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}" id="themSP"
+                       style="display: none" id="themSPA"
                        href="/danh-sach-san-pham/${bill.id}/2"> <i class="bi bi-plus-circle"></i> Sản phẩm</a>
                     <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}"
-                            onclick="handleOnClickXacNhan()">Xác nhận
+                            onclick="handleOnClickXacNhan('${bill.id}')">Xác nhận
                     </button>
                     <a style="display: none" class="btn btn-dark" href="/don-hang/updateStatus/${bill.id}/3/1"
                        id="aXacNhan">
@@ -72,7 +74,7 @@
                                id="addressDetail" ${(bill.status != 1 && bill.status != 3) ? "disabled" : ""}
                                value="${bill.addressDetail}">
                     </div>
-                    <button class="btn btn-dark" onclick="handleUpdate()"
+                    <button class="btn btn-dark" onclick="handleUpdate('${bill.id}')" type="button"
                             style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}">Sửa
                     </button>
                 </form>
@@ -123,7 +125,7 @@
                             <td>
                                 <button class="btn btn-danger"
                                         style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}"
-                                        onclick="handleOnClickCheck()">Xoá
+                                        onclick="handleOnClickCheck('${bill.id}')">Xoá
                                 </button>
                                 <a class="btn btn-danger" id="deleteA" style="display: none"
                                    href="/don-hang/delete/${cartDetail.id}/${bill.id}">Xoá</a>
@@ -131,7 +133,7 @@
                                    href="/don-hang/update/${cartDetail.id}/${bill.id}">Xoá</a>
                                 <button class="btn btn-warning"
                                         style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}"
-                                        onclick="handleOnClickSua('${cartDetail.quantity}',${cartDetail.productDetail.quantity})">
+                                        onclick="handleOnClickSua('${cartDetail.quantity}',${cartDetail.productDetail.quantity},'${bill.id}')">
                                     Sửa
                                 </button>
                             </td>
@@ -146,7 +148,24 @@
 </div>
 <script>
 
-    function handleOnClickSua(quantityOld, quantitySP) {
+    async function handleOnClickThemSP(id){
+        var res = await axios.get("/api/check/statusBill/" + id + "/" + 1);
+        var resData = await axios.get("/api/check/statusBill/" + id + "/" + 3);
+        if (!(res.data || resData.data)){
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+            return false;
+        }else{
+            document.getElementById("themSPA").click();
+        }
+    }
+
+    async function handleOnClickSua(quantityOld, quantitySP, id) {
+        var res = await axios.get("/api/check/statusBill/" + id + "/" + 1);
+        var resData = await axios.get("/api/check/statusBill/" + id + "/" + 3);
+        if (!(res.data || resData.data)){
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+            return false;
+        }
         var quantityNew = prompt("Vui lòng nhập số lượng, số lượng cũ là " + quantityOld + ":");
         if (quantityNew == null || quantityNew == "" || quantityNew <= 0) {
             toastr.error("Vui lòng nhập số lượng!");
@@ -167,7 +186,12 @@
         a.click();
     }
 
-    function handleOnClickXacNhan() {
+    async function handleOnClickXacNhan(id) {
+        var resData = await axios.get("/api/check/statusBill/" + id + "/" + 1);
+        if (!(resData.data)){
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+            return false;
+        }
         var a = document.getElementById("aXacNhan");
         var _href = a.href;
         var quantity = prompt("Nhập phí ship: ")
@@ -185,23 +209,37 @@
         a.click();
     }
 
-    function handleUpdate() {
-        document.getElementById("frmSubmitCreateBill").submit();
+    async function handleUpdate(id) {
+        var res = await axios.get("/api/check/statusBill/" + id + "/" + 1)
+        var resDa = await axios.get("/api/check/statusBill/" + id + "/" + 3)
+        if (res.data || resDa.data) {
+            if (confirm("Bạn có muốn sửa thông tin nhận hàng không")) {
+                document.getElementById("frmSubmitCreateBill").submit();
+            }
+        } else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
     }
 
-    async function handleOnClickCheck() {
-        if (!confirm("Bạn có muốn xoá sản phẩm không?")) {
-            return false;
+    async function handleOnClickCheck(id) {
+        var res = await axios.get("/api/check/statusBill/" + id + "/" + 1);
+        var resData = await axios.get("/api/check/statusBill/"+id+"/" + 3)
+        if(res.data || resData.data){
+            await axios.get('/don-hang/checkSize/' + ${bill.id})
+                .then((response) => {
+                    console.log(response);
+                    if (response.data) {
+                        if (confirm("Bạn có muốn xoá sản phẩm không?")) {
+                            document.getElementById("deleteA").click();
+                        }
+                    } else {
+                        alert("Đơn hàng chỉ còn 1 sản phẩm không thể xoá");
+                        return false;
+                    }
+                })
+
+        } else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
         }
-        await axios.get('/don-hang/checkSize/' + ${bill.id})
-            .then((response) => {
-                console.log(response);
-                if (response.data) {
-                    document.getElementById("deleteA").click();
-                } else {
-                    alert("Đơn hàng chỉ còn 1 sản phẩm không thể xoá");
-                    return false;
-                }
-            })
     }
 </script>

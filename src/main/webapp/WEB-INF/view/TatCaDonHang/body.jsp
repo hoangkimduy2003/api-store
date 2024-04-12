@@ -84,26 +84,36 @@
                     <td>
                         <a style="color: aliceblue;" class="btn btn-info" href="/don-hang/chi-tiet/${bill.id}" ><i class="bi bi-eye"></i>
                         </a>
+                        <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnClickHuyHoaDon('${bill.id}')">Huỷ</button>
+                        <button class="btn btn-dark" style="${(bill.status != 3) ? "display: none" : ""}" onclick="handleOnClickHuyHoaDon('${bill.id}')">Huỷ</button>
+                        <a class="btn btn-dark"
+                           id="handleOnClickHuyHoaDon${bill.id}"
+                           style="display: none"
+                           href="/don-hang/updateStatus/${bill.id}/0/3"
+                        >Xác nhận</a>
                         <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnClickXacNhan('${bill.id}')">Xác nhận</button>
                         <a class="btn btn-dark"
                            id="xacNhanAll${bill.id}"
                            style="display: none"
                            href="/don-hang/updateStatus/${bill.id}/3/3"
                         >Xác nhận</a>
+                        <button class="btn btn-dark" style="${(bill.status != 3) ? "display: none" : ""}" onclick="handleOnClickGiaoHang('${bill.id}')">Giao hàng</button>
                         <a class="btn btn-dark"
-                           style="${(bill.status != 3) ? "display: none" : ""}"
+                           id="handleOnClickGiaoHang${bill.id}"
+                           style="display: none"
                            href="/don-hang/updateStatus/${bill.id}/4/3"
-                           onclick="return confirm('Xác nhận giao hàng')"
                         >Giao hàng</a>
+                        <button class="btn btn-dark" style="${(bill.status != 4) ? "display: none" : ""}" onclick="handleHoanThanh('${bill.id}')">Hoàn thành</button>
                         <a class="btn btn-dark"
-                           style="${(bill.status != 4) ? "display: none" : ""}"
+                           id="handleHoanThanh${bill.id}"
+                           style="display: none"
                            href="/don-hang/updateStatus/${bill.id}/5/3"
-                           onclick="return confirm('Xác nhận giao hàng thành công')"
                            >Giao hàng thành công</a>
+                        <button class="btn btn-danger" style="${(bill.status != 4) ? "display: none" : ""}" onclick="handleOnClickThatBai('${bill.id}')">Giao thất bại</button>
                         <a class="btn btn-danger"
-                           style="${(bill.status != 4) ? "display: none" : ""}"
-                           href="/don-hang/updateStatus/${bill.id}/5/3"
-                           onclick="return confirm('Xác nhận giao hàng thất bại')"
+                           id="handleOnClickThatBai${bill.id}"
+                           style="display:none;"
+                           href="/don-hang/updateStatus/${bill.id}/0/3"
                         >Giao hàng thất bại</a>
                     </td>
                 </tr>
@@ -122,6 +132,41 @@
     </div>
 </div>
 <script>
+    async function handleOnClickHuyHoaDon(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
+        var resData = await axios.get("/api/check/statusBill/"+id+"/" + 3)
+        if(res.data || resData.data){
+            if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                toastr.success("Huỷ thành công");
+                document.getElementById("handleOnClickHuyHoaDon"+id).click();
+            }
+        }else{
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
+    }
+    async function handleHoanThanh(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 4)
+        if(res.data){
+            if(confirm("Xác nhận giao hàng thành công")){
+                toastr.success("Xác nhận thành công");
+                document.getElementById("handleHoanThanh"+id).click();
+            }
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
+    }
+
+    async function handleOnClickThatBai(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 4)
+        if(res.data){
+            if(confirm("Xác nhận giao hàng thất bại")){
+                toastr.success("Xác nhận thành công");
+                document.getElementById("handleOnClickThatBai"+id).click();
+            }
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
+    }
     function handleOnSubmitSearch(){
         // if(document.getElementById("dateEnd").value == '' || document.getElementById("dateEnd").value == undefined
         //     || document.getElementById("dateEnd").value === ''){
@@ -147,26 +192,43 @@
         }
 
     }
-    function handleOnClickXacNhan(id){
-        var a = document.getElementById("xacNhanAll"+id);
-        var _href = a.href;
-        var quantity = prompt("Nhập phí ship: ")
-        console.log(quantity);
-        if(quantity == null || quantity == "" || quantity < 0){
-            toastr.error("Vui lòng nhập phí ship!");
-            return false;
+    async function handleOnClickXacNhan(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
+        console.log(res);
+        if(res.data){
+            var a = document.getElementById("xacNhanAll"+id);
+            var _href = a.href;
+            var quantity = prompt("Nhập phí ship: ")
+            console.log(quantity);
+            if(quantity == null || quantity == "" || quantity < 0){
+                toastr.error("Vui lòng nhập phí ship!");
+                return false;
+            }
+            if(isNaN(quantity)){
+                toastr.error("Phí ship phải là số");
+                return false;
+            }
+            _href = _href + "?ship=" + quantity;
+            a.setAttribute("href", _href);
+            toastr.success("Xác nhận thành công")
+            setTimeout(function() {
+                a.click();
+            }, 500);
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
         }
-        if(isNaN(quantity)){
-            toastr.error("Phí ship phải là số");
-            return false;
-        }
-        _href = _href + "?ship=" + quantity;
-        a.setAttribute("href", _href);
-        toastr.success("Xác nhận thành công")
-        setTimeout(function() {
-            a.click();
-        }, 500);
+    }
 
+    async function handleOnClickGiaoHang(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 3)
+        if(res.data){
+            if(confirm("Xác nhận giao cho đơn vị vận chuyển")){
+                toastr.success("Giao cho đơn vị vận chuyển thành công");
+                document.getElementById("handleOnClickGiaoHang"+id).click();
+            }
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
     }
 
 </script>

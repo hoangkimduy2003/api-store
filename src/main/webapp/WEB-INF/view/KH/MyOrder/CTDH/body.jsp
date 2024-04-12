@@ -56,9 +56,9 @@
                                id="addressDetail" ${(bill.status != 1 && bill.status != 3) ? "disabled" : ""}
                                value="${bill.addressDetail}">
                     </div>
-                    <button class="btn btn-dark" onclick="handleUpdate()"
+                    <span class="btn btn-dark" onclick="handleUpdate('${bill.id}')"
                             style="${(bill.status != 1) ? "display: none" : ""}">Sửa
-                    </button>
+                    </span>
                 </form>
                 <br/>
 
@@ -154,8 +154,16 @@
         a.click();
     }
 
-    function handleUpdate() {
-        document.getElementById("frmSubmitCreateBill").submit();
+    async function handleUpdate(id) {
+       await axios.get("/api/check/statusBill/" + id + "/" + 1).then(res => {
+           if (res.data) {
+               if (confirm("Bạn có muốn sửa thông tin nhận hàng không")) {
+                   document.getElementById("frmSubmitCreateBill").submit();
+               }
+           } else {
+               toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+           }
+       })
     }
 
     async function handleOnClickCheck() {

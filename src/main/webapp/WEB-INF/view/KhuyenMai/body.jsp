@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container m-2">
     <jsp:include page="modal.jsp"></jsp:include>
-    <button type="button" onclick="preAction(null,null,1)" style="width: 150px" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" onclick="preAction(null,null,null,null,null,null,1,null,null,1)" style="width: 150px" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Thêm khuyến mại
     </button>
     <div style="min-height: 320px">
@@ -37,11 +37,11 @@
                     <td>${x.quantity}</td>
                     <td>${x.status == 0 ? "Không hoạt động" : "Hoạt động"}</td>
                     <td>
-                        <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.name}',${x.status})"
+                        <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.voucherCode}','${x.minimumInvoice}','${x.dateStart}','${x.dateEnd}','${x.quantity}','${x.voucherType}','${x.promotionalLevel}','${x.maximumPromotion}','${x.status}')"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Sửa
                         </button>
-                        <a class="btn btn-dark"><i class="bi bi-envelope-arrow-up-fill"></i></a>
+                        <button onclick="handleOnClickSendKhuyenMai('${x.id}',this)" style="${x.sendType == 1 ? "" : "display: none"}" class="btn btn-info"><i class="bi bi-envelope-arrow-up-fill"></i></button>
                     </td>
                 </tr>
             </c:forEach>
@@ -58,3 +58,15 @@
         </c:forEach>
     </ul>
 </div>
+<script>
+    async function handleOnClickSendKhuyenMai(id, e){
+        e.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+        var res = await axios.get("/khuyen-mai/sendEmail/"+id);
+        if(res.status == 200){
+            toastr.success("Gửi khuyến mãi đến khách hàng thành công");
+            e.style.display = "none";
+        }else{
+            toastr.error("Gửi thông tin đến khách hàng thất bại");
+        }
+    }
+</script>

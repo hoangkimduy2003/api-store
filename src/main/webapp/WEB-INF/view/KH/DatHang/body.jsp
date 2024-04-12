@@ -10,11 +10,11 @@
             <div class="col-5">
                 <form action="/dat-hang/order" method="post" id="frmSubmitCreateBill" onsubmit="handleOnOrder()">
                     <div class="mb-3">
-                        <label for="fullName" class="form-label">Họ và tên:</label>
+                        <label for="fullName" class="form-label">Họ và tên<span style="color: red">(*)</span>:</label>
                         <input class="form-control" name="fullName" id="fullName">
                     </div>
                     <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">Số điện thoại:</label>
+                        <label for="phoneNumber" class="form-label">Số điện thoại<span style="color: red">(*)</span>:</label>
                         <input class="form-control" name="user.phoneNumber" id="phoneNumber"
                                aria-describedby="emailHelp">
                         <input class="form-control" name="status" value="1" hidden id="status"
@@ -23,29 +23,43 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="mb-3">
-                                <label for="city" class="form-label">Thành phố</label>
+                                <label for="city" class="form-label">Thành phố<span style="color: red">(*)</span>:</label>
                                 <select id="city" name="city" class="form-select" onchange="handleOnChangeCity(this)">
                                 </select>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="mb-3">
-                                <label for="district" class="form-label">Quận/huyện</label>>
+                                <label for="district" class="form-label">Quận/huyện<span style="color: red">(*)</span>:</label>
                                 <select id="district" name="district" class="form-select" onchange="handleOnChangeDistrict(this)">
                                 </select>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="mb-3">
-                                <label for="ward" class="form-label">Phường/xã</label>
+                                <label for="ward" class="form-label">Phường/xã<span style="color: red">(*)</span>:</label>
                                 <select id="ward" name="ward" class="form-select">
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="addressDetail" class="form-label">Địa chỉ chi tiết:</label>
+                        <label for="addressDetail" class="form-label">Địa chỉ chi tiết<span style="color: red">(*)</span>:</label>
                         <input class="form-control" name="addressDetail" id="addressDetail">
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="mb-3">
+                                <label for="voucher" class="form-label">Mã giảm giá:</label>
+                                <input class="form-control" name="voucher" id="voucher">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="btnVoucher" class="form-label">Áp dụng</label>
+                                <button type="button" id="btnVoucher" class="btn btn-dark" onclick="handleOnClickApVouCher('${cart.totalMoney}')">Áp dụng</button>
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-dark" type="button" onclick="handleOnOrder()">ĐẶT HÀNG</button>
                     <a href="/gio-hang" id="aQuayLai" class="btn btn-dark">QUAY LẠI</a>
@@ -97,9 +111,9 @@
                     <div class="col-12">
                         <div style="width: 30%; float: right;">
                             <p>
-                                Tổng sản phẩm: <fmt:formatNumber pattern="#,###"
-                                                                 value="${cart.totalProduct}"/><br>
-                                Tạm tính: <fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/> VND
+                                Tổng tiền: <span id="tongTien"><fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/></span><br>
+                                Giảm giá: <span id="giaGiam">0</span><br/>
+                                Tạm tính: <span id="tamTinh"><fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/></span> VND
                                 <br/>
                                 <span style="color: red; font-size: 12px">Đơn hàng chưa bao gồm phí ship</span>
                             </p>
@@ -147,6 +161,44 @@
             )
         }
     )
+
+    async function handleOnClickApVouCher(totalMoney){
+        var voucher = document.getElementById("voucher").value;
+        if(voucher == '' || voucher == null){
+            toastr.error("Vui lòng nhập mã giảm giá ");
+            return false;
+        }
+        await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
+            console.log(res);
+            console.log(res.status);
+            if(res.status == 200){
+                var vc = res.data;
+                if(vc.voucherType == 1 ){
+                    console.log(1);
+                    var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
+                    if(giaGiam > (+vc.maximumPromotion)){
+                        giaGiam = (+vc.maximumPromotion);
+                    }
+                    var giaConLai = (+totalMoney) - giaGiam;
+                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                    document.getElementById("giaGiam").innerHTML = gia;
+                    document.getElementById("tamTinh").innerHTML = tamTinh;
+                }else{
+
+                }
+            }else{
+                toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
+                document.getElementById("giaGiam").innerHTML = 0;
+                document.getElementById("tamTinh").innerHTML = totalMoney;
+                return false;
+            }
+        }).catch(e =>{
+            toastr.error("Mã giảm giá không tồn tại hoặc đã kết thúc");
+            return false;
+        })
+
+    }
 
     function handleOnChangeCity(e) {
         document.getElementById("district").innerHTML = "";

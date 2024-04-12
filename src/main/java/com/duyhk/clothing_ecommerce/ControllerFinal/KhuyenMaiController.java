@@ -2,6 +2,7 @@ package com.duyhk.clothing_ecommerce.ControllerFinal;
 
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
 import com.duyhk.clothing_ecommerce.dto.VoucherDTO;
+import com.duyhk.clothing_ecommerce.entity.Voucher;
 import com.duyhk.clothing_ecommerce.service.UserService;
 import com.duyhk.clothing_ecommerce.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +32,16 @@ public class KhuyenMaiController {
         return "redirect:/khuyen-mai";
     }
 
+    @GetMapping("/sendEmail/{id}")
+    @ResponseBody
+    public void sendEmail(@PathVariable("id") Long id){
+        voucherService.sendEmail(id);
+    }
+
+
+    @GetMapping("/voucherApp/{voucherCode}")
+    @ResponseBody
+    public VoucherDTO findByVoucherCode(@PathVariable("voucherCode") String voucherCode){
+        return voucherService.findByVoucherCode(voucherCode);
+    }
 }

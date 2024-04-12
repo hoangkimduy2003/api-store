@@ -6,6 +6,7 @@ import com.duyhk.clothing_ecommerce.dto.search.SearchBillDTO;
 import com.duyhk.clothing_ecommerce.entity.Bill;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BillService {
     Bill convertToEntity(BillDTO billDTO);
@@ -43,4 +44,6 @@ public interface BillService {
     void updateAddress(BillDTO billDTO);
 
     PageDTO<List<BillDTO>> searchByCustomer(SearchBillCustomerDTO searchBillCustomerDTO);
+
+    boolean checkStatusBill(Long id, Integer status);
 }

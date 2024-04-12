@@ -36,14 +36,12 @@ public class Bill extends TimeAuditable implements Serializable {
     @Column(updatable = false)
     private Date orderDate;
     private Date orderDateFinal;
+    private Double moneyRoot;
+    private String voucher;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private Users user;
-
-    @ManyToOne
-    @JoinColumn(name = "voucher_id")
-    private Voucher voucher;
 
     @OneToOne
     @JoinColumn(name = "exchange_id")

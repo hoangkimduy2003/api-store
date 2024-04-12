@@ -67,8 +67,10 @@
                         <td>
                             <a style="color: aliceblue;" class="btn btn-info" href="/CTDH/${bill.id}" ><i class="bi bi-eye"></i>
                             </a>
+                            <button class="btn btn-dark" style="${(bill.status != 4) ? "display: none" : ""}" onclick="handOnDaNhan('${bill.id}')">Đã nhận hàng</button>
                             <a class="btn btn-dark"
-                               style="${(bill.status != 4) ? "display: none" : ""}"
+                               id="btnDaNhanOnline${bill.id}"
+                               style="display: none"
                                href="/don-hang/updateStatus/${bill.id}/5/2"
                             >Đã nhận hàng</a>
                             <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnHuy('${bill.id}')">Huỷ</button>
@@ -77,11 +79,11 @@
                                style="display: none"
                                href="/don-hang/updateStatus/${bill.id}/0/2"
                             >Huỷ</a>
+                            <button class="btn btn-dark" style="${(bill.status != 4) ? "display: none" : ""}" onclick="handleOnKhongNhanHang('${bill.id}')">Hoàn trả</button>
                             <a class="btn btn-dark"
-                               id="khongnhanhang"
-                               style="${(bill.status != 4) ? "display: none" : ""}"
+                               id="khongnhanhang${bill.id}"
+                               style="display:none;"
                                href="/don-hang/updateStatus/${bill.id}/0/2"
-                               onclick="return confirm('Bạn có muốn trả hàng không ?')"
                             >Hoàn trả</a>
                         </td>
                     </tr>
@@ -101,9 +103,43 @@
     </div>
 </div>
 <script>
-    function handleOnHuy(id){
-        if(confirm("Bạn có muốn huỷ đơn hàng không")){
-            document.getElementById("btnHuyOnline"+id).click();
+    async function handleOnHuy(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
+        console.log(res);
+        if(res.data){
+            if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                toastr.success("Huỷ thành công");
+                document.getElementById("btnHuyOnline"+id).click();
+            }
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
         }
+
+    }
+    async function handOnDaNhan(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 4)
+        console.log(res);
+        if(res.data){
+            if(confirm("Đã nhận hàng thành công")){
+                toastr.success("Nhận hàng thành công");
+                document.getElementById("btnDaNhanOnline"+id).click();
+            }
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
+
+    }
+    async function handleOnKhongNhanHang(id){
+        var res = await axios.get("/api/check/statusBill/"+id+"/" + 4)
+        console.log(res);
+        if(res.data){
+            if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                toastr.success("Huỷ thành công");
+                document.getElementById("khongnhanhang"+id).click();
+            }
+        }else {
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
+
     }
 </script>
