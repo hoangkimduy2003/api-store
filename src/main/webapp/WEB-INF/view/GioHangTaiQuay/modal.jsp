@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Số lượng</label>
-                        <input class="form-control" name="quantity" id="quantity" >
+                        <input class="form-control" name="quantity" id="quantity" type="number" >
                     </div>
                 </div>
                 <div class="modal-footer">

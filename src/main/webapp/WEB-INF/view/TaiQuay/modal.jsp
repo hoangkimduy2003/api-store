@@ -226,10 +226,17 @@
             toastr.error("Tiền khách trả không đủ để thanh toán đơn hàng");
             return false;
         }
+        var sdt = document.getElementById("phoneNumber").value;
+        if (!(sdt == "" || sdt == undefined || sdt == null)) {
+            var phoneNumberRegex = /^(?!(0{10}|(\+?84|0)0+)\b)(\+?84|0)(86|34|35|36|37|38|39|88|89|96|97|98|90|93|70|79|77|76|78|91|94|88|85|81|82|83|84|92|56|58|99|59|87|89|81|82|83|84|85|86|88|89|99|96|97|98|96|97|98|96|97|98)\d{7}$/;
+            if (!phoneNumberRegex.test(document.getElementById("phoneNumber").value)) {
+                toastr.error("Số điện thoại không hợp lệ");
+                return false;
+            }
+        }
         if (document.getElementById("htnh").value == 2) {
             var fullName = document.getElementById("fullName").value;
             var address = document.getElementById("addressDetail").value;
-            var sdt = document.getElementById("phoneNumber").value;
             if (sdt == "" || sdt == undefined || sdt == null) {
                 toastr.error("Vui lòng nhập số điện thoại");
                 return false;
