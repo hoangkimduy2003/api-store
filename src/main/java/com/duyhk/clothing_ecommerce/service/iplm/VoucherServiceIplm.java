@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -146,6 +147,10 @@ public class VoucherServiceIplm implements VoucherService {
     }
     @Override
     public VoucherDTO findByVoucherCode(String voucherCode){
-        return convertToDto(voucherRepo.findByVoucherCode(voucherCode).orElseThrow(() -> new CustomValidationException("voucher not found")));
+        VoucherDTO voucherDTO = convertToDto(voucherRepo.findByVoucherCode(voucherCode).orElseThrow(() -> new CustomValidationException("voucher not found")));
+        if(voucherDTO.getStatus() == 0) throw new CustomValidationException("voucher not active");
+        if(voucherDTO.getDateStart().compareTo(LocalDate.now()) > 0) throw new CustomValidationException("Voucher not active");
+        if(voucherDTO.getDateEnd().compareTo(LocalDate.now()) < 0) throw new CustomValidationException("Voucher not active");
+        return voucherDTO;
     }
 }
