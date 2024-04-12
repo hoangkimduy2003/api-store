@@ -35,4 +35,6 @@ public class BillDTO extends TimeAuditableDTO implements Serializable {
     private String district;
     private String city;
     private String ward;
+    private String voucher;
+    private Double moneyRoot;
 }

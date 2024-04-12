@@ -74,9 +74,17 @@
         // }
         document.getElementById("frmAction").submit();
     }
-    var preAction = function (id,name,status){
+    var preAction = function (id,voucherCode,minimumInvoice,dateStart,dateEnd,quantity,voucherType,promotionalLevel,maximumPromotion,status){
+
         document.getElementById("id").value = id;
-        document.getElementById("name").value = name;
+        document.getElementById("voucherCode").value = voucherCode;
+        document.getElementById("minimumInvoice").value = minimumInvoice;
+        document.getElementById("dateStart").value = dateStart;
+        document.getElementById("dateEnd").value = dateEnd;
+        document.getElementById("quantity").value = quantity;
+        document.getElementById("voucherType").value = voucherType;
+        document.getElementById("promotionalLevel").value = promotionalLevel;
+        document.getElementById("maximumPromotion").value = maximumPromotion;
         document.getElementById("status").value = status;
     }
 

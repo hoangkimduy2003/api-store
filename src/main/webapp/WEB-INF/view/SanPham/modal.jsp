@@ -90,9 +90,6 @@
 <script>
 
     var handleOnAction = function () {
-        if (!confirm("Bạn có muốn thao tác không?")) {
-            return false;
-        }
         if(document.getElementById("name").value == "" ){
             var errorMessage = document.getElementById("nameErr");
             errorMessage.innerText = "Vui lòng điền tên ";
@@ -117,7 +114,7 @@
             errorMessage.innerText = "Vui lòng điền giá bán ";
             return false;
         }else if(document.getElementById("price").value <=0 ||
-            document.getElementById("price").value <= document.getElementById("importPrice").value){
+            (+document.getElementById("price").value) <= (+document.getElementById("importPrice").value)){
             var errorMessage = document.getElementById("priceErr");
             errorMessage.innerText = "Giá bán phải lớn hơn giá nhập ";
             return false;
@@ -135,6 +132,9 @@
         if(document.getElementById("description").value == ""){
             var errorMessage = document.getElementById("descriptionErr");
             errorMessage.innerText = "Vui lòng điền mô tả";
+            return false;
+        }
+        if (!confirm("Bạn có muốn thao tác không?")) {
             return false;
         }
         document.getElementById("frmAction").submit();

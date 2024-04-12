@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserReponsitory extends JpaRepository<Users, Long> {
@@ -22,4 +23,7 @@ public interface UserReponsitory extends JpaRepository<Users, Long> {
     @Query("select u from Users u where u.role = com.duyhk.clothing_ecommerce.entity.Role.ADMIN " +
             "and (:phoneNumber is null or :phoneNumber = '' or u.phoneNumber like :phoneNumber)")
     Page<Users> getStaff(@Param("phoneNumber") String phoneNumber, Pageable pageable);
+
+    @Query("select u from Users u where u.email is not null")
+    List<Users> findUserHaveEmail();
 }

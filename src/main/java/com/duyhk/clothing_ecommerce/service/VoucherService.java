@@ -29,4 +29,8 @@ public interface VoucherService {
     void action(VoucherDTO voucherDTO);
 
     VoucherDTO detail(Long id);
+
+    void sendEmail(Long id);
+
+    VoucherDTO findByVoucherCode(String voucherCode);
 }
