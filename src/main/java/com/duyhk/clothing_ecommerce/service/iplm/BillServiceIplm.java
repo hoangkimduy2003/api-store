@@ -170,14 +170,29 @@ public class BillServiceIplm implements BillService {
 
     @Override
     public void updateSellAtStoreFinal(BillDTO billDTO) {
+        Voucher voucher = voucherRepo.findByVoucherCode(billDTO.getVoucher()).orElse(null);
         Bill bill = billReponsitory.findById(billDTO.getId()).orElseThrow(IllegalArgumentException::new);
         if (bill != null) {
             bill.setStatus(billDTO.getStatus());
             bill.setFullName(billDTO.getFullName());
             bill.setPhoneNumber(billDTO.getPhoneNumber());
             bill.setAddressDetail(billDTO.getAddressDetail());
-            if (billDTO.getUser().getPhoneNumber() == null) {
-                throw new CustomValidationException("Vui lòng nhập số điện thoại");
+            bill.setMoneyRoot(bill.getTotalMoney());
+            if(voucher != null){
+                if (voucher.getVoucherType() == 1) {
+                    double gia = bill.getTotalMoney() * voucher.getPromotionalLevel();
+                    if (gia > voucher.getMaximumPromotion()) {
+                        gia = voucher.getMaximumPromotion();
+                    }
+                    bill.setGiaGiam(gia);
+                    bill.setTotalMoney(bill.getTotalMoney() - gia);
+                } else {
+                    bill.setTotalMoney(bill.getTotalMoney() - voucher.getPromotionalLevel());
+                }
+                voucher.setQuantity(voucher.getQuantity() - 1);
+                voucherRepo.save(voucher);
+            }else {
+                bill.setGiaGiam(0d);
             }
             Users user = userRepon.findByPhoneNumber(billDTO.getUser().getPhoneNumber()).orElse(null);
             if (user != null) {
@@ -286,7 +301,7 @@ public class BillServiceIplm implements BillService {
                 + ", " + billDTO.getCity().split("\\|")[1];
         bill.setBillCode(generateRandomString());
         bill.setStatus(1);
-        bill.setPhoneNumber(users.getPhoneNumber());
+        bill.setPhoneNumber(billDTO.getUser().getPhoneNumber());
         bill.setFullName(billDTO.getFullName());
         bill.setAddressDetail(addressDetail);
         bill.setBillType(2);
@@ -298,6 +313,7 @@ public class BillServiceIplm implements BillService {
                 if (gia > voucher.getMaximumPromotion()) {
                     gia = voucher.getMaximumPromotion();
                 }
+                bill.setGiaGiam(gia);
                 bill.setTotalMoney(cart.getTotalMoney() - gia);
             } else {
                 bill.setTotalMoney(cart.getTotalMoney() - voucher.getPromotionalLevel());
@@ -306,6 +322,7 @@ public class BillServiceIplm implements BillService {
             voucherRepo.save(voucher);
         } else {
             bill.setTotalMoney(cart.getTotalMoney());
+            bill.setGiaGiam(0d);
         }
         Bill billSave = billReponsitory.save(bill);
         List<BillDetail> billDetailLists = new ArrayList<>();
