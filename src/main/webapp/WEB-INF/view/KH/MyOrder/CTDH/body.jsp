@@ -6,19 +6,13 @@
         hàng </a>/ ${bill.billCode}
     <div>
         <div class="row">
-            <div class="col-2">
-                <div class="mb-3">
-                    <label for="addressDetail" class="form-label">Tổng tiền: </label>
-                    <fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/>
-                </div>
-            </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="mb-3">
                     <label for="addressDetail" class="form-label">Ngày đặt: </label>
                     ${bill.orderDate}
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <div class="mb-3">
                     <label for="addressDetail" class="form-label">Hình thức: </label>
                     ${bill.billType == 1 ? "Tại quầy" : "Online"}
@@ -108,7 +102,20 @@
                     </c:forEach>
                     </tbody>
                 </table>
-
+                <div id="divTien" class="me-3">
+                    <div class="mb-1">
+                        <label for="addressDetail" class="form-label fw-bold">Tổng tiền: </label>
+                        <fmt:formatNumber pattern="#,###" value="${bill.moneyRoot}"/> VND
+                    </div>
+                    <div class="mb-1">
+                        <label for="addressDetail" class="form-label fw-bold">Giảm giá: </label>
+                        <fmt:formatNumber pattern="#,###" value="${bill.giaGiam}"/> VND
+                    </div>
+                    <div class="mb-1">
+                        <label for="addressDetail" class="form-label fw-bold">Thành tiền: </label>
+                        <fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/> VND
+                    </div>
+                </div>
             </div>
         </div>
     </div>

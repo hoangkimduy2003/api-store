@@ -94,6 +94,7 @@
 <script>
 
     async function handleOnClickCheckVOucher(totalMoney){
+        var voucher = document.getElementById("voucher").value;
         await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
             console.log(res);
             console.log(res.status);
