@@ -62,7 +62,7 @@
         <c:forEach begin="1" end="${list.totalPages}" varStatus="loop">
             <li class="page-item">
                 <a class="page-link"
-                   href="/nhan-vien?page=${loop.begin + loop.count -2}&phoneNumber=${searchUserDTO.phoneNumber}">
+                   href="/khach-hang?page=${loop.begin + loop.count -2}&phoneNumber=${searchUserDTO.phoneNumber}">
                         ${loop.begin + loop.count -1}
                 </a>
             </li>

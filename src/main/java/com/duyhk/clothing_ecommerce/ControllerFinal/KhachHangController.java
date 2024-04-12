@@ -33,6 +33,6 @@ public class KhachHangController {
         }else{
             userService.update(userDTO);
         }
-        return "redirect:/nhan-vien";
+        return "redirect:/khach-hang";
     }
 }
