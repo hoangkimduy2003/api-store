@@ -60,7 +60,7 @@
     <p/>
     <div class="d-flex justify-content-between">
         <div>
-            <button class="btn btn-dark" onclick="toggleCamera()">Quét QR</button>
+            <button class="btn btn-dark" onclick="toggleCamera('${bill.id}')">Quét QR</button>
             <button onclick="handleOnClickThemSanPham('${bill.id}')" class="btn btn-dark" >Tìm sản phẩm</button>&nbsp;
             <a class="btn btn-dark" id="aTimSP" style="display: none" href="/danh-sach-san-pham/${bill.id}/${bill.billType}">Tìm sản phẩm</a>&nbsp;
             <button class="btn btn-dark" onclick="handleOnClickThanhToan('${bill.id}')">Thanh toán</button>
@@ -143,14 +143,18 @@
     const context = canvas.getContext('2d');
     let isCameraOn = false;
 
-    function toggleCamera() {
-        if (isCameraOn) {
-            video.style.display = 'none';
-            canvas.style.display = 'none';
-            isCameraOn = false;
-        } else {
-            startCamera();
-            isCameraOn = true;
+    function toggleCamera(billId) {
+        if(billId != null && billId != "" && billId != undefined){
+            if (isCameraOn) {
+                video.style.display = 'none';
+                canvas.style.display = 'none';
+                isCameraOn = false;
+            } else {
+                startCamera();
+                isCameraOn = true;
+            }
+        }else{
+            toastr.error("Vui lòng tạo hoá đơn trước");
         }
     }
 

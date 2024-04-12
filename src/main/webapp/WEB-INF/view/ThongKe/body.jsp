@@ -212,7 +212,7 @@
                                     <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}" /></td>
                                     <td>${(bill.status == 1 && bill.billType == 1) ? "Đang chờ" : ((bill.status == 1 && bill.billType == 2) ? "Chờ xác nhận" : (bill.status == 2 ? "Đang xử lý" :
                                             bill.status == 3 ? "Chờ lấy hàng" : ( bill.status ==  4 ? "Đang giao" :
-                                                    (bill.status == 5 ? (bill.billType==1?"Đã hoàn thành" :"Đã giao") : (bill.status == 6 ? "Trả hàng" : "Đã huỷ")))))}</td>
+                                                    (bill.status == 5 ? "Hoàn thành" : (bill.status == 6 ? "Trả hàng" : "Đã huỷ")))))}</td>
                                     <td>${bill.billType == 1 ? " Tại quầy" : "Online"}</td>
                                 </tr>
                             </c:forEach>
