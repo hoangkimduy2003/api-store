@@ -41,6 +41,20 @@
                     </div>
                     <div class="mb-3" id="inputAddress">
                     </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="mb-3">
+                                <label for="voucher" class="form-label">Mã giảm giá:</label>
+                                <input class="form-control" name="voucher" id="voucher">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="btnVoucher" class="form-label">Kiểm tra</label>
+                                <button type="button" id="btnVoucher" class="btn btn-dark" onclick="handleOnClickCheckVOucher('${bill.totalMoney}')">Kiểm tra</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -78,6 +92,22 @@
     </div>
 </div>
 <script>
+
+    async function handleOnClickCheckVOucher(totalMoney){
+        await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
+            console.log(res);
+            console.log(res.status);
+            if(res.status == 200){
+                toastr.success("Mã giảm giá còn hoạt động");
+            }else{
+                toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
+                return false;
+            }
+        }).catch(e =>{
+            toastr.error("Mã giảm giá không tồn tại hoặc đã kết thúc");
+            return false;
+        })
+    }
 
     async function handleOnChangeSdt(e){
         var value = e.value;
@@ -180,19 +210,19 @@
     function handleOnAction() {
 
         if (${bill.totalMoney == 0}) {
-            alert("Đơn hàng chưa có sản phẩm nào");
+            toastr.error("Đơn hàng chưa có sản phẩm nào");
             return false;
         }
         if (+document.getElementById("moneyCustomer").value <= 0 || document.getElementById("moneyCustomer").value == "" || document.getElementById("moneyCustomer").value == null
             || document.getElementById("moneyCustomer").value == undefined) {
-            alert("Vui lòng nhập tiền khách trả");
+            toastr.error("Vui lòng nhập tiền khách trả");
             return false;
         }
         if (+document.getElementById("moneyCustomer").value < ${bill.totalMoney} && document.getElementById("htnh").value == 1) {
-            alert("Tiền khách trả không đủ để thanh toán đơn hàng");
+            toastr.error("Tiền khách trả không đủ để thanh toán đơn hàng");
             return false;
         } else if (+document.getElementById("moneyCustomer").value < (${bill.totalMoney} +35000) && document.getElementById("htnh").value == 2) {
-            alert("Tiền khách trả không đủ để thanh toán đơn hàng");
+            toastr.error("Tiền khách trả không đủ để thanh toán đơn hàng");
             return false;
         }
         if (document.getElementById("htnh").value == 2) {
@@ -200,15 +230,15 @@
             var address = document.getElementById("addressDetail").value;
             var sdt = document.getElementById("phoneNumber").value;
             if (sdt == "" || sdt == undefined || sdt == null) {
-                alert("Vui lòng nhập số điện thoại");
+                toastr.error("Vui lòng nhập số điện thoại");
                 return false;
             }
             if (fullName == "" || fullName == undefined || fullName == null) {
-                alert("Vui lòng nhập tên nhận hàng");
+                toastr.error("Vui lòng nhập tên nhận hàng");
                 return false;
             }
             if (address == null || address == "" || address == undefined) {
-                alert("Vui lòng nhập địa chỉ nhận hàng");
+                toastr.error("Vui lòng nhập địa chỉ nhận hàng");
                 return false;
             }
         }
@@ -225,15 +255,15 @@
 
     var handleOnActionUpdate = function () {
         if (document.getElementById("quantity").value == null || document.getElementById("quantity").value == "") {
-            alert("Vui lòng nhập số lượng");
+            toastr.error("Vui lòng nhập số lượng");
             return false;
         }
         if (document.getElementById("quantity").value <= 0) {
-            alert("Số lượng phải lớn hơn 0");
+            toastr.error("Số lượng phải lớn hơn 0");
             return false;
         }
         if (+document.getElementById("quantity").value > (+document.getElementById("quantityProduct").value + (+document.getElementById("quantityOld").value))) {
-            alert("Số lượng chỉ còn: " + (+document.getElementById("quantityProduct").value + (+document.getElementById("quantityOld").value)));
+            toastr.error("Số lượng chỉ còn: " + (+document.getElementById("quantityProduct").value + (+document.getElementById("quantityOld").value)));
             return false;
         }
         document.getElementById("frmActionUpdate").submit();

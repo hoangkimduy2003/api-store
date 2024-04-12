@@ -158,7 +158,7 @@
         if(billId != null && billId != "" && billId != undefined){
             document.getElementById("btnShowTT").click();
         }else{
-            alert("Vui lòng tạo hoá đơn trước");
+            toastr.error("Vui lòng tạo hoá đơn trước");
         }
     }
 
@@ -167,7 +167,7 @@
         if(billId != null && billId != "" && billId != undefined){
             document.getElementById("aTimSP").click();
         }else{
-            alert("Vui lòng tạo hoá đơn trước");
+            toastr.error("Vui lòng tạo hoá đơn trước");
         }
     }
 
@@ -235,11 +235,10 @@
                                         form.submit();
                                         document.body.removeChild(form);
                                     }
-
                                 })
                         }
                     }).catch(function (error) {
-                    alert("Sản phẩm không tồn tại");
+                       toastr.error("Sản phẩm không tồn tại");
                     return;
                 });
 

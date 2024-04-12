@@ -233,7 +233,7 @@
                             document.getElementById("deleteA").click();
                         }
                     } else {
-                        alert("Đơn hàng chỉ còn 1 sản phẩm không thể xoá");
+                        toastr.error("Đơn hàng chỉ còn 1 sản phẩm không thể xoá");
                         return false;
                     }
                 })
