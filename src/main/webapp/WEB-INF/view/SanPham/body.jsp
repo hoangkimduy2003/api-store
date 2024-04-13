@@ -96,7 +96,7 @@
                     <td>${x.totalQuantitySold}</td>
                     <td>
                         <label class="switch">
-                            <input id="active${x.id}" onclick="return confirm('Bạn có muốn thay đổi trạng thái không')" type="checkbox" ${x.status == 1 ? "checked" : ""} onchange="handleOnChangeToggleActiveProduct('${x.id}')">
+                            <input id="active${x.id}" type="checkbox" ${x.status == 1 ? "checked" : ""} onclick="handleOnChangeToggleActiveProduct('${x.id}')">
                             <span class="slider round"></span>
                         </label>
                     </td>
@@ -128,6 +128,7 @@
 
 <script>
     async function handleOnChangeToggleActiveProduct(id){
+        var isCheck = true;
         var active = document.getElementById("active"+id).checked;
             await axios.get("/san-pham/changeStatus/"+ id + "/" + (active ? 1 : 0)).then(res => {
                 if(res.status == 200){
@@ -135,7 +136,11 @@
                 }
             }).catch(e => {
                 console.log(e);
-                toastr.error("Thay đổi trạng thái thất bại!");
+                toastr.error("Vui lòng thêm sản phẩm chi tiết trước!");
+                isCheck = false;
             })
+        if(!isCheck) {
+            document.getElementById("active"+id).checked = false;
+        }
     }
 </script>

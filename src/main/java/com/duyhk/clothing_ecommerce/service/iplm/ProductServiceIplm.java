@@ -292,6 +292,7 @@ public class ProductServiceIplm implements ProductService {
         if(product != null) {
             product.setStatus(status);
             List<ProductDetail> list = productDetailRepo.findByProduct(id);
+            if(list.isEmpty()) throw new CustomValidationException("Sản phẩm cần thêm chi tiết sản phẩm");
             list.stream().forEach(x -> {
                 x.setStatus(status);
             });

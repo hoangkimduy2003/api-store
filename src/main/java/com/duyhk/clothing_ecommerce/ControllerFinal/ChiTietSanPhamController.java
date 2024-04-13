@@ -31,11 +31,17 @@ public class ChiTietSanPhamController {
 
     @GetMapping("/{idSP}")
     public String home(@RequestParam(required = false, name = "page") Integer page, @PathVariable("idSP") Long idSp, Model model) {
-        model.addAttribute("list", productDetailService.getByIdSp(new PageRequestDTO(page, 5), idSp));
+        model.addAttribute("list", productDetailService.getByIdSpAd(new PageRequestDTO(page, 5), idSp));
         model.addAttribute("sizes", sizeService.getAll());
         model.addAttribute("colors", colorService.getAll());
         model.addAttribute("idSp", idSp);
         return "ChiTietSanPham/ChiTietSanPham";
+    }
+
+    @GetMapping("/changeStatus/{id}/{status}")
+    @ResponseBody
+    public void changeStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status){
+        productDetailService.changeStatus(id,status);
     }
 
     @GetMapping("/api/{productCode}")
