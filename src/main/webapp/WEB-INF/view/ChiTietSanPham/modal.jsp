@@ -42,25 +42,20 @@
     var handleOnAction = async function (){
         var color = document.getElementById("color").value;
         var size = document.getElementById("size").value;
-        if(!confirm("Bạn có muốn thao tác không?")){
-            return false;
-        }
         if(document.getElementById("color").value == -1 ){
-            alert("Vui lòng chọn màu sắc");
+            toastr.error("Vui lòng chọn màu sắc");
             return false;
         }
         if(document.getElementById("size").value == -1 ){
-            alert("Vui lòng chọn kích cỡ");
+            toastr.error("Vui lòng chọn kích cỡ");
             return false;
         }
         if(document.getElementById("quantity").value == "" ){
-            alert("Vui lòng nhập số lượng");
+            toastr.error("Vui lòng nhập số lượng");
             return false;
         }
         if(document.getElementById("quantity").value < 1){
-            console.log(typeof color);
-            console.log(color);
-            alert("Số lượng phải lớn hơn 0");
+            toastr.error("Số lượng phải lớn hơn 0");
             return false;
         }
         // document.getElementById("frmAction").submit();
@@ -68,10 +63,14 @@
             .then(function (response) {
 
                 if(response.data===-1){
-                    document.getElementById("frmAction").submit();
+                    if(!confirm("Bạn có muốn thao tác không?")){
+                        return false;
+                    }else{
+                        document.getElementById("frmAction").submit();
+                    }
                 }else {
                     if(!(document.getElementById("id").value != null && document.getElementById("id").value != "")){
-                        alert("Chi  tiết sản phẩm đã tồn tại");
+                        toastr.error("Chi  tiết sản phẩm đã tồn tại");
                         return false;
                     }else{
                         document.getElementById("frmAction").submit();

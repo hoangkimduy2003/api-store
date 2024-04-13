@@ -118,7 +118,6 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     public String create(ProductDetailDTO productDetailDTO) {
         Product product = productRepo.findById(productDetailDTO.getProduct().getId()).orElse(null);
         product.setTotalQuantity(product.getTotalQuantity() + productDetailDTO.getQuantity());
-        product.setStatus(1);
         productDetailDTO.setStatus(1);
         productDetailDTO.setPrice(product.getPrice());
         productDetailDTO.setPriceSale(product.getPriceSale());
