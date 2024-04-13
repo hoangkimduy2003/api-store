@@ -17,6 +17,8 @@ public interface ProductDetailService {
     List<ProductDetailDTO> getAll();
 
     PageDTO<List<ProductDetailDTO>> getByIdSp(PageRequestDTO pageRequestDTO, Long id);
+
+    PageDTO<List<ProductDetailDTO>> getByIdSpAd(PageRequestDTO pageRequestDTO, Long id);
     PageDTO<List<ProductDetailDTO>> getByPageRequest(PageRequestDTO pageRequestDTO);
 
     PageDTO<List<ProductDetailDTO>> search(SearchProductDTO searchProductDTO);
@@ -33,4 +35,6 @@ public interface ProductDetailService {
     List<ProductDetailDTO> searchByColorName(String nameColor, Long idProduct);
 
     ProductDetail searchBySizeAndColor(Long idProduct, Long idColor,Long idSize);
+
+    void changeStatus(Long id , Integer status);
 }

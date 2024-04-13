@@ -18,9 +18,9 @@
                                aria-describedby="emailHelp">
                     </div>
                     <div class="mb-3">
-                        <p>Tổng tiền: <span id="totalMoney"><fmt:formatNumber pattern="#,###"
-                                                                              value="${bill.totalMoney}"/></span>
-                            VND</p>
+                        <p>Tổng tiền: <span id="totalMoney"><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></span> VND</p>
+                        <p>Giá giảm: <span id="giaGiam">0</span></p>
+                        <p>Thành tiền: <span id="tamTinhValue"><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></span></p>
                     </div>
                     <div class="mb-3">
                         <p>Trả lại: <span id="moneyTransfers"></span> VND</p>
@@ -96,10 +96,22 @@
     async function handleOnClickCheckVOucher(totalMoney){
         var voucher = document.getElementById("voucher").value;
         await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
-            console.log(res);
-            console.log(res.status);
             if(res.status == 200){
-                toastr.success("Mã giảm giá còn hoạt động");
+                var vc = res.data;
+                if(vc.voucherType == 1 ){
+                    console.log(1);
+                    var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
+                    if(giaGiam > (+vc.maximumPromotion)){
+                        giaGiam = (+vc.maximumPromotion);
+                    }
+                    var giaConLai = (+totalMoney) - giaGiam;
+                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                    document.getElementById("giaGiam").innerHTML = gia;
+                    document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                }else{
+
+                }
             }else{
                 toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
                 return false;
@@ -185,15 +197,16 @@
 
     function handleOnChangeInputMoney(e) {
         var value = e.value;
+        var tamTinh = +document.getElementById("tamTinhValue").innerText.replace(",","");
         if (value != "" && value != null) {
             if (document.getElementById("htnh").value == 1) {
                 value = (+value);
                 // moneyTransfers
-                var frmMoney = (value - +${bill.totalMoney});
+                var frmMoney = (value - +tamTinh);
                 var valueNew = new Intl.NumberFormat('en-US').format(frmMoney);
                 document.getElementById("moneyTransfers").innerHTML = valueNew;
             } else {
-                var frmMoney = (+${bill.totalMoney} -value + 35000);
+                var frmMoney = (+tamTinh -value + 35000);
                 var valueNew = new Intl.NumberFormat('en-US').format(frmMoney);
                 document.getElementById("moneyTransfers").innerHTML = valueNew;
             }
@@ -219,7 +232,8 @@
             toastr.error("Vui lòng nhập tiền khách trả");
             return false;
         }
-        if (+document.getElementById("moneyCustomer").value < ${bill.totalMoney} && document.getElementById("htnh").value == 1) {
+        var tamTinh = document.getElementById("tamTinhValue").innerText;
+        if (+document.getElementById("moneyCustomer").value < (+(tamTinh.replace(",",""))) && document.getElementById("htnh").value == 1) {
             toastr.error("Tiền khách trả không đủ để thanh toán đơn hàng");
             return false;
         } else if (+document.getElementById("moneyCustomer").value < (${bill.totalMoney} +35000) && document.getElementById("htnh").value == 2) {

@@ -61,6 +61,22 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     }
 
     @Override
+    public PageDTO<List<ProductDetailDTO>> getByIdSpAd(PageRequestDTO pageRequestDTO, Long id) {
+        pageRequestDTO.setPage(pageRequestDTO.getPage() == null ? 0 : pageRequestDTO.getPage());
+        pageRequestDTO.setSize(pageRequestDTO.getSize() == null ? 5 : pageRequestDTO.getSize());
+        Page<ProductDetail> pageEntity = productDetailRepo.findByProductId(id,
+                PageRequest.of(
+                        pageRequestDTO.getPage(),
+                        pageRequestDTO.getSize()));
+        List<ProductDetailDTO> listDto = pageEntity.get().map(a -> convertToDto(a)).collect(Collectors.toList());
+        return PageDTO.<List<ProductDetailDTO>>builder()
+                .data(listDto)
+                .totalElements(pageEntity.getTotalElements())
+                .totalPages(pageEntity.getTotalPages())
+                .build();
+    }
+
+    @Override
     public PageDTO<List<ProductDetailDTO>> getByPageRequest(PageRequestDTO pageRequestDTO) {
         pageRequestDTO.setPage(pageRequestDTO.getPage() == null ? 0 : pageRequestDTO.getPage());
         pageRequestDTO.setSize(pageRequestDTO.getSize() == null ? 5 : pageRequestDTO.getSize());
@@ -118,7 +134,7 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     public String create(ProductDetailDTO productDetailDTO) {
         Product product = productRepo.findById(productDetailDTO.getProduct().getId()).orElse(null);
         product.setTotalQuantity(product.getTotalQuantity() + productDetailDTO.getQuantity());
-        productDetailDTO.setStatus(1);
+        productDetailDTO.setStatus(product.getStatus());
         productDetailDTO.setPrice(product.getPrice());
         productDetailDTO.setPriceSale(product.getPriceSale());
         productDetailDTO.setName(product.getName());
@@ -176,5 +192,23 @@ public class ProductDetailServiceIplm implements ProductDetailService {
         }
 
         return "SPCT" + randomString.toString();
+    }
+
+    @Override
+    public void changeStatus(Long id , Integer status){
+        ProductDetail productDetail = productDetailRepo.findById(id).orElse(null);
+        if(productDetail != null){
+            productDetail.setStatus(status);
+            if(status == 1){
+                productDetail.getProduct().setStatus(1);
+            }else{
+                List<ProductDetail> list = productDetailRepo.findByProduct(productDetail.getProduct().getId());
+                list = list.stream().filter(x -> (x.getStatus() == 1)).collect(Collectors.toList());
+                if(list.size() == 0){
+                    productDetail.getProduct().setStatus(0);
+                }
+            }
+            productDetailRepo.save(productDetail);
+        }
     }
 }
