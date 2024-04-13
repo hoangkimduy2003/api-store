@@ -286,4 +286,17 @@ public class ProductServiceIplm implements ProductService {
 
         return "SP" + randomString.toString();
     }
+    @Override
+    public void changeStatus(Long id, Integer status){
+        Product product = productRepo.findById(id).orElse(null);
+        if(product != null) {
+            product.setStatus(status);
+            List<ProductDetail> list = productDetailRepo.findByProduct(id);
+            list.stream().forEach(x -> {
+                x.setStatus(status);
+            });
+            productRepo.save(product);
+            productDetailRepo.saveAll(list);
+        }
+    }
 }

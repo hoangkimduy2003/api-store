@@ -63,7 +63,7 @@
                                 </select>
                                 <label id="categoryErr" style="color: red "></label>
                             </div>
-                            <div class="mb-3-">
+                            <div class="mb-3" id="divStatus">
                                 <label for="status" class="form-label">Trạng thái</label>
                                 <select class="form-select" name="status" id="status">
                                     <option value="1">Hoạt động</option>
@@ -155,9 +155,10 @@
         document.getElementById("filesUpload").value = files;
         if(status != null){
             document.getElementById("status").value = status;
-            document.getElementById("status").style.display = "block";
+            document.getElementById("divStatus").style.display = "block";
         }else{
-            document.getElementById("status").style.display = "none";
+            document.getElementById("divStatus").style.display = "none";
+            document.getElementById("status").value = 0;
         }
     }
 
