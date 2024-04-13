@@ -41,6 +41,12 @@ public class SanPhamController {
         return "SanPham/SanPham";
     }
 
+    @GetMapping("/changeStatus/{id}/{status}")
+    @ResponseBody
+    public void changeStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status){
+            productService.changeStatus(id,status);
+    }
+
     @PostMapping("/action")
     public String action(@ModelAttribute ProductDTO productDTO) throws IOException {
         if(productDTO.getId() == null){

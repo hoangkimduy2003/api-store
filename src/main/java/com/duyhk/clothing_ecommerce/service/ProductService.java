@@ -34,4 +34,6 @@ public interface ProductService {
     PageDTO<List<ProductDTO>> search(SearchProductDTO searchProductDTO);
 
     PageDTO<List<ProductDTO>> searchOnline(SearchProductDTO searchProductDTO);
+
+    void changeStatus(Long id, Integer status);
 }
