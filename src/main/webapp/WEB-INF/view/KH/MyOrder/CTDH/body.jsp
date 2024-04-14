@@ -29,8 +29,9 @@
         </div>
         <div class="row">
             <div class="col-5">
-                <form action="/don-hang/edit/${bill.id}/2" method="post" id="frmSubmitCreateBill"
+                <form action="/don-hang/edit/${bill.id}/2" method="post" class="disabled" id="frmSubmitCreateBill"
                       onsubmit="handleOnOrder()">
+                    <fieldset disabled>
                     <div class="mb-3">
                         <label for="fullName" class="form-label">Họ và tên:</label>
                         <input class="form-control" name="fullName" id="fullName"
@@ -50,9 +51,7 @@
                                id="addressDetail" ${(bill.status != 1 && bill.status != 3) ? "disabled" : ""}
                                value="${bill.addressDetail}">
                     </div>
-                    <span class="btn btn-dark" onclick="handleUpdate('${bill.id}')"
-                            style="${(bill.status != 1) ? "display: none" : ""}">Sửa
-                    </span>
+                    </fieldset>
                 </form>
                 <br/>
 

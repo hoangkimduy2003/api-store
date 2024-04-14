@@ -90,10 +90,10 @@
                     <td><img src="/san-pham/img?fileName=${x.images[0]}" style="width: 60px; height: 80px"></td>
                     <td>${x.name}</td>
                     <td>${x.category.name}</td>
-                    <td>${x.price}</td>
-                    <td>${x.importPrice}</td>
-                    <td>${x.totalQuantity}</td>
-                    <td>${x.totalQuantitySold}</td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.price}"/> VND</td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.importPrice}"/> VND</td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.totalQuantity}"/></td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.totalQuantitySold}"/></td>
                     <td>
                         <label class="switch">
                             <input id="active${x.id}" type="checkbox" ${x.status == 1 ? "checked" : ""} onclick="handleOnChangeToggleActiveProduct('${x.id}')">

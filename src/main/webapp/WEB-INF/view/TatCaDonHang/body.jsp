@@ -123,7 +123,7 @@
         <ul class="pagination">
             <c:forEach begin="1" end="${bills.totalPages}" varStatus="loop">
                 <li class="page-item">
-                    <a class="page-link" href="/don-hang?page=${loop.begin + loop.count -2}">
+                    <a class="page-link" href="/don-hang?page=${loop.begin + loop.count -2}&staff=${searchBillDTO.staff}&billType=${searchBillDTO.billType}&status=${searchBillDTO.status}&strDateStart=${searchBillDTO.strDateStart}&strDateEnd=${searchBillDTO.strDateEnd}&phoneNumber=${searchBillDTO.phoneNumber}">
                             ${loop.begin + loop.count -1}
                     </a>
                 </li>
