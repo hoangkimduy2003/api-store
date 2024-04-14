@@ -123,6 +123,7 @@ public class BillDetailServiceIplm implements BillDetailService {
         productDetailOld.setQuantitySold(productDetailOld.getQuantitySold() + billDetailDTO.getQuantity());
 
         Bill bill = billRepo.findById(billDetailDTO.getBill().getId()).orElse(null);
+        bill.setMoneyRoot(bill.getMoneyRoot() + billDetailDTO.getTotalPrice());
         bill.setTotalMoney(bill.getTotalMoney() + billDetailDTO.getTotalPrice());
         bill.setTatolProduct(bill.getTatolProduct() + billDetailDTO.getQuantity());
         billDetailReponsitory.save(billDetailCompe);
@@ -139,6 +140,7 @@ public class BillDetailServiceIplm implements BillDetailService {
             productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity() - billDetailDTO.getQuantity());
             productDetail.setQuantitySold(productDetail.getQuantitySold() - billDetail.getQuantity() + billDetailDTO.getQuantity());
             billDetailDTO.setTotalPrice(productDetail.getPrice() * billDetailDTO.getQuantity());
+            bill.setMoneyRoot(billDetailDTO.getTotalPrice() + bill.getMoneyRoot() - billDetail.getTotalPrice());
             bill.setTotalMoney(billDetailDTO.getTotalPrice() + bill.getTotalMoney() - billDetail.getTotalPrice());
             bill.setTatolProduct(bill.getTatolProduct() + billDetailDTO.getQuantity() - billDetail.getQuantity());
             billDetail = convertToEntity(billDetailDTO);
@@ -159,6 +161,7 @@ public class BillDetailServiceIplm implements BillDetailService {
             productDetail.getProduct().setTotalQuantitySold(productDetail.getProduct().getTotalQuantitySold() - billDetail.getQuantity());
             productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity() );
             productDetail.setQuantitySold(productDetail.getQuantitySold() - billDetail.getQuantity());
+            bill.setMoneyRoot(bill.getMoneyRoot() - billDetail.getTotalPrice());
             bill.setTotalMoney(bill.getTotalMoney() - billDetail.getTotalPrice());
             bill.setTatolProduct(bill.getTatolProduct() - 1);
             
