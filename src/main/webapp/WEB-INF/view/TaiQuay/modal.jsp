@@ -4,7 +4,7 @@
 <div class="modal fade" id="thanhtoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/tai-quay/atStore/${bill.id}" method="post" id="frmAction" onsubmit="handleOnAction()">
+            <form action="/tai-quay/atStore/${bill.id}" method="post" id="frmAction" onsubmit="handleOnAction('${bill.totalMoney}')">
                 <input class="form-control" name="id" id="id" style="display: none" aria-describedby="emailHelp">
                 <div class="modal-body">
                     <div class="mb-3">
@@ -19,11 +19,11 @@
                     </div>
                     <div class="mb-3">
                         <p>Tổng tiền: <span id="totalMoney"><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></span> VND</p>
-                        <p>Giá giảm: <span id="giaGiam">0</span></p>
-                        <p>Thành tiền: <span id="tamTinhValue"><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></span></p>
+                        <p>Giá giảm: <span id="giaGiam">0</span> VND</p>
+                        <p>Thành tiền: <span id="tamTinhValue"><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></span> VND</p>
                     </div>
                     <div class="mb-3">
-                        <p>Trả lại: <span id="moneyTransfers"></span> VND</p>
+                        <p id="moneyTransfers">Trả lại: 0 VND</p>
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="form-label">Tiền khách đưa:</label>
@@ -50,15 +50,15 @@
                         </div>
                         <div class="col-3">
                             <div class="mb-3">
-                                <label for="btnVoucher" class="form-label">Kiểm tra</label>
-                                <button type="button" id="btnVoucher" class="btn btn-dark" onclick="handleOnClickCheckVOucher('${bill.totalMoney}')">Kiểm tra</button>
+                                <label for="btnVoucher" class="form-label">Áp dụng</label>
+                                <button type="button" id="btnVoucher" class="btn btn-dark" onclick="handleOnClickCheckVOucher('${bill.totalMoney}')">Áp dụng</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" onclick="handleOnAction()" class="btn btn-primary">Đồng ý</button>
+                    <button type="button" onclick="handleOnAction('${bill.totalMoney}')" class="btn btn-primary">Đồng ý</button>
                 </div>
             </form>
         </div>
@@ -109,8 +109,35 @@
                     var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
                     document.getElementById("giaGiam").innerHTML = gia;
                     document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                    var tienKD = document.getElementById("moneyCustomer").value;
+                    if(tienKD != "" && tienKD != null && tienKD != undefined){
+                        var traLai = tienKD - giaConLai;
+                        if(traLai >= 0){
+                            var valueNew = new Intl.NumberFormat('en-US').format(traLai);
+                            document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                        }else{
+                            var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                            document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                        }
+                    }
                 }else{
-
+                    var giaGiam = +vc.promotionalLevel;
+                    var giaConLai = (+totalMoney) - giaGiam;
+                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                    document.getElementById("giaGiam").innerHTML = gia;
+                    document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                    var tienKD = document.getElementById("moneyCustomer").value;
+                    if(tienKD != "" && tienKD != null && tienKD != undefined){
+                        var traLai = tienKD - giaConLai;
+                        if(traLai >= 0){
+                            var valueNew = new Intl.NumberFormat('en-US').format(traLai);
+                            document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                        }else{
+                            var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                            document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                        }
+                    }
                 }
             }else{
                 toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
@@ -201,10 +228,15 @@
         if (value != "" && value != null) {
             if (document.getElementById("htnh").value == 1) {
                 value = (+value);
-                // moneyTransfers
+                // moneyTransfersư
                 var frmMoney = (value - +tamTinh);
-                var valueNew = new Intl.NumberFormat('en-US').format(frmMoney);
-                document.getElementById("moneyTransfers").innerHTML = valueNew;
+                if(frmMoney >= 0){
+                    var valueNew = new Intl.NumberFormat('en-US').format(frmMoney);
+                    document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                }else{
+                    var valueNew = new Intl.NumberFormat('en-US').format(-frmMoney);
+                    document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                }
             } else {
                 var frmMoney = (+tamTinh -value + 35000);
                 var valueNew = new Intl.NumberFormat('en-US').format(frmMoney);
@@ -221,7 +253,67 @@
         document.getElementById("quantityProduct").value = quantityProduct;
     }
 
-    function handleOnAction() {
+    async function handleOnAction(totalMoney) {
+        var voucher = document.getElementById("voucher").value;
+        if(!(document.getElementById("voucher").value == "" ||
+            document.getElementById("voucher").value == null ||
+            document.getElementById("voucher").value == undefined)){
+            if(+document.getElementById("tamTinhValue").innerText.replace(",","") == +document.getElementById("totalMoney").innerText.replace(",","")){
+                await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
+                    if(res.status == 200){
+                        var vc = res.data;
+                        if(vc.voucherType == 1 ){
+                            console.log(1);
+                            var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
+                            if(giaGiam > (+vc.maximumPromotion)){
+                                giaGiam = (+vc.maximumPromotion);
+                            }
+                            var giaConLai = (+totalMoney) - giaGiam;
+                            var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                            var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                            document.getElementById("giaGiam").innerHTML = gia;
+                            document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                            var tienKD = document.getElementById("moneyCustomer").value;
+                            if(tienKD != "" && tienKD != null && tienKD != undefined){
+                                var traLai = tienKD - giaConLai;
+                                if(traLai >= 0){
+                                    var valueNew = new Intl.NumberFormat('en-US').format(traLai);
+                                    document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                                }else{
+                                    var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                                    document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                                }
+                            }
+                        }else{
+                            var giaGiam = +vc.promotionalLevel;
+                            var giaConLai = (+totalMoney) - giaGiam;
+                            var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                            var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                            document.getElementById("giaGiam").innerHTML = gia;
+                            document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                            var tienKD = document.getElementById("moneyCustomer").value;
+                            if(tienKD != "" && tienKD != null && tienKD != undefined){
+                                var traLai = tienKD - giaConLai;
+                                if(traLai >= 0){
+                                    var valueNew = new Intl.NumberFormat('en-US').format(traLai);
+                                    document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                                }else{
+                                    var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                                    document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                                }
+                            }
+                        }
+                    }else{
+                        toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
+                        return false;
+                    }
+                }).catch(e =>{
+                    toastr.error("Mã giảm giá không tồn tại hoặc đã kết thúc");
+                    return false;
+                });
+                return false;
+            }
+        }
 
         if (${bill.totalMoney == 0}) {
             toastr.error("Đơn hàng chưa có sản phẩm nào");
@@ -242,7 +334,7 @@
         }
         var sdt = document.getElementById("phoneNumber").value;
         if (!(sdt == "" || sdt == undefined || sdt == null)) {
-            var phoneNumberRegex = /^(?!(0{10}|(\+?84|0)0+)\b)(\+?84|0)(86|34|35|36|37|38|39|88|89|96|97|98|90|93|70|79|77|76|78|91|94|88|85|81|82|83|84|92|56|58|99|59|87|89|81|82|83|84|85|86|88|89|99|96|97|98|96|97|98|96|97|98)\d{7}$/;
+            var phoneNumberRegex = /^(?!(0{10}|(\+?84|0)0+)\b)(\+?84|0)(86|34|33|31|32|35|36|37|38|39|88|89|96|97|98|90|93|70|79|77|76|78|91|94|88|85|81|82|83|84|92|56|58|99|59|87|89|81|82|83|84|85|86|88|89|99|96|97|98|96|97|98|96|97|98)\d{7}$/;
             if (!phoneNumberRegex.test(document.getElementById("phoneNumber").value)) {
                 toastr.error("Số điện thoại không hợp lệ");
                 return false;

@@ -217,6 +217,27 @@
     }
 
     async function handleUpdate(id) {
+        var fullName = document.getElementById("fullName").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var addressDetail = document.getElementById("addressDetail").value;
+        if(fullName == "" || fullName == null || fullName == undefined){
+            toastr.error("Vui lòng nhập tên");
+            return false;
+        }
+        if(phoneNumber == "" || phoneNumber == null || phoneNumber == undefined){
+            toastr.error("Vui lòng nhập số điện thoại");
+            return false;
+        } else {
+            var phoneNumberRegex = /^(?!(0{10}|(\+?84|0)0+)\b)(\+?84|0)(86|34|33|32|35|36|37|38|39|88|89|96|97|98|90|93|70|79|77|76|78|91|94|88|85|81|82|83|84|92|56|58|99|59|87|89|81|82|83|84|85|86|88|89|99|96|97|98|96|97|98|96|97|98)\d{7}$/;
+            if (!phoneNumberRegex.test(phoneNumber)) {
+                toastr.error("Số điện thoại không hợp lệ");
+                return false;
+            }
+        }
+        if(addressDetail == "" || addressDetail == null || addressDetail == undefined){
+            toastr.error("Vui lòng nhập địa chỉ");
+            return false;
+        }
         var res = await axios.get("/api/check/statusBill/" + id + "/" + 1)
         var resDa = await axios.get("/api/check/statusBill/" + id + "/" + 3)
         if (res.data || resDa.data) {

@@ -185,7 +185,12 @@
                     document.getElementById("giaGiam").innerHTML = gia;
                     document.getElementById("tamTinh").innerHTML = tamTinh;
                 }else{
-
+                    var giaGiam = +vc.promotionalLevel;
+                    var giaConLai = (+totalMoney) - giaGiam;
+                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                    document.getElementById("giaGiam").innerHTML = gia;
+                    document.getElementById("tamTinh").innerHTML = tamTinh;
                 }
             }else{
                 toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
