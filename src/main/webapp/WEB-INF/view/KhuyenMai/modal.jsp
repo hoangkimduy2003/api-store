@@ -64,17 +64,67 @@
     </div>
 </div>
 <script>
-    var handleOnAction = function (){
-        // if(!confirm("Bạn có muốn thao tác không?")){
-        //     return false;
-        // }
-        // if(document.getElementById("name").value == "" || document.getElementById("name").value == null){
-        //     alert("Tên không được để trống");
-        //     return false;
-        // }
-        document.getElementById("frmAction").submit();
+    var handleOnAction = async function (){
+        //
+        if(validate()){
+            var voucherCode = document.getElementById("voucherCode").value;
+            await axios.get("/khuyen-mai/voucherApp/"+voucherCode).then(res => {
+                toastr.error("Mã khuyến mại đã tồn tại");
+            }).catch(e => {
+                document.getElementById("frmAction").submit();
+            })
+        }
     }
-    var preAction = function (id,voucherCode,minimumInvoice,dateStart,dateEnd,quantity,voucherType,promotionalLevel,maximumPromotion,status){
+
+
+    function validate(){
+        var voucherCode = document.getElementById("voucherCode").value;
+        var minimumInvoice = document.getElementById("minimumInvoice").value;
+        var dateStart = document.getElementById("dateStart").value;
+        var dateEnd = document.getElementById("dateEnd").value;
+        var quantity = document.getElementById("quantity").value;
+        var promotionalLevel = document.getElementById("promotionalLevel").value;
+        var maximumPromotion = document.getElementById("maximumPromotion").value;
+        var voucherType = document.getElementById("voucherType").value;
+        console.log(dateStart);
+        if(voucherCode == null || voucherCode.trim() == "" || voucherCode == undefined){
+            toastr.error("Vui lòng nhập mã khuyến mại");
+            return false;
+        }
+        if(minimumInvoice == null || minimumInvoice == "" || minimumInvoice == undefined){
+            toastr.error("Vui lòng nhập giá trị tối thiểu đơn hàng");
+            return false;
+        }
+        if(dateStart == null || dateStart == "" || dateStart == undefined){
+            toastr.error("Vui lòng nhập ngày bắt đầu");
+            return false;
+        }
+        if(dateEnd == null || dateEnd == "" || dateEnd == undefined){
+            toastr.error("Vui lòng nhập ngày kết thúc");
+            return false;
+        }
+        if(new Date(dateStart) > new Date(dateEnd)){
+            toastr.error("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+            return false;
+        }
+        if(quantity == null || quantity == "" || quantity == undefined){
+            toastr.error("Vui lòng nhập số lượng");
+            return false;
+        }
+        if(promotionalLevel == null || promotionalLevel == "" || promotionalLevel == undefined){
+            toastr.error("Vui lòng nhập giá trị giá");
+            return false;
+        }
+        if(voucherType == 1){
+            if(maximumPromotion == null || maximumPromotion == "" || maximumPromotion == undefined){
+                toastr.error("Vui lòng nhập giảm tối đa");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    var preAction = function (id,voucherCode,minimumInvoice,dateStart,dateEnd,quantity,voucherType,promotionalLevel,maximumPromotion,status,action){
 
         document.getElementById("id").value = id;
         document.getElementById("voucherCode").value = voucherCode;
@@ -86,6 +136,13 @@
         document.getElementById("promotionalLevel").value = promotionalLevel;
         document.getElementById("maximumPromotion").value = maximumPromotion;
         document.getElementById("status").value = status;
+        if(action == 1){
+            document.getElementById("voucherCode").disabled = false;
+            document.getElementById("status").disabled = false;
+        }else{
+            document.getElementById("voucherCode").disabled = true;
+            document.getElementById("status").disabled = true;
+        }
     }
 
     var handleOnChangeVoucherType = function (e){

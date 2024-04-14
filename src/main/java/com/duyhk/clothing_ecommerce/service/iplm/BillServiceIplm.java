@@ -165,6 +165,7 @@ public class BillServiceIplm implements BillService {
         bill.setBillType(1);
         bill.setBillCode(generateRandomString());
         bill.setOrderDate(bill.getCreatedAt());
+        bill.setMoneyRoot(0d);
         return billReponsitory.save(bill);
     }
 
