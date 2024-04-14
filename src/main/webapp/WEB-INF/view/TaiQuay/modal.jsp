@@ -23,7 +23,7 @@
                         <p>Thành tiền: <span id="tamTinhValue"><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></span> VND</p>
                     </div>
                     <div class="mb-3">
-                        <p id="moneyTransfers">Trả lại: 0 VND</p>
+                        <p id="moneyTransfers">Còn thiếu: <fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/> VND</p>
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="form-label">Tiền khách đưa:</label>
@@ -224,7 +224,8 @@
 
     function handleOnChangeInputMoney(e) {
         var value = e.value;
-        var tamTinh = +document.getElementById("tamTinhValue").innerText.replace(",","");
+        var tamTinh = +(document.getElementById("tamTinhValue").innerText.replaceAll(",","").replaceAll(".",""));
+        console.log(tamTinh);
         if (value != "" && value != null) {
             if (document.getElementById("htnh").value == 1) {
                 value = (+value);
@@ -258,7 +259,7 @@
         if(!(document.getElementById("voucher").value == "" ||
             document.getElementById("voucher").value == null ||
             document.getElementById("voucher").value == undefined)){
-            if(+document.getElementById("tamTinhValue").innerText.replace(",","") == +document.getElementById("totalMoney").innerText.replace(",","")){
+            if(+document.getElementById("tamTinhValue").innerText.replaceAll(",","").replaceAll(".","") == +document.getElementById("totalMoney").innerText.replaceAll(",","").replaceAll(".","")){
                 await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
                     if(res.status == 200){
                         var vc = res.data;
@@ -325,7 +326,7 @@
             return false;
         }
         var tamTinh = document.getElementById("tamTinhValue").innerText;
-        if (+document.getElementById("moneyCustomer").value < (+(tamTinh.replace(",",""))) && document.getElementById("htnh").value == 1) {
+        if (+document.getElementById("moneyCustomer").value < (+(tamTinh.replaceAll(",","").replaceAll(".",""))) && document.getElementById("htnh").value == 1) {
             toastr.error("Tiền khách trả không đủ để thanh toán đơn hàng");
             return false;
         } else if (+document.getElementById("moneyCustomer").value < (${bill.totalMoney} +35000) && document.getElementById("htnh").value == 2) {
