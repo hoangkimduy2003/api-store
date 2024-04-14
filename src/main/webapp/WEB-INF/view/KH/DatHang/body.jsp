@@ -74,7 +74,7 @@
                         </th>
                         <th scope="col">Số lượng</th>
                         <th scope="col">Giá (VND)</th>
-                        <th scope="col">Tổng tiền (VND)</th>
+                        <th scope="col">Thành tiền (VND)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -111,8 +111,8 @@
                     <div class="col-12">
                         <div style="width: 30%; float: right;">
                             <p>
-                                Tổng tiền: <span id="tongTien"><fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/></span><br>
-                                Giảm giá: <span id="giaGiam">0</span><br/>
+                                Tổng tiền: <span id="tongTien"><fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/></span> VND<br>
+                                Giảm giá: <span id="giaGiam">0</span> VND<br/>
                                 Tạm tính: <span id="tamTinh"><fmt:formatNumber pattern="#,###" value="${cart.totalMoney}"/></span> VND
                                 <br/>
                                 <span style="color: red; font-size: 12px">Đơn hàng chưa bao gồm phí ship</span>

@@ -17,7 +17,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -132,15 +135,21 @@ public class VoucherServiceIplm implements VoucherService {
                    <h4>OMAN cảm ơn %s đã đồng hàng cùng chúng tôi<h4>
                    <h5>Mã giảm giá: %s</h5>
                    <h6>Giảm %s cho đơn hàng từ %s nhanh tay đặt hàng ngay </h6>
+                   <h6>Chương trình diễn ra từ %s đến %s </h6>
+                   <p style='color:red; font-size: 11px'>Lưu ý: phiếu giảm giá chỉ dành cho %s người đầu tiên sử dụng</p>
                 """;
         List<Users> usersList = userRepo.findUserHaveEmail();
         NumberFormat format = NumberFormat.getNumberInstance(Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         for (Users u : usersList){
             emailService.sendEmail(u.getEmail(),titleEmail,
                     String.format(contentEmail,u.getFullName(),
                             voucher.getVoucherCode(),
                             format.format(voucher.getPromotionalLevel()) + (voucher.getVoucherType() == 1 ? "%" : " nghìn đồng"),
-                            format.format(voucher.getMinimumInvoice())));
+                            format.format(voucher.getMinimumInvoice()),
+                            sdf.format(Date.from(voucher.getDateStart().atStartOfDay(ZoneId.systemDefault()).toInstant())),
+                            sdf.format(Date.from(voucher.getDateEnd().atStartOfDay(ZoneId.systemDefault()).toInstant())),
+                            format.format(voucher.getQuantity())));
         }
         voucher.setSendType(2);
         voucherRepo.save(voucher);
@@ -149,6 +158,7 @@ public class VoucherServiceIplm implements VoucherService {
     public VoucherDTO findByVoucherCode(String voucherCode){
         VoucherDTO voucherDTO = convertToDto(voucherRepo.findByVoucherCode(voucherCode).orElseThrow(() -> new CustomValidationException("voucher not found")));
         if(voucherDTO.getStatus() == 0) throw new CustomValidationException("voucher not active");
+        if(voucherDTO.getQuantity() <= 0) throw new CustomValidationException("Voucher sold out");
         if(voucherDTO.getDateStart().compareTo(LocalDate.now()) > 0) throw new CustomValidationException("Voucher not active");
         if(voucherDTO.getDateEnd().compareTo(LocalDate.now()) < 0) throw new CustomValidationException("Voucher not active");
         return voucherDTO;
