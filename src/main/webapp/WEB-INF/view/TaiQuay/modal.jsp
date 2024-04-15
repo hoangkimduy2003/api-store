@@ -119,6 +119,9 @@
                             var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
                             document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                         }
+                    }else{
+                        var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
+                        document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                     }
                 }else{
                     var giaGiam = +vc.promotionalLevel;
@@ -137,6 +140,9 @@
                             var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
                             document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                         }
+                    }else{
+                        var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
+                        document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                     }
                 }
             }else{
@@ -285,6 +291,9 @@
                                         var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
                                         document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                                     }
+                                }else{
+                                    var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
+                                    document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                                 }
                             }else{
                                 var giaGiam = +vc.promotionalLevel;
@@ -303,6 +312,9 @@
                                         var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
                                         document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                                     }
+                                }else{
+                                    var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
+                                    document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                                 }
                             }
                         }else{
