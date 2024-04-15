@@ -173,24 +173,29 @@
             console.log(res.status);
             if(res.status == 200){
                 var vc = res.data;
-                if(vc.voucherType == 1 ){
-                    console.log(1);
-                    var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
-                    if(giaGiam > (+vc.maximumPromotion)){
-                        giaGiam = (+vc.maximumPromotion);
+                if(+totalMoney >= +(vc.minimumInvoice)) {
+                    if(vc.voucherType == 1 ){
+                        console.log(1);
+                        var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
+                        if(giaGiam > (+vc.maximumPromotion)){
+                            giaGiam = (+vc.maximumPromotion);
+                        }
+                        var giaConLai = (+totalMoney) - giaGiam;
+                        var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                        var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                        document.getElementById("giaGiam").innerHTML = gia;
+                        document.getElementById("tamTinh").innerHTML = tamTinh;
+                    }else{
+                        var giaGiam = +vc.promotionalLevel;
+                        var giaConLai = (+totalMoney) - giaGiam;
+                        var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                        var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                        document.getElementById("giaGiam").innerHTML = gia;
+                        document.getElementById("tamTinh").innerHTML = tamTinh;
                     }
-                    var giaConLai = (+totalMoney) - giaGiam;
-                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
-                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
-                    document.getElementById("giaGiam").innerHTML = gia;
-                    document.getElementById("tamTinh").innerHTML = tamTinh;
                 }else{
-                    var giaGiam = +vc.promotionalLevel;
-                    var giaConLai = (+totalMoney) - giaGiam;
-                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
-                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
-                    document.getElementById("giaGiam").innerHTML = gia;
-                    document.getElementById("tamTinh").innerHTML = tamTinh;
+                    toastr.error("Đơn hàng chưa đạt giá trị tối thiểu để áp dụng mã");
+                    return false;
                 }
             }else{
                 toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
