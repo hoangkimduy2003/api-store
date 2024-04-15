@@ -91,6 +91,10 @@
             toastr.error("Vui lòng nhập mã khuyến mại");
             return false;
         }
+        if(voucherCode.length > 10){
+            toastr.error("Độ dài mã tối đa 10 kí tự");
+            return false;
+        }
         if(minimumInvoice == null || minimumInvoice == "" || minimumInvoice == undefined){
             toastr.error("Vui lòng nhập giá trị tối thiểu đơn hàng");
             return false;
