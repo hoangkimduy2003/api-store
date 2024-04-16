@@ -46,4 +46,8 @@ public interface ProductDetailReponsitory extends JpaRepository<ProductDetail, L
             " and p.color.id = :idColor and p.size.id = :idSize  and p.quantity > 0 and p.status = 1")
     ProductDetail searchBySizeAndColor
             (@Param("idProduct") Long idProduct,@Param("idColor") Long idColor,@Param("idSize") Long idSize);
-}
+
+    @Query("select count(p) from ProductDetail p where p.size.id = :sizeId and p.color.id = :colorId and p.id != (:id) and p.product.id = :productId")
+    Integer kiemTraMaSauKhiSua (Long sizeId, Long colorId, Long id, Long productId);
+
+    }

@@ -6,6 +6,7 @@ import com.duyhk.clothing_ecommerce.entity.Color;
 import com.duyhk.clothing_ecommerce.entity.Product;
 import com.duyhk.clothing_ecommerce.entity.ProductDetail;
 import com.duyhk.clothing_ecommerce.entity.Size;
+import com.duyhk.clothing_ecommerce.exception.CustomValidationException;
 import com.duyhk.clothing_ecommerce.reponsitory.ProductDetailReponsitory;
 import com.duyhk.clothing_ecommerce.reponsitory.ProductReponsitory;
 import com.duyhk.clothing_ecommerce.service.ProductDetailService;
@@ -150,6 +151,9 @@ public class ProductDetailServiceIplm implements ProductDetailService {
     public void update(ProductDetailDTO productDetailDTO) {
         ProductDetail productDetail = productDetailRepo.findById(productDetailDTO.getId()).orElseThrow(IllegalArgumentException::new);
         if (productDetail != null) {
+            if (productDetailRepo.kiemTraMaSauKhiSua(productDetailDTO.getSize().getId(), productDetailDTO.getColor().getId(),
+                    productDetailDTO.getId(), productDetailDTO.getProduct().getId()) > 0)
+                throw new CustomValidationException("ton tia");
 //            productDetail = convertToEntity(productDetailDTO);
             productDetail.setQuantity(productDetailDTO.getQuantity());
             productDetail.setColor(new ModelMapper().map(productDetailDTO.getColor(), Color.class));

@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class VoucherDTO {
+public class VoucherDTO extends TimeAuditableDTO {
     private Long id;
     private String name;
     private String voucherCode;

@@ -69,8 +69,17 @@
         if(validate()){
             var voucherCode = document.getElementById("voucherCode").value;
             await axios.get("/khuyen-mai/voucherApp/"+voucherCode).then(res => {
-                toastr.error("Mã khuyến mại đã tồn tại");
+                var idVoucher = document.getElementById("id").value;
+                if(idVoucher == null || idVoucher == "" || idVoucher == undefined){
+                    toastr.error("Mã khuyến mại đã tồn tại");
+                }else{
+                    document.getElementById("voucherCode").disabled = false;
+                    document.getElementById("status").disabled = false;
+                    document.getElementById("frmAction").submit();
+                }
             }).catch(e => {
+                document.getElementById("voucherCode").disabled = false;
+                document.getElementById("status").disabled = false;
                 document.getElementById("frmAction").submit();
             })
         }
@@ -113,6 +122,10 @@
         }
         if(quantity == null || quantity == "" || quantity == undefined){
             toastr.error("Vui lòng nhập số lượng");
+            return false;
+        }
+        if(quantity <= 0){
+            toastr.error("Số lượng phải lớn hơn 0");
             return false;
         }
         if(promotionalLevel == null || promotionalLevel == "" || promotionalLevel == undefined){
