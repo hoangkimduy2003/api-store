@@ -122,6 +122,8 @@ public class UserServiceIplm implements UserService {
         users.setFavourite(new Favourite());
         if (users.getRole() == null || "".equals(users.getRole())) {
             users.setRole(Role.CUSTOMER);
+        }else {
+            users.setPassword("123");
         }
         users.setTotalInvoice(0l);
         users.setTotalInvoiceValue(0d);

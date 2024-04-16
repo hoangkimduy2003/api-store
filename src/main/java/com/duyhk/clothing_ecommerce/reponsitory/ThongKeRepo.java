@@ -88,10 +88,10 @@ public interface ThongKeRepo extends JpaRepository<Bill, Long> {
                    @Param("year") Long year);
 
     @Query("select SUM(b.totalMoney) from Bill b where b.status = 5")
-    long totalMoneyBill();
+    Long totalMoneyBill();
 
     @Query("select SUM(p.totalQuantitySold) from Product p")
-    long totalProductSold();
+    Long totalProductSold();
 
     @Query("select b from Bill b order by b.createdAt desc")
     Page<Bill> getBillNew(Pageable pageable);

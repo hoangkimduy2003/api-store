@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style>
     .switch {
         position: relative;
@@ -75,7 +76,7 @@
                 <th scope="col">Mã chi tiết</th>
                 <th scope="col">Màu sắc</th>
                 <th scope="col">Kích cỡ</th>
-                <th scope="col">Đơn giá</th>
+                <th scope="col">Đơn giá (VND)</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Thao tác</th>
@@ -88,8 +89,8 @@
                     <td>${x.productDetailCode}</td>
                     <td>${x.color.name}</td>
                     <td>${x.size.name}</td>
-                    <td>${x.priceSale}</td>
-                    <td>${x.quantity}</td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.priceSale}"/></td>
+                    <td><fmt:formatNumber pattern="#,###" value="${x.quantity}"/></td>
                     <td>
                         <label class="switch">
                             <input id="active${x.id}" onclick="return confirm('Bạn có muốn thay đổi trạng thái không')" type="checkbox" ${x.status == 1 ? "checked" : ""} onchange="handleOnChangeToggleActiveProductDetail('${x.id}')">

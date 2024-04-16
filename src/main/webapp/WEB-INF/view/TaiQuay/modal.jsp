@@ -11,7 +11,7 @@
                         <p>Tên KH: <span id="customerName"></span></p>
                     </div>
                     <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">Số điện thoại:</label>
+                        <label for="phoneNumber" class="form-label">Số điện thoại<span style="color: red">(*)</span>:</label>
                         <input class="form-control" name="user.phoneNumber" id="phoneNumber"
                                aria-describedby="emailHelp" onchange="handleOnChangeSdt(this)">
                         <input class="form-control" name="status" value="5" hidden id="status"
@@ -98,53 +98,59 @@
         await axios.get('/khuyen-mai/voucherApp/'+ voucher).then(res => {
             if(res.status == 200){
                 var vc = res.data;
-                if(vc.voucherType == 1 ){
-                    console.log(1);
-                    var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
-                    if(giaGiam > (+vc.maximumPromotion)){
-                        giaGiam = (+vc.maximumPromotion);
-                    }
-                    var giaConLai = (+totalMoney) - giaGiam;
-                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
-                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
-                    document.getElementById("giaGiam").innerHTML = gia;
-                    document.getElementById("tamTinhValue").innerHTML = tamTinh;
-                    var tienKD = document.getElementById("moneyCustomer").value;
-                    if(tienKD != "" && tienKD != null && tienKD != undefined){
-                        var traLai = tienKD - giaConLai;
-                        if(traLai >= 0){
-                            var valueNew = new Intl.NumberFormat('en-US').format(traLai);
-                            document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                if(+totalMoney >= +(vc.minimumInvoice)){
+                    if(vc.voucherType == 1 ){
+                        console.log(1);
+                        var giaGiam = (+totalMoney) * (vc.promotionalLevel/100);
+                        if(giaGiam > (+vc.maximumPromotion)){
+                            giaGiam = (+vc.maximumPromotion);
+                        }
+                        var giaConLai = (+totalMoney) - giaGiam;
+                        var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                        var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                        document.getElementById("giaGiam").innerHTML = gia;
+                        document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                        var tienKD = document.getElementById("moneyCustomer").value;
+                        if(tienKD != "" && tienKD != null && tienKD != undefined){
+                            var traLai = tienKD - giaConLai;
+                            if(traLai >= 0){
+                                var valueNew = new Intl.NumberFormat('en-US').format(traLai);
+                                document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                            }else{
+                                var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                                document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                            }
                         }else{
-                            var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                            var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
                             document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
                         }
                     }else{
-                        var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
-                        document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                        var giaGiam = +vc.promotionalLevel;
+                        var giaConLai = (+totalMoney) - giaGiam;
+                        var gia = Math.floor(giaGiam).toLocaleString('en-US');
+                        var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
+                        document.getElementById("giaGiam").innerHTML = gia;
+                        document.getElementById("tamTinhValue").innerHTML = tamTinh;
+                        var tienKD = document.getElementById("moneyCustomer").value;
+                        if(tienKD != "" && tienKD != null && tienKD != undefined){
+                            var traLai = tienKD - giaConLai;
+                            if(traLai >= 0){
+                                var valueNew = new Intl.NumberFormat('en-US').format(traLai);
+                                document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
+                            }else{
+                                var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
+                                document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                            }
+                        }else{
+                            var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
+                            document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
+                        }
                     }
                 }else{
-                    var giaGiam = +vc.promotionalLevel;
-                    var giaConLai = (+totalMoney) - giaGiam;
-                    var gia = Math.floor(giaGiam).toLocaleString('en-US');
-                    var tamTinh = Math.floor(giaConLai).toLocaleString('en-US');
-                    document.getElementById("giaGiam").innerHTML = gia;
-                    document.getElementById("tamTinhValue").innerHTML = tamTinh;
-                    var tienKD = document.getElementById("moneyCustomer").value;
-                    if(tienKD != "" && tienKD != null && tienKD != undefined){
-                        var traLai = tienKD - giaConLai;
-                        if(traLai >= 0){
-                            var valueNew = new Intl.NumberFormat('en-US').format(traLai);
-                            document.getElementById("moneyTransfers").innerHTML = "Trả lại: " + valueNew + " VND";
-                        }else{
-                            var valueNew = new Intl.NumberFormat('en-US').format(-traLai);
-                            document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
-                        }
-                    }else{
-                        var valueNew = new Intl.NumberFormat('en-US').format(giaConLai);
-                        document.getElementById("moneyTransfers").innerHTML = "Còn thiếu: " + valueNew + " VND";
-                    }
+                    toastr.error("Hoá đơn chưa đạt giá trị tối tiểu của mã giảm giá");
+                    return false;
                 }
+
             }else{
                 toastr.error("Mã giảm giá không đúng hoặc đã hết hạn");
                 return false;
@@ -318,7 +324,7 @@
                                 }
                             }
                         }else{
-                            toastr.error("Đơn hàng chưa đạt giá trị tối thiểu");
+                            toastr.error("Đơn hàng chưa đạt giá trị tối thiểu của mã giảm giá");
                             return false;
                         }
                     }else{

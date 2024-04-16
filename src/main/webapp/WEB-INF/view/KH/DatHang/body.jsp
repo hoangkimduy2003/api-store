@@ -259,6 +259,9 @@
             || document.getElementById("fullName").value == undefined) {
             toastr.error("Vui lòng nhập tên");
             return false;
+        }else if(document.getElementById("fullName").value.trim() == ""){
+            toastr.error("Vui lòng nhập tên");
+            return false;
         }
         if(document.getElementById("phoneNumber").value == null || document.getElementById("phoneNumber").value == ""
             || document.getElementById("phoneNumber").value == undefined){
@@ -272,6 +275,9 @@
         }
         if(document.getElementById("addressDetail").value == null || document.getElementById("addressDetail").value == ""
             ||document.getElementById("addressDetail").value == undefined){
+            toastr.error("Vui lòng nhập địa chỉ chi tiết");
+            return false;
+        }else if(document.getElementById("addressDetail").value.trim() == ""){
             toastr.error("Vui lòng nhập địa chỉ chi tiết");
             return false;
         }

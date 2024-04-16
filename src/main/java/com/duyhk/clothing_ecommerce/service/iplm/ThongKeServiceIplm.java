@@ -69,9 +69,11 @@ public class ThongKeServiceIplm implements ThongKeService {
         long totalBillOnline = thongKeRepo.totalBillOnline(2);
         long totalUser = thongKeRepo.totalUser();
         long totalUserBuy = thongKeRepo.totalUserBy();
-        long totalProductSold = thongKeRepo.totalProductSold();
+        Long totalProductSold = thongKeRepo.totalProductSold();
+        totalProductSold = totalProductSold == null ? 0 : totalProductSold;
         long totalBill = thongKeRepo.totalBill(null,null,null,null);
-        long totalMoneyBill = thongKeRepo.totalMoneyBill();
+        Long totalMoneyBill = thongKeRepo.totalMoneyBill();
+        totalMoneyBill = totalMoneyBill == null ? 0 : totalMoneyBill;
         List<Bill> billNews = thongKeRepo.getBillNew(PageRequest.of(0, 5)).getContent();
         List<Product> products = thongKeRepo.getProductSale(PageRequest.of(0, 5)).getContent();
         String[] _time = searchThongKeDTO.getDate().split("-");
@@ -106,9 +108,9 @@ public class ThongKeServiceIplm implements ThongKeService {
         billRate.setTotalBill(totalBill);
         billRate.setTotalProductSold(totalProductSold);
         billRate.setTotalMoneyBill(totalMoneyBill);
-        billRate.setCompletionRate(((double) totalBillsSuccess / (double) totalBillOnline) * 100);
-        billRate.setCancelRate(((double) totalBillsCancel / (double) totalBillOnline) * 100);
-        billRate.setBuyRate(((double) totalUserBuy / (double) totalUser) * 100);
+        billRate.setCompletionRate(Double.isNaN(((double) totalBillsSuccess / (double) totalBillOnline) * 100) ? 100 : ((double) totalBillsSuccess / (double) totalBillOnline) * 100);
+        billRate.setCancelRate(Double.isNaN(((double) totalBillsCancel / (double) totalBillOnline) * 100) ? 0 : (((double) totalBillsCancel / (double) totalBillOnline) * 100));
+        billRate.setBuyRate(Double.isNaN(((double) totalUserBuy / (double) totalUser) * 100) ? 100 : ((double) totalUserBuy / (double) totalUser) * 100);
         return billRate;
     }
 
