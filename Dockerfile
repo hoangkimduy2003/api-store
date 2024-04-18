@@ -1,8 +1,9 @@
-FROM maven:3.8.5-openjdk-17 AS build
-COPY . .
-RUN mvn clean package -Pprod -DskipTests
+FROM openjdk:17
 
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/clothing_ecommerce-0.0.1-SNAPSHOT.jar clothing_ecommerce.jar
-EXPOSE 8081
-ENTRYPOINT ["java","-jar","clothing_ecommerce.jar"]
+ARG FILE_JAR=target/*.jar
+
+ADD ${FILE_JAR} api-service.jar
+
+ENTRYPOINT ["java","-jar","api-service.jar"]
+
+EXPOSE 800
