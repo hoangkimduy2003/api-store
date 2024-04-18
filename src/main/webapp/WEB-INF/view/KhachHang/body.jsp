@@ -31,7 +31,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tên nhân viên</th>
+                <th scope="col">Tên khách hàng </th>
                 <th scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
                 <th scope="col">Trạng thái</th>
