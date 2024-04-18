@@ -54,7 +54,9 @@
                     </fieldset>
                 </form>
                 <br/>
-
+                <div style="${bill.status == 0 ? 'display: block' : 'display: none'}">
+                    <p>Lý do huỷ: <span style="color: red">${bill.reasonCancel}</span></p>
+                </div>
             </div>
             <div class="col-7">
                 <table class="table">

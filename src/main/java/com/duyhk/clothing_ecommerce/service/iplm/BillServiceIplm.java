@@ -252,12 +252,36 @@ public class BillServiceIplm implements BillService {
     }
 
     @Override
+    public void updateStatusById(Long id, Integer status, String reason) {
+        Bill bill = billReponsitory.findById(id).orElse(null);
+        if (bill != null) {
+            bill.setStatus(status);
+            bill.setReasonCancel(reason);
+            billReponsitory.save(bill);
+            if (status == 0) {
+                List<BillDetail> billDetails = billDetailRepo.findByBillId(bill.getId());
+                billDetails.stream().forEach(x -> {
+                    ProductDetail productDetail = productDetailRepo.findById(x.getProductDetail().getId()).orElse(null);
+                    productDetail.setQuantitySold(productDetail.getQuantitySold() - x.getQuantity());
+                    productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+                    Product product = productRepo.findById(productDetail.getProduct().getId()).orElse(null);
+                    product.setTotalQuantitySold(product.getTotalQuantitySold() - x.getQuantity());
+                    product.setTotalQuantity(product.getTotalQuantity() + x.getQuantity());
+                    productDetailRepo.save(productDetail);
+                    productRepo.save(product);
+                });
+            }
+        }
+    }
+
+    @Override
     public void updateStatusById(Long id, Integer status, Long quantity) {
         Bill bill = billReponsitory.findById(id).orElse(null);
         if (bill != null) {
             bill.setTotalMoney(bill.getTotalMoney() + quantity);
             bill.setOrderDateFinal(status == 5 ? new Date() : null);
             bill.setStatus(status);
+            bill.setShippingFee(quantity);
             billReponsitory.save(bill);
             if (status == 0) {
                 if (bill.getVoucher() != null || !"".equals(bill.getVoucher())) {

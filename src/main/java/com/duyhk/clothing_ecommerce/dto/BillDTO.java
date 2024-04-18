@@ -38,4 +38,6 @@ public class BillDTO extends TimeAuditableDTO implements Serializable {
     private String voucher;
     private Double moneyRoot;
     private Double giaGiam;
+    private Long shippingFee;
+    private String reasonCancel;
 }

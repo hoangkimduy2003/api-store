@@ -136,9 +136,17 @@
         var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
         var resData = await axios.get("/api/check/statusBill/"+id+"/" + 3)
         if(res.data || resData.data){
-            if(confirm("Bạn có muốn huỷ đơn hàng không")){
-                toastr.success("Huỷ thành công");
-                document.getElementById("handleOnClickHuyHoaDon"+id).click();
+            var reason = prompt("Vui lòng nhập lý do huỷ");
+            if(reason != null && reason.trim() != "" && reason != undefined){
+                if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                    var a = document.getElementById("handleOnClickHuyHoaDon"+id);
+                    var _href = a.href + "?reason=" + reason;
+                    toastr.success("Huỷ thành công");
+                    document.getElementById("handleOnClickHuyHoaDon"+id).setAttribute("href", _href);
+                    document.getElementById("handleOnClickHuyHoaDon"+id).click();
+                }
+            }else{
+                toastr.error("Lý do huỷ không hợp lệ");
             }
         }else{
             toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
@@ -159,10 +167,19 @@
     async function handleOnClickThatBai(id){
         var res = await axios.get("/api/check/statusBill/"+id+"/" + 4)
         if(res.data){
-            if(confirm("Xác nhận giao hàng thất bại")){
-                toastr.success("Xác nhận thành công");
-                document.getElementById("handleOnClickThatBai"+id).click();
+            var reason = prompt("Vui lòng nhập lý do thất bại");
+            if(reason != null && reason.trim() != "" && reason != undefined){
+                if(confirm("Xác nhận giao hàng thất bại")){
+                    var a = document.getElementById("handleOnClickThatBai"+id);
+                    var _href = a.href + "?reason=" + reason;
+                    toastr.success("Đơn hàng đã được huỷ");
+                    document.getElementById("handleOnClickThatBai"+id).setAttribute("href", _href);
+                    document.getElementById("handleOnClickThatBai"+id).click();
+                }
+            }else{
+                toastr.error("Lý do huỷ không hợp lệ");
             }
+
         }else {
             toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
         }

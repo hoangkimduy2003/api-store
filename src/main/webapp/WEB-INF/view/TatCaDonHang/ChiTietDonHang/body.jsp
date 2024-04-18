@@ -90,8 +90,9 @@
                             style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}">Sửa
                     </button>
                 </form>
-                <br/>
-
+                <div style="${bill.status == 0 ? 'display: block' : 'display: none'}">
+                    <p>Lý do huỷ: <span style="color: red">${bill.reasonCancel}</span></p>
+                </div>
             </div>
             <div class="col-7">
                 <table class="table">
@@ -262,9 +263,17 @@
         var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
         var resData = await axios.get("/api/check/statusBill/"+id+"/" + 3)
         if(res.data || resData.data){
-            if(confirm("Bạn có muốn huỷ đơn hàng không")){
-                toastr.success("Huỷ thành công");
-                document.getElementById("aHuyHoaHonOK").click();
+            var reason = prompt("Vui lòng nhập lý do huỷ");
+            if(reason != null && reason.trim() != "" && reason != undefined){
+                if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                    var a = document.getElementById("aHuyHoaHonOK");
+                    var _href = a.href + "?reason=" + reason;
+                    toastr.success("Huỷ thành công");
+                    document.getElementById("aHuyHoaHonOK").setAttribute("href", _href);
+                    document.getElementById("aHuyHoaHonOK").click();
+                }
+            }else{
+                toastr.error("Lý do huỷ không hợp lệ");
             }
         }else{
             toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
