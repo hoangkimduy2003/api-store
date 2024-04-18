@@ -34,6 +34,7 @@ public interface BillService {
 
 
     void updateStatusById(Long id, Integer status, Long quantity);
+    void updateStatusById(Long id, Integer status, String reson);
 
     void createBillOnline(BillDTO billDTO);
 

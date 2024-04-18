@@ -80,12 +80,14 @@ public class TatCaDonHangController {
     public String xacNhan(@PathVariable("billId") Long billId,
                           @PathVariable("status") int status,
                           @PathVariable("action") int action,
-                          @RequestParam(name = "ship", required = false) Long quantity) {
-        if(quantity == null) {
+                          @RequestParam(name = "ship", required = false) Long quantity,
+                          @RequestParam(name = "reason", required = false) String reason) {
+        if(quantity == null && reason == null) {
             billService.updateStatusById(billId, status);
-        }else{
+        }else if(quantity != null){
             billService.updateStatusById(billId, status, quantity);
-
+        } else{
+            billService.updateStatusById(billId, status, reason);
         }
         if(action == 1){
             return "redirect:/don-hang/chi-tiet/" + billId;
