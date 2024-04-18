@@ -11,7 +11,7 @@
                         <p>Tên KH: <span id="customerName"></span></p>
                     </div>
                     <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">Số điện thoại<span style="color: red">(*)</span>:</label>
+                        <label for="phoneNumber" class="form-label">Số điện thoại:</label>
                         <input class="form-control" name="user.phoneNumber" id="phoneNumber"
                                aria-describedby="emailHelp" onchange="handleOnChangeSdt(this)">
                         <input class="form-control" name="status" value="5" hidden id="status"
@@ -26,7 +26,7 @@
                         <p id="moneyTransfers">Còn thiếu: <fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/> VND</p>
                     </div>
                     <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">Tiền khách đưa:</label>
+                        <label for="phoneNumber" class="form-label">Tiền khách đưa<span style="color: red">(*)</span>:</label>
                         <input class="form-control" type="number" id="moneyCustomer"
                                onchange="handleOnChangeInputMoney(this)" aria-describedby="emailHelp">
                     </div>

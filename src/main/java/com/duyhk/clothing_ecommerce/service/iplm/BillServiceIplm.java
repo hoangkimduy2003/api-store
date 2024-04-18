@@ -179,6 +179,7 @@ public class BillServiceIplm implements BillService {
             bill.setPhoneNumber(billDTO.getPhoneNumber());
             bill.setAddressDetail(billDTO.getAddressDetail());
             bill.setMoneyRoot(bill.getTotalMoney());
+            bill.setOrderDateFinal(new Date());
             if(voucher != null){
                 if (voucher.getVoucherType() == 1) {
                     double gia = bill.getTotalMoney() * voucher.getPromotionalLevel();
