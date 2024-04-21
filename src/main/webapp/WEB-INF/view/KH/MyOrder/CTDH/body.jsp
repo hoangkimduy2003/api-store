@@ -67,7 +67,7 @@
                         </th>
                         <th scope="col">Số lượng</th>
                         <th scope="col">Giá (VND)</th>
-                        <th scope="col">Tổng tiền (VND)</th>
+                        <th scope="col">Thành tiền (VND)</th>
 <%--                        <th scope="col" style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}">Thao--%>
 <%--                            tác--%>
 <%--                        </th>--%>
@@ -111,6 +111,11 @@
                     <div class="mb-1">
                         <label for="addressDetail" class="form-label fw-bold">Giảm giá: </label>
                         <fmt:formatNumber pattern="#,###" value="${bill.giaGiam}"/> VND
+                    </div>
+                    <div class="mb-1" style="${bill.billType == 1 ? 'display: none' : ''}">
+                        <label for="addressDetail" class="form-label fw-bold">Phí ship: </label>
+                        <p style="${bill.status == 1 ? 'display: none' : ''}"><fmt:formatNumber pattern="#,###" value="${bill.shippingFee}"/> VND</p>
+                        <span style="color: red ;${bill.status != 1 ? 'display: none' : ''}">Đơn hàng sẽ được cộng phí ship sau khi xác nhận</span>
                     </div>
                     <div class="mb-1">
                         <label for="addressDetail" class="form-label fw-bold">Thành tiền: </label>

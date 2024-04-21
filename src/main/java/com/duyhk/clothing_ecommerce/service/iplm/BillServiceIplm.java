@@ -333,9 +333,10 @@ public class BillServiceIplm implements BillService {
         bill.setBillType(2);
         bill.setTatolProduct(cart.getTotalProduct());
         bill.setMoneyRoot(cart.getTotalMoney());
-        if (voucher != null) {
+        bill.setShippingFee(0l);
+        if (voucher != null && voucher.getMinimumInvoice() <= cart.getTotalMoney()) {
             if (voucher.getVoucherType() == 1) {
-                double gia = cart.getTotalMoney() * voucher.getPromotionalLevel();
+                double gia = cart.getTotalMoney() * (voucher.getPromotionalLevel()/100);
                 if (gia > voucher.getMaximumPromotion()) {
                     gia = voucher.getMaximumPromotion();
                 }
