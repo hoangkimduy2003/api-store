@@ -73,13 +73,13 @@
                                style="display: none"
                                href="/don-hang/updateStatus/${bill.id}/5/2"
                             >Đã nhận hàng</a>
-                            <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnHuy('${bill.id}')">Huỷ</button>
+                            <button class="btn btn-dark" style="${(bill.status != 1) ? "display: none" : ""}" onclick="handleOnHuy('${bill.id}',1)">Huỷ</button>
                             <a class="btn btn-dark"
                                id="btnHuyOnline${bill.id}"
                                style="display: none"
                                href="/don-hang/updateStatus/${bill.id}/0/2"
                             >Huỷ</a>
-                            <button class="btn btn-dark" style="${(bill.status != 4) ? "display: none" : ""}" onclick="handleOnHuy('${bill.id}')">Thất bại</button>
+                            <button class="btn btn-dark" style="${(bill.status != 4) ? "display: none" : ""}" onclick="handleOnHuy('${bill.id}',2)">Thất bại</button>
                             <a class="btn btn-dark"
                                id="khongnhanhang${bill.id}"
                                style="display:none;"
@@ -103,25 +103,47 @@
     </div>
 </div>
 <script>
-    async function handleOnHuy(id){
-        var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
-        console.log(res);
-        if(res.data){
-            var reason = prompt("Vui lòng nhập lý do huỷ");
-            if(reason != null && reason.trim() != "" && reason != undefined){
-                if(confirm("Bạn có muốn huỷ đơn hàng không")){
-                    var a = document.getElementById("btnHuyOnline"+id);
-                    var _href = a.href + "?reason=" + reason;
-                    toastr.success("Huỷ thành công");
-                    document.getElementById("btnHuyOnline"+id).setAttribute("href", _href);
-                    document.getElementById("btnHuyOnline"+id).click();
+    async function handleOnHuy(id,typeAction){
+        if(typeAction == 1){
+            var res = await axios.get("/api/check/statusBill/"+id+"/" + 1)
+            console.log(res);
+            if(res.data){
+                var reason = prompt("Vui lòng nhập lý do huỷ");
+                if(reason != null && reason.trim() != "" && reason != undefined){
+                    if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                        var a = document.getElementById("btnHuyOnline"+id);
+                        var _href = a.href + "?reason=" + reason;
+                        toastr.success("Huỷ thành công");
+                        document.getElementById("btnHuyOnline"+id).setAttribute("href", _href);
+                        document.getElementById("btnHuyOnline"+id).click();
+                    }
+                }else{
+                    toastr.error("Lý do huỷ không hợp lệ");
                 }
-            }else{
-                toastr.error("Lý do huỷ không hợp lệ");
+            }else {
+                toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
             }
-        }else {
-            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }else{
+            var res = await axios.get("/api/check/statusBill/"+id+"/" + 4);
+            console.log(res);
+            if(res.data){
+                var reason = prompt("Vui lòng nhập lý do huỷ");
+                if(reason != null && reason.trim() != "" && reason != undefined){
+                    if(confirm("Bạn có muốn huỷ đơn hàng không")){
+                        var a = document.getElementById("btnHuyOnline"+id);
+                        var _href = a.href + "?reason=" + reason;
+                        toastr.success("Huỷ thành công");
+                        document.getElementById("btnHuyOnline"+id).setAttribute("href", _href);
+                        document.getElementById("btnHuyOnline"+id).click();
+                    }
+                }else{
+                    toastr.error("Lý do huỷ không hợp lệ");
+                }
+            }else {
+                toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+            }
         }
+
 
     }
     async function handOnDaNhan(id){
