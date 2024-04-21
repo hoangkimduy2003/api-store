@@ -251,7 +251,7 @@
         var _href = a.href;
         var quantity = prompt("Nhập phí ship: ")
         console.log(quantity);
-        if (quantity == null || quantity == "" || quantity <= 0) {
+        if (quantity == null || quantity == "" || quantity < 0) {
             toastr.error("Vui lòng nhập phí ship!");
             return false;
         }

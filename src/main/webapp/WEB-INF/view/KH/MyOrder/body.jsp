@@ -43,7 +43,6 @@
                     <th scope="col">#</th>
                     <th scope="col">Tên người nhận</th>
                     <th scope="col">Số điện thoại</th>
-                    <th scope="col">Tổng sản phẩm</th>
                     <th scope="col">Tổng tiền</th>
                     <th scope="col">Ngày tạo</th>
                     <th scope="col">Trạng thái</th>
@@ -56,7 +55,6 @@
                         <td>${loopStatus.index + 1}</td>
                         <td>${bill.fullName}</td>
                         <td>${bill.phoneNumber}</td>
-                        <td><fmt:formatNumber pattern="#,###" value="${bill.tatolProduct}"/></td>
                         <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></td>
                         <td>${bill.orderDate}</td>
                         <td>
