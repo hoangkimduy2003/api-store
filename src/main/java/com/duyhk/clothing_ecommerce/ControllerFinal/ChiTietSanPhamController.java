@@ -6,6 +6,7 @@ import com.duyhk.clothing_ecommerce.entity.ProductDetail;
 import com.duyhk.clothing_ecommerce.service.ColorService;
 import com.duyhk.clothing_ecommerce.service.ProductDetailService;
 import com.duyhk.clothing_ecommerce.service.SizeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,9 @@ public class ChiTietSanPhamController {
 
     @Autowired
     private SizeService sizeService;
+
+    @Autowired
+    private HttpSession session;
 
     @GetMapping
     public String home() {
@@ -47,6 +51,7 @@ public class ChiTietSanPhamController {
     @GetMapping("/api/{productCode}")
     @ResponseBody
     public ProductDetailDTO getProductDetailApi(@PathVariable("productCode") String productCode) {
+        session.setAttribute("billType", 1);
         return productDetailService.findProductDetailByProductDetailCode(productCode);
     }
 
