@@ -259,6 +259,13 @@ public class BillServiceIplm implements BillService {
             bill.setReasonCancel(reason);
             billReponsitory.save(bill);
             if (status == 0) {
+                if (bill.getVoucher() != null || !"".equals(bill.getVoucher())) {
+                    Voucher voucher = voucherRepo.findByVoucherCode(bill.getBillCode()).orElse(null);
+                    if (voucher != null) {
+                        voucher.setQuantity(voucher.getQuantity() + 1);
+                        voucherRepo.save(voucher);
+                    }
+                }
                 List<BillDetail> billDetails = billDetailRepo.findByBillId(bill.getId());
                 billDetails.stream().forEach(x -> {
                     ProductDetail productDetail = productDetailRepo.findById(x.getProductDetail().getId()).orElse(null);
