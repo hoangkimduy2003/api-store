@@ -165,7 +165,7 @@
                     </div>
                     <div class="mb-1" style="${bill.billType == 1 ? 'display: none' : ''}">
                         <label for="addressDetail" class="form-label fw-bold">Phí ship: </label>
-                        <p style="${bill.status == 1 ? 'display: none' : ''}"><fmt:formatNumber pattern="#,###" value="${bill.shippingFee}"/> VND</p>
+                        <span style="${bill.status == 1 ? 'display: none' : ''}"><fmt:formatNumber pattern="#,###" value="${bill.shippingFee}"/> VND</span>
                         <span style="${bill.status != 1 ? 'display: none' : ''}">Đơn hàng sẽ được cộng phí ship sau khi xác nhận</span>
                     </div>
                     <div class="mb-1">
