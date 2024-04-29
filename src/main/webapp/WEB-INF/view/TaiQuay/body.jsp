@@ -62,12 +62,12 @@
         <div>
             <button class="btn btn-dark" onclick="toggleCamera('${bill.id}')">Quét QR</button>
             <button onclick="handleOnClickThemSanPham('${bill.id}')" class="btn btn-dark" >Tìm sản phẩm</button>&nbsp;
-            <a class="btn btn-dark" id="aTimSP" style="display: none" href="/danh-sach-san-pham/${bill.id}/${bill.billType}">Tìm sản phẩm</a>&nbsp;
+            <a class="btn btn-dark" id="aTimSP" style="display: none" href="/danh-sach-san-pham/${bill.id}/${bill.billType}">Tìm sản phẩm</a>
             <button class="btn btn-dark" onclick="handleOnClickThanhToan('${bill.id}')">Thanh toán</button>
             <button data-bs-toggle="modal" id="btnShowTT" style="display: none" data-bs-target="#thanhtoan" onclick="preActionThanhToan()" class="btn btn-dark">Thanh toán</button>
-            <div class="col-4">
+            <span style="font-weight: bold">
                 Tổng tiền: <fmt:formatNumber pattern="#,###" value="${bill.totalMoney}" /> VND
-            </div>
+            </span>
         </div>
         <div>
             <video id="qr-video" width="240" height="160" style="display: none" autoplay></video>
