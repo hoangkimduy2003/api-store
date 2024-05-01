@@ -27,7 +27,7 @@ public interface ProductReponsitory extends JpaRepository<Product, Long> {
                          Pageable pageable);
 
     @Query("select p from Product p " +
-            "where p.totalQuantity > 0 and p.name like :name " +
+            "where p.totalQuantity > 0 and p.status = 1 and p.name like :name " +
             "and (:status is null or :status = -1 or p.status = :status) " +
             "and (:categoryId is null or :categoryId = -1L or p.category.id = :categoryId) " +
             "and (:brandId is null or :brandId = -1L or p.brand.id = :brandId) " +
@@ -50,7 +50,7 @@ public interface ProductReponsitory extends JpaRepository<Product, Long> {
                                Pageable pageable);
 
     @Query("select p from Product p " +
-            "where p.totalQuantity > 0 and p.name like :name " +
+            "where p.totalQuantity > 0 and p.status = 1 and p.name like :name " +
             "and (:status is null or :status = -1 or p.status = :status) " +
             "and (:categoryId is null or :categoryId = -1L or p.category.id = :categoryId) " +
             "and (:brandId is null or :brandId = -1L or p.brand.id = :brandId) " +

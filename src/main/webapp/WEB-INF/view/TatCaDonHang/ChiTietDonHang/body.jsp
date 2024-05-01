@@ -43,7 +43,8 @@
                     <a style="display: none" class="btn btn-dark" href="/don-hang/updateStatus/${bill.id}/3/1"
                        id="aXacNhan">
                         Xác nhận</a>
-                    <a style="${(bill.status != 3) ? "display: none" : ""}" class="btn btn-dark"
+                    <button class="btn btn-dark" style="${(bill.status != 3) ? "display: none" : ""}" onclick="handleOnClickGiaoHangOK('${bill.id}')">Giao hàng</button>
+                    <a style="display: none" class="btn btn-dark" id="handleOnClickGiaoHangOK"
                        href="/don-hang/updateStatus/${bill.id}/4/1">
                         Giao hàng</a>
 
@@ -166,7 +167,7 @@
                     <div class="mb-1" style="${bill.billType == 1 ? 'display: none' : ''}">
                         <label for="addressDetail" class="form-label fw-bold">Phí ship: </label>
                         <span style="${bill.status == 1 ? 'display: none' : ''}"><fmt:formatNumber pattern="#,###" value="${bill.shippingFee}"/> VND</span>
-                        <span style="${bill.status != 1 ? 'display: none' : ''}">Đơn hàng sẽ được cộng phí ship sau khi xác nhận</span>
+                        <span style="color: red; ${bill.status != 1 ? 'display: none' : ''}">Đơn hàng sẽ được cộng phí ship sau khi xác nhận</span>
                     </div>
                     <div class="mb-1">
                         <label for="addressDetail" class="form-label fw-bold">Thành tiền: </label>
@@ -262,6 +263,17 @@
         _href = _href + "?ship=" + quantity;
         a.setAttribute("href", _href);
         a.click();
+    }
+
+    async function handleOnClickGiaoHangOK(id) {
+        var resData = await axios.get("/api/check/statusBill/"+id+"/" + 3)
+        if(resData.data){
+            if(confirm("Bạn có muốn xác nhận giao hàng không")){
+                document.getElementById("handleOnClickGiaoHangOK").click();
+            }
+        }else{
+            toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
+        }
     }
 
     async function handleOnClickXacNhanHuy(id) {

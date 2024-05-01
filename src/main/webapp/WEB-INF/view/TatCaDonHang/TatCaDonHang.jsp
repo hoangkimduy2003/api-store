@@ -87,13 +87,16 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a href="/khuyen-mai" class="text-decoration-none px-3 py-2 my-2 d-block">Khuyến mãi</a>
+                    <a href="/khuyen-mai" class="text-decoration-none px-3 py-2 my-2 d-block">Khuyến mại</a>
                 </li>
                 <li class="">
                     <a href="/nhan-vien" class="text-decoration-none px-3 py-2 my-2 d-block">Nhân viên</a>
                 </li>
                 <li class="">
                     <a href="/khach-hang" class="text-decoration-none px-3 py-2 my-2 d-block">Khách hàng</a>
+                </li>
+                <li class="">
+                    <a href="/account/dang-nhap/out" onclick="return confirm('Bạn có muốn đăng xuất không');" class="text-decoration-none px-3 py-2 my-2 d-block">Đăng xuất</a>
                 </li>
             </ul>
         </div>

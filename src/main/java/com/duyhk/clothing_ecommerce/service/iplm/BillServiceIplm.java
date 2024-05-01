@@ -166,6 +166,8 @@ public class BillServiceIplm implements BillService {
         bill.setBillCode(generateRandomString());
         bill.setOrderDate(bill.getCreatedAt());
         bill.setMoneyRoot(0d);
+        bill.setGiaGiam(0d);
+        bill.setShippingFee(0l);
         return billReponsitory.save(bill);
     }
 
@@ -235,7 +237,21 @@ public class BillServiceIplm implements BillService {
             bill.setOrderDateFinal(status == 5 ? new Date() : null);
             bill.setStatus(status);
             billReponsitory.save(bill);
+            if(status == 5 && bill.getVoucher() != null && bill.getGiaGiam() > 0){
+                Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+                if (voucher != null) {
+                    voucher.setQuantity(voucher.getQuantity() + 1);
+                    voucherRepo.save(voucher);
+                }
+            }
             if (status == 0) {
+                if (bill.getVoucher() != null || !"".equals(bill.getVoucher())) {
+                    Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+                    if (voucher != null) {
+                        voucher.setQuantity(voucher.getQuantity() + 1);
+                        voucherRepo.save(voucher);
+                    }
+                }
                 List<BillDetail> billDetails = billDetailRepo.findByBillId(bill.getId());
                 billDetails.stream().forEach(x -> {
                     ProductDetail productDetail = productDetailRepo.findById(x.getProductDetail().getId()).orElse(null);
@@ -258,9 +274,16 @@ public class BillServiceIplm implements BillService {
             bill.setStatus(status);
             bill.setReasonCancel(reason);
             billReponsitory.save(bill);
+            if(status == 5 && bill.getVoucher() != null && bill.getGiaGiam() > 0){
+                Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+                if (voucher != null) {
+                    voucher.setQuantity(voucher.getQuantity() + 1);
+                    voucherRepo.save(voucher);
+                }
+            }
             if (status == 0) {
                 if (bill.getVoucher() != null || !"".equals(bill.getVoucher())) {
-                    Voucher voucher = voucherRepo.findByVoucherCode(bill.getBillCode()).orElse(null);
+                    Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
                     if (voucher != null) {
                         voucher.setQuantity(voucher.getQuantity() + 1);
                         voucherRepo.save(voucher);
@@ -290,9 +313,16 @@ public class BillServiceIplm implements BillService {
             bill.setStatus(status);
             bill.setShippingFee(quantity);
             billReponsitory.save(bill);
+            if(status == 5 && bill.getVoucher() != null && bill.getGiaGiam() > 0){
+                Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+                if (voucher != null) {
+                    voucher.setQuantity(voucher.getQuantity() + 1);
+                    voucherRepo.save(voucher);
+                }
+            }
             if (status == 0) {
                 if (bill.getVoucher() != null || !"".equals(bill.getVoucher())) {
-                    Voucher voucher = voucherRepo.findByVoucherCode(bill.getBillCode()).orElse(null);
+                    Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
                     if (voucher != null) {
                         voucher.setQuantity(voucher.getQuantity() + 1);
                         voucherRepo.save(voucher);
@@ -353,6 +383,7 @@ public class BillServiceIplm implements BillService {
                 bill.setTotalMoney(cart.getTotalMoney() - voucher.getPromotionalLevel());
             }
             voucher.setQuantity(voucher.getQuantity() - 1);
+            bill.setVoucher(voucher.getVoucherCode());
             voucherRepo.save(voucher);
         } else {
             bill.setTotalMoney(cart.getTotalMoney());

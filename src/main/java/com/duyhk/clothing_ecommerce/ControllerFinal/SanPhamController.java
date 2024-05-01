@@ -38,6 +38,7 @@ public class SanPhamController {
         model.addAttribute("list", productService.search(searchProductDTO));
         model.addAttribute("brands", brandService.getAll());
         model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("searchProductDTO",searchProductDTO);
         return "SanPham/SanPham";
     }
 

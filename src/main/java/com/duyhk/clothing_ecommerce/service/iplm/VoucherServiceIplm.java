@@ -116,6 +116,11 @@ public class VoucherServiceIplm implements VoucherService {
         voucher.setSendType(1);
         if(voucherDTO.getId() == null){
             voucher.setDiscount(0d);
+        }else{
+            Voucher v = voucherRepo.findById(voucherDTO.getId()).orElse(null);
+            if(v != null){
+                voucher.setSendType(v.getSendType());
+            }
         }
         if(voucher.getVoucherType() == 2){
             voucher.setDiscount(0d);
