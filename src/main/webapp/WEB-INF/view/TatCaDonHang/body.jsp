@@ -62,6 +62,7 @@
 <%--                <th scope="col">Tổng sản phẩm</th>--%>
                 <th scope="col">Tổng tiền</th>
                 <th scope="col">Ngày tạo</th>
+                <th scope="col">Hình thức</th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Thao tác</th>
             </tr>
@@ -76,6 +77,7 @@
 <%--                    <td><fmt:formatNumber pattern="#,###" value="${bill.tatolProduct}"/></td>--%>
                     <td><fmt:formatNumber pattern="#,###" value="${bill.totalMoney}"/></td>
                     <td>${bill.orderDate}</td>
+                    <td>${bill.billType == 1 ? "Tại quầy" : "Online"}</td>
                     <td>
                         ${bill.status == 1 ? "Chờ xác nhận" : (bill.status == 2 ? "Đang xử lý" :
                                 bill.status == 3 ? "Chờ lấy hàng" : ( bill.status ==  4 ? "Đang giao" :

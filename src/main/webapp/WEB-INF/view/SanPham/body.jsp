@@ -63,11 +63,48 @@
     }
 </style>
 <div class="container m-2">
+    <form id="searchForm" action="/san-pham" method="get">
+        <div class="row">
+            <div class="col-2">
+                <input class="form-control" name="name" id="name" aria-describedby="emailHelp" placeholder="Tên sản phẩm" value="${searchProductDTO.name}">
+            </div>
+            <div class="col-2">
+                <select class="form-select" name="brandId" id="brand"
+                        aria-label="Default select example">
+                    <option value="-1" ${searchProductDTO.brandId == (-1) ? "selected" : ""}>--Thương hiệu--</option>
+                    <c:forEach items="${brands}" var="x">
+                        <option value="${x.id}" ${searchProductDTO.brandId == x.id ? "selected" : ""}>${x.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-2">
+                <select class="form-select" name="categoryId" id="category">
+                    <option value="-1" ${searchProductDTO.categoryId == (-1) ? "selected" : ""}>--Loại sản phẩm--</option>
+                    <c:forEach items="${categories}" var="x">
+                        <option value="${x.id}" ${searchProductDTO.categoryId == x.id ? "selected" : ""}>${x.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-2">
+                <select class="form-select" name="status" id="status">
+                    <option value="-1" ${searchProductDTO.status == (-1) ? "selected" : ""}>--Trạng thái--</option>
+                    <option value="1" ${searchProductDTO.status == (1) ? "selected" : ""}>Hoạt động</option>
+                    <option value="0" ${searchProductDTO.status == (0) ? "selected" : ""}>Không hoạt động</option>
+                </select>
+            </div>
+            <div class="col-1">
+                <input type="submit" value="Tìm kiếm" id="search-input" class="btn btn-info">
+            </div>
+            <div class="col-2">
+                <button type="button" onclick="preAction(null,null,-1,-1,null,null,null,null,null)" class="btn btn-dark" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                    Thêm sản phẩm
+                </button>
+            </div>
+        </div>
+    </form>
     <jsp:include page="modal.jsp"></jsp:include>
-    <button type="button" onclick="preAction(null,null,-1,-1,null,null,null,null,null)" class="btn btn-dark" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">
-        Thêm sản phẩm
-    </button>
+
     <div style="min-height: 540px">
         <table class="table">
             <thead>
@@ -76,6 +113,7 @@
                 <th scope="col">Ảnh</th>
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Loại sản phẩm</th>
+                <th scope="col">Thương hiệu</th>
                 <th scope="col">Giá bán</th>
                 <th scope="col">Giá nhập</th>
                 <th scope="col">Số lượng trong kho</th>
@@ -91,6 +129,7 @@
                     <td><img src="/san-pham/img?fileName=${x.images[0]}" style="width: 60px; height: 80px"></td>
                     <td>${x.name}</td>
                     <td>${x.category.name}</td>
+                    <td>${x.brand.name}</td>
                     <td><fmt:formatNumber pattern="#,###" value="${x.price}"/> VND</td>
                     <td><fmt:formatNumber pattern="#,###" value="${x.importPrice}"/> VND</td>
                     <td><fmt:formatNumber pattern="#,###" value="${x.totalQuantity}"/></td>
@@ -119,7 +158,7 @@
     <ul class="pagination">
         <c:forEach begin="1" end="${list.totalPages}" varStatus="loop">
             <li class="page-item">
-                <a class="page-link" href="/san-pham?page=${loop.begin + loop.count -2}">
+                <a class="page-link" href="/san-pham?page=${loop.begin + loop.count -2}&name=${searchProductDTO.name}&brandId=${searchProductDTO.brandId}&categoryId=${searchProductDTO.categoryId}&status=${searchProductDTO.status}">
                         ${loop.begin + loop.count -1}
                 </a>
             </li>

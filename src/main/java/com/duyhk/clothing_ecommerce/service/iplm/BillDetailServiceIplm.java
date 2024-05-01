@@ -4,15 +4,9 @@ import com.duyhk.clothing_ecommerce.dto.BillDTO;
 import com.duyhk.clothing_ecommerce.dto.BillDetailDTO;
 import com.duyhk.clothing_ecommerce.dto.PageDTO;
 import com.duyhk.clothing_ecommerce.dto.PageRequestDTO;
-import com.duyhk.clothing_ecommerce.entity.Bill;
-import com.duyhk.clothing_ecommerce.entity.BillDetail;
-import com.duyhk.clothing_ecommerce.entity.Product;
-import com.duyhk.clothing_ecommerce.entity.ProductDetail;
+import com.duyhk.clothing_ecommerce.entity.*;
 import com.duyhk.clothing_ecommerce.exception.CustomValidationException;
-import com.duyhk.clothing_ecommerce.reponsitory.BillDetailReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.BillReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.ProductDetailReponsitory;
-import com.duyhk.clothing_ecommerce.reponsitory.ProductReponsitory;
+import com.duyhk.clothing_ecommerce.reponsitory.*;
 import com.duyhk.clothing_ecommerce.service.BillDetailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +27,9 @@ public class BillDetailServiceIplm implements BillDetailService {
 
     @Autowired
     private BillReponsitory billRepo;
+
+    @Autowired
+    private VoucherReponsitory voucherRepo;
 
     @Override
     public BillDetail convertToEntity(BillDetailDTO billDetailDTO) {
@@ -126,6 +123,27 @@ public class BillDetailServiceIplm implements BillDetailService {
         bill.setMoneyRoot(bill.getMoneyRoot() + billDetailDTO.getTotalPrice());
         bill.setTotalMoney(bill.getTotalMoney() + billDetailDTO.getTotalPrice());
         bill.setTatolProduct(bill.getTatolProduct() + billDetailDTO.getQuantity());
+        if(bill.getVoucher() != null){
+            Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+            if (voucher != null && voucher.getMinimumInvoice() <= bill.getMoneyRoot()) {
+                if (voucher.getVoucherType() == 1) {
+                    double gia = bill.getMoneyRoot() * (voucher.getPromotionalLevel()/100);
+                    if (gia > voucher.getMaximumPromotion()) {
+                        gia = voucher.getMaximumPromotion();
+                    }
+                    bill.setGiaGiam(gia);
+                    bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee() - gia);
+                } else {
+                    bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee() - voucher.getPromotionalLevel());
+                }
+                voucher.setQuantity(voucher.getQuantity() - 1);
+                bill.setVoucher(voucher.getVoucherCode());
+                voucherRepo.save(voucher);
+            } else {
+                bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee());
+                bill.setGiaGiam(0d);
+            }
+        }
         billDetailReponsitory.save(billDetailCompe);
     }
 
@@ -143,6 +161,27 @@ public class BillDetailServiceIplm implements BillDetailService {
             bill.setMoneyRoot(billDetailDTO.getTotalPrice() + bill.getMoneyRoot() - billDetail.getTotalPrice());
             bill.setTotalMoney(billDetailDTO.getTotalPrice() + bill.getTotalMoney() - billDetail.getTotalPrice());
             bill.setTatolProduct(bill.getTatolProduct() + billDetailDTO.getQuantity() - billDetail.getQuantity());
+            if(bill.getVoucher() != null){
+                Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+                if (voucher != null && voucher.getMinimumInvoice() <= bill.getMoneyRoot()) {
+                    if (voucher.getVoucherType() == 1) {
+                        double gia = bill.getMoneyRoot() * (voucher.getPromotionalLevel()/100);
+                        if (gia > voucher.getMaximumPromotion()) {
+                            gia = voucher.getMaximumPromotion();
+                        }
+                        bill.setGiaGiam(gia);
+                        bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee() - gia);
+                    } else {
+                        bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee() - voucher.getPromotionalLevel());
+                    }
+                    voucher.setQuantity(voucher.getQuantity() - 1);
+                    bill.setVoucher(voucher.getVoucherCode());
+                    voucherRepo.save(voucher);
+                } else {
+                    bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee());
+                    bill.setGiaGiam(0d);
+                }
+            }
             billDetail = convertToEntity(billDetailDTO);
             billDetail.setProductDetail(productDetail);
             billDetail.setPrice(productDetail.getPrice());
@@ -164,7 +203,27 @@ public class BillDetailServiceIplm implements BillDetailService {
             bill.setMoneyRoot(bill.getMoneyRoot() - billDetail.getTotalPrice());
             bill.setTotalMoney(bill.getTotalMoney() - billDetail.getTotalPrice());
             bill.setTatolProduct(bill.getTatolProduct() - 1);
-            
+            if(bill.getVoucher() != null){
+                Voucher voucher = voucherRepo.findByVoucherCode(bill.getVoucher()).orElse(null);
+                if (voucher != null && voucher.getMinimumInvoice() <= bill.getMoneyRoot()) {
+                    if (voucher.getVoucherType() == 1) {
+                        double gia = bill.getMoneyRoot() * (voucher.getPromotionalLevel()/100);
+                        if (gia > voucher.getMaximumPromotion()) {
+                            gia = voucher.getMaximumPromotion();
+                        }
+                        bill.setGiaGiam(gia);
+                        bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee() - gia);
+                    } else {
+                        bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee() - voucher.getPromotionalLevel());
+                    }
+                    voucher.setQuantity(voucher.getQuantity() - 1);
+                    bill.setVoucher(voucher.getVoucherCode());
+                    voucherRepo.save(voucher);
+                } else {
+                    bill.setTotalMoney(bill.getMoneyRoot() + bill.getShippingFee());
+                    bill.setGiaGiam(0d);
+                }
+            }
             billDetailReponsitory.deleteById(id);
         }
     }

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="container m-2">
     <jsp:include page="modal.jsp"></jsp:include>
-    <button type="button" onclick="preAction(null,null,null,null,null,null,1,null,null,1,1)" style="width: 150px" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" onclick="preAction(null,null,null,null,null,null,1,null,null,1,1,1)" style="width: 150px" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Thêm khuyến mại
     </button>
     <div style="min-height: 320px">
@@ -37,11 +37,11 @@
                     <td>${x.quantity}</td>
                     <td>${x.status == 0 ? "Không hoạt động" : "Hoạt động"}</td>
                     <td>
-                        <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.voucherCode}','${x.minimumInvoice}','${x.dateStart}','${x.dateEnd}','${x.quantity}','${x.voucherType}','${x.promotionalLevel}','${x.maximumPromotion}','${x.status}',2)"
+                        <button type="button" class="btn btn-warning" onclick="preAction(${x.id},'${x.voucherCode}','${x.minimumInvoice}','${x.dateStart}','${x.dateEnd}','${x.quantity}','${x.voucherType}','${x.promotionalLevel}','${x.maximumPromotion}','${x.status}',2,${x.sendType})"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Sửa
                         </button>
-                        <button onclick="handleOnClickSendKhuyenMai('${x.id}',this)" style="${x.sendType == 1 ? "" : "display: none"}" class="btn btn-info"><i class="bi bi-envelope-arrow-up-fill"></i></button>
+                        <button onclick="handleOnClickSendKhuyenMai('${x.id}',this)" style="${(x.sendType == 1 && x.status == 1)? "" : "display: none"}" class="btn btn-info"><i class="bi bi-envelope-arrow-up-fill"></i></button>
                     </td>
                 </tr>
             </c:forEach>

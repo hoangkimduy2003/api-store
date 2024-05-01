@@ -74,12 +74,24 @@
                     toastr.error("Mã khuyến mại đã tồn tại");
                 }else{
                     document.getElementById("voucherCode").disabled = false;
-                    document.getElementById("status").disabled = false;
+                    document.getElementById("minimumInvoice").disabled = false;
+                    document.getElementById("dateStart").disabled = false;
+                    document.getElementById("dateEnd").disabled = false;
+                    document.getElementById("quantity").disabled = false;
+                    document.getElementById("voucherType").disabled = false;
+                    document.getElementById("promotionalLevel").disabled = false;
+                    document.getElementById("maximumPromotion").disabled = false;
                     document.getElementById("frmAction").submit();
                 }
             }).catch(e => {
                 document.getElementById("voucherCode").disabled = false;
-                document.getElementById("status").disabled = false;
+                document.getElementById("minimumInvoice").disabled = false;
+                document.getElementById("dateStart").disabled = false;
+                document.getElementById("dateEnd").disabled = false;
+                document.getElementById("quantity").disabled = false;
+                document.getElementById("voucherType").disabled = false;
+                document.getElementById("promotionalLevel").disabled = false;
+                document.getElementById("maximumPromotion").disabled = false;
                 document.getElementById("frmAction").submit();
             })
         }
@@ -132,16 +144,24 @@
             toastr.error("Vui lòng nhập giá trị giá");
             return false;
         }
+        if(promotionalLevel <= 0){
+            toastr.error("Giá trị giảm phải lớn hơn 0");
+            return false;
+        }
         if(voucherType == 1){
             if(maximumPromotion == null || maximumPromotion == "" || maximumPromotion == undefined){
                 toastr.error("Vui lòng nhập giảm tối đa");
+                return false;
+            }
+            if(maximumPromotion <= 0){
+                toastr.error("Giá trị giảm tối đa phải lớn hơn 0");
                 return false;
             }
         }
         return true;
     }
 
-    var preAction = function (id,voucherCode,minimumInvoice,dateStart,dateEnd,quantity,voucherType,promotionalLevel,maximumPromotion,status,action){
+    var preAction = function (id,voucherCode,minimumInvoice,dateStart,dateEnd,quantity,voucherType,promotionalLevel,maximumPromotion,status,action,sendType){
 
         document.getElementById("id").value = id;
         document.getElementById("voucherCode").value = voucherCode;
@@ -155,10 +175,25 @@
         document.getElementById("status").value = status;
         if(action == 1){
             document.getElementById("voucherCode").disabled = false;
-            document.getElementById("status").disabled = false;
         }else{
             document.getElementById("voucherCode").disabled = true;
-            document.getElementById("status").disabled = true;
+        }
+        if(sendType == 2){
+            document.getElementById("minimumInvoice").disabled = true;
+            document.getElementById("dateStart").disabled = true;
+            document.getElementById("dateEnd").disabled = true;
+            document.getElementById("quantity").disabled = true;
+            document.getElementById("voucherType").disabled = true;
+            document.getElementById("promotionalLevel").disabled = true;
+            document.getElementById("maximumPromotion").disabled = true;
+        }else{
+            document.getElementById("minimumInvoice").disabled = false;
+            document.getElementById("dateStart").disabled = false;
+            document.getElementById("dateEnd").disabled = false;
+            document.getElementById("quantity").disabled = false;
+            document.getElementById("voucherType").disabled = false;
+            document.getElementById("promotionalLevel").disabled = false;
+            document.getElementById("maximumPromotion").disabled = false;
         }
     }
 
