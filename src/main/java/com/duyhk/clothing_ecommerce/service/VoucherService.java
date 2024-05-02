@@ -33,4 +33,6 @@ public interface VoucherService {
     void sendEmail(Long id);
 
     VoucherDTO findByVoucherCode(String voucherCode);
+
+    VoucherDTO findByVoucherCode2(String voucherCode);
 }

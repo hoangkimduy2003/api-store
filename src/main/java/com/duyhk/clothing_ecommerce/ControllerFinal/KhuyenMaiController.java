@@ -44,4 +44,9 @@ public class KhuyenMaiController {
     public VoucherDTO findByVoucherCode(@PathVariable("voucherCode") String voucherCode){
         return voucherService.findByVoucherCode(voucherCode);
     }
+    @GetMapping("/voucherApp2/{voucherCode}")
+    @ResponseBody
+    public VoucherDTO findByVoucherCode2(@PathVariable("voucherCode") String voucherCode){
+        return voucherService.findByVoucherCode2(voucherCode);
+    }
 }

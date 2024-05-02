@@ -170,4 +170,10 @@ public class VoucherServiceIplm implements VoucherService {
         if(voucherDTO.getDateEnd().compareTo(LocalDate.now()) < 0) throw new CustomValidationException("Voucher not active");
         return voucherDTO;
     }
+
+    @Override
+    public VoucherDTO findByVoucherCode2(String voucherCode){
+        VoucherDTO voucherDTO = convertToDto(voucherRepo.findByVoucherCode(voucherCode).orElseThrow(() -> new CustomValidationException("voucher not found")));
+        return voucherDTO;
+    }
 }

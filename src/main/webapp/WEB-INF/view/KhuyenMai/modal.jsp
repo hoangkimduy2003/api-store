@@ -68,7 +68,7 @@
         //
         if(validate()){
             var voucherCode = document.getElementById("voucherCode").value;
-            await axios.get("/khuyen-mai/voucherApp/"+voucherCode).then(res => {
+            await axios.get("/khuyen-mai/voucherApp2/"+voucherCode).then(res => {
                 var idVoucher = document.getElementById("id").value;
                 if(idVoucher == null || idVoucher == "" || idVoucher == undefined){
                     toastr.error("Mã khuyến mại đã tồn tại");
@@ -120,6 +120,10 @@
             toastr.error("Vui lòng nhập giá trị tối thiểu đơn hàng");
             return false;
         }
+        if(minimumInvoice < 0){
+            toastr.error("Giá trị tối thiểu phải >= 0 ");
+            return false;
+        }
         if(dateStart == null || dateStart == "" || dateStart == undefined){
             toastr.error("Vui lòng nhập ngày bắt đầu");
             return false;
@@ -155,6 +159,10 @@
             }
             if(maximumPromotion <= 0){
                 toastr.error("Giá trị giảm tối đa phải lớn hơn 0");
+                return false;
+            }
+            if(promotionalLevel > 100){
+                toastr.error("Phần trăm giảm phải nhỏ hơn hoặc bằng 100%");
                 return false;
             }
         }
