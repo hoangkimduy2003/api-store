@@ -139,9 +139,9 @@
                             <td>
                                 <button class="btn btn-danger"
                                         style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}"
-                                        onclick="handleOnClickCheck('${bill.id}')">Xoá
+                                        onclick="handleOnClickCheck('${bill.id}','${cartDetail.id}')">Xoá
                                 </button>
-                                <a class="btn btn-danger" id="deleteA" style="display: none"
+                                <a class="btn btn-danger" id="deleteA${cartDetail.id}" style="display: none"
                                    href="/don-hang/delete/${cartDetail.id}/${bill.id}">Xoá</a>
                                 <a class="btn btn-danger" id="updateA" style="display: none"
                                    href="/don-hang/update/${cartDetail.id}/${bill.id}">Xoá</a>
@@ -195,9 +195,17 @@
     async function handleOnClickThatBaiOK(id){
         var res = await axios.get("/api/check/statusBill/"+id+"/" + 4)
         if(res.data){
-            if(confirm("Xác nhận giao hàng thất bại")){
-                toastr.success("Xác nhận thành công");
-                document.getElementById("handleOnClickThatBaiOK").click();
+            var reason = prompt("Vui lòng nhập lý do huỷ");
+            if(reason != null && reason.trim() != "" && reason != undefined){
+                if(confirm("Xác nhận giao hàng thất bại không")){
+                    var a = document.getElementById("handleOnClickThatBaiOK");
+                    var _href = a.href + "?reason=" + reason;
+                    toastr.success("Huỷ thành công");
+                    document.getElementById("handleOnClickThatBaiOK").setAttribute("href", _href);
+                    document.getElementById("handleOnClickThatBaiOK").click();
+                }
+            }else{
+                toastr.error("Lý do huỷ không hợp lệ");
             }
         }else {
             toastr.error("Đơn hàng đã được thay đổi trạng thái. Vui lòng tải lại trang");
@@ -330,7 +338,7 @@
         }
     }
 
-    async function handleOnClickCheck(id) {
+    async function handleOnClickCheck(id, billDetailId) {
         var res = await axios.get("/api/check/statusBill/" + id + "/" + 1);
         var resData = await axios.get("/api/check/statusBill/"+id+"/" + 3)
         if(res.data || resData.data){
@@ -339,7 +347,7 @@
                     console.log(response);
                     if (response.data) {
                         if (confirm("Bạn có muốn xoá sản phẩm không?")) {
-                            document.getElementById("deleteA").click();
+                            document.getElementById("deleteA"+billDetailId).click();
                         }
                     } else {
                         toastr.error("Đơn hàng chỉ còn 1 sản phẩm không thể xoá");

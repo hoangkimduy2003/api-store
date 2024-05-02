@@ -4,10 +4,12 @@ import com.duyhk.clothing_ecommerce.dto.BillDTO;
 import com.duyhk.clothing_ecommerce.dto.CartDTO;
 import com.duyhk.clothing_ecommerce.dto.CartDetailDTO;
 import com.duyhk.clothing_ecommerce.dto.UserDTO;
+import com.duyhk.clothing_ecommerce.entity.Cart;
 import com.duyhk.clothing_ecommerce.entity.CartDetail;
 import com.duyhk.clothing_ecommerce.entity.Role;
 import com.duyhk.clothing_ecommerce.entity.Users;
 import com.duyhk.clothing_ecommerce.reponsitory.CartDetailReponsitory;
+import com.duyhk.clothing_ecommerce.reponsitory.CartReponsitory;
 import com.duyhk.clothing_ecommerce.service.BillService;
 import com.duyhk.clothing_ecommerce.service.CartDetailService;
 import com.duyhk.clothing_ecommerce.service.CartService;
@@ -35,6 +37,9 @@ public class DatHangController {
 
     @Autowired
     private CartDetailReponsitory cartDetailRepo;
+
+    @Autowired
+    CartReponsitory cartRepo;
 
     @Autowired
     private HttpSession session;
@@ -81,14 +86,26 @@ public class DatHangController {
     @ResponseBody
     public boolean checkOrder(){
         Long cartId = (Long) session.getAttribute("cartId");
+        Cart cart = cartRepo.findById(cartId).orElse(null);
+        boolean isCheck = true;
         List<CartDetail> carts = cartDetailRepo.findByCartId(cartId);
         for(CartDetail x: carts){
-             if((x.getQuantity() > x.getProductDetail().getQuantity())){
-                 x.setQuantity(x.getProductDetail().getQuantity());
-                 cartDetailRepo.save(x);
-                 return false;
-             }
+            if(x.getProductDetail().getQuantity() == 0){
+                cart.setTotalProduct(cart.getTotalProduct() - 1);
+                cart.setTotalMoney(cart.getTotalMoney() - x.getQuantity() * x.getProductDetail().getPriceSale());
+                isCheck = false;
+            }else{
+                if((x.getQuantity() > x.getProductDetail().getQuantity())){
+                    cart.setTotalMoney(cart.getTotalMoney() -
+                            (x.getQuantity() * x.getProductDetail().getPrice()) +
+                            (x.getProductDetail().getQuantity() * x.getProductDetail().getPriceSale()));
+                    x.setQuantity(x.getProductDetail().getQuantity());
+                    cartDetailRepo.save(x);
+                    isCheck = false;
+                }
+            }
         }
-        return true;
+        cartRepo.save(cart);
+        return isCheck;
     }
 }

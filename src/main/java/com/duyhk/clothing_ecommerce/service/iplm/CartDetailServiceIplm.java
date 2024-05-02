@@ -77,6 +77,7 @@ public class CartDetailServiceIplm implements CartDetailService {
                 cart.setTotalProduct(cart.getTotalProduct() + 1);
                 cart.setTotalMoney(cart.getTotalMoney() + productDetail.getPriceSale() * cartDetail.getQuantity());
             } else {
+                cart.setTotalMoney(cart.getTotalMoney() + productDetail.getPriceSale() * cartDetail.getQuantity());
                 cartDetail.setQuantity(cartDetail.getQuantity() + cartDetails.get(0).getQuantity());
                 cartDetail.setId(cartDetails.get(0).getId());
             }

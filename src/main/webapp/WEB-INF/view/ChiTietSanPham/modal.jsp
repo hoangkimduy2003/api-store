@@ -58,23 +58,30 @@
             toastr.error("Số lượng phải lớn hơn 0");
             return false;
         }
-        // document.getElementById("frmAction").submit();
-        await axios.get(`/chi-tiet-sp/check?idProduct=${idSp}`+`&`+`idColor=`+color+`&`+`idSize=`+ size)
-            .then(function (response) {
-                if(response.data===-1){
-                    if(!confirm("Bạn có muốn thao tác không?")){
+        if(document.getElementById("id").value == null || document.getElementById("id").value == ""){
+            await axios.get(`/chi-tiet-sp/check?idProduct=${idSp}`+`&`+`idColor=`+color+`&`+`idSize=`+ size)
+                .then(function (response) {
+                    if(response.data===-1){
+                        if(!confirm("Bạn có muốn thao tác không?")){
+                            return false;
+                        }else{
+                            document.getElementById("frmAction").submit();
+                        }
+                    }else {
+                        toastr.error("Chi  tiết sản phẩm đã tồn tại");
                         return false;
-                    }else{
-                        document.getElementById("frmAction").submit();
                     }
-                }else {
-                    toastr.error("Chi  tiết sản phẩm đã tồn tại");
+                }).catch(e => {
+                    toastr.error("Chi tiết sản phẩm đã tồn tại");
                     return false;
-                }
-            }).catch(e => {
-                toastr.error("Chi tiết sản phẩm đã tồn tại");
-                return false;
-            })
+                })
+        }else{
+            document.getElementById("size").disabled = false;
+            document.getElementById("color").disabled = false;
+            document.getElementById("frmAction").submit();
+        }
+        // document.getElementById("frmAction").submit();
+
 
     }
     var preAction = function (id,quantity,size,color){
@@ -82,5 +89,12 @@
         document.getElementById("quantity").value = quantity;
         document.getElementById("size").value = size;
         document.getElementById("color").value = color;
+        if(id != null){
+            document.getElementById("size").disabled = true;
+            document.getElementById("color").disabled = true;
+        }else{
+            document.getElementById("size").disabled = false;
+            document.getElementById("color").disabled = false;
+        }
     }
 </script>
