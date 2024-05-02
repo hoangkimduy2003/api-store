@@ -43,7 +43,7 @@ public interface ProductDetailReponsitory extends JpaRepository<ProductDetail, L
     List<ProductDetail> searchByColorName(@Param("colorName") String colorName,@Param("idProduct") Long idProduct);
 
     @Query("select p from ProductDetail p where p.product.id = :idProduct " +
-            " and p.color.id = :idColor and p.size.id = :idSize  and p.quantity > 0 and p.status = 1")
+            " and p.color.id = :idColor and p.size.id = :idSize")
     ProductDetail searchBySizeAndColor
             (@Param("idProduct") Long idProduct,@Param("idColor") Long idColor,@Param("idSize") Long idSize);
 
