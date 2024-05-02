@@ -111,7 +111,7 @@
     <ul class="pagination">
         <c:forEach begin="1" end="${list.totalPages}" varStatus="loop">
             <li class="page-item">
-                <a class="page-link" href="/kich-co?page=${loop.begin + loop.count -2}">
+                <a class="page-link" href="/chi-tiet-sp?page=${loop.begin + loop.count -2}">
                         ${loop.begin + loop.count -1}
                 </a>
             </li>

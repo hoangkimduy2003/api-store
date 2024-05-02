@@ -17,27 +17,27 @@
                     <div style="margin-top: 36px;" class="row">
                         <form id="frmSignUp" action="/account/createAccount" method="post" onsubmit="handleOnSubmit()">
                             <div class="mb-1">
-                                <label for="phoneNumber" class="form-label">SỐ ĐIỆN THOẠI*</label>
+                                <label for="phoneNumber" class="form-label">SỐ ĐIỆN THOẠI <span style="color: red">(*)</span></label>
                                 <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
                                 <p id="errSdt" style="color: red;font-size: 12px">${msg}</p>
                             </div>
                             <div class="mb-1">
-                                <label for="email" class="form-label">EMAIL</label>
+                                <label for="email" class="form-label">EMAIL <span style="color: red">(*)</span></label>
                                 <input type="text" class="form-control" id="email" name="email" >
                                 <p style="color: red;font-size: 12px"></p>
                             </div>
                             <div class="mb-1">
-                                <label for="fullName" class="form-label">FULL NAME*</label>
+                                <label for="fullName" class="form-label">HỌ VÀ TÊN <span style="color: red">(*)</span></label>
                                 <input type="text" class="form-control" id="fullName" name="fullName" >
                                 <p id="errName" style="color: red;font-size: 12px"></p>
                             </div>
                             <div class="mb-1">
-                                <label for="password" class="form-label">MẬT KHẨU*</label>
+                                <label for="password" class="form-label">MẬT KHẨU <span style="color: red">(*)</span></label>
                                 <input type="password" class="form-control" id="password" name="password">
                                 <p id="errPassword" style="color: red;font-size: 12px"></p>
                             </div>
                             <div class="mb-1">
-                                <label for="passwordConfirm" class="form-label">NHẬP LẠI MẬT KHẨU*</label>
+                                <label for="passwordConfirm" class="form-label">NHẬP LẠI MẬT KHẨU <span style="color: red">(*)</span></label>
                                 <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
                                 <p id="errRePass" style="color: red;font-size: 12px"></p>
 
@@ -96,7 +96,7 @@
             alert("Nhập lại mật khẩu không chính xác")
             return false;
         }
-        alert("Đăng ký thành công. Vui lồng đăng nhập lại")
+        alert("Đăng ký thành công. Vui lòng đăng nhập lại")
         return true;
     }
 
