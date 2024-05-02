@@ -143,11 +143,11 @@
                                 </button>
                                 <a class="btn btn-danger" id="deleteA${cartDetail.id}" style="display: none"
                                    href="/don-hang/delete/${cartDetail.id}/${bill.id}">Xoá</a>
-                                <a class="btn btn-danger" id="updateA" style="display: none"
+                                <a class="btn btn-danger" id="updateA${cartDetail.id}" style="display: none"
                                    href="/don-hang/update/${cartDetail.id}/${bill.id}">Xoá</a>
                                 <button class="btn btn-warning"
                                         style="${(bill.status != 1 && bill.status != 3) ? "display: none" : ""}"
-                                        onclick="handleOnClickSua('${cartDetail.quantity}',${cartDetail.productDetail.quantity},'${bill.id}')">
+                                        onclick="handleOnClickSua('${cartDetail.quantity}',${cartDetail.productDetail.quantity},'${bill.id}','${cartDetail.id}')">
                                     Sửa
                                 </button>
                             </td>
@@ -223,7 +223,7 @@
         }
     }
 
-    async function handleOnClickSua(quantityOld, quantitySP, id) {
+    async function handleOnClickSua(quantityOld, quantitySP, id, cartDetailId) {
         var res = await axios.get("/api/check/statusBill/" + id + "/" + 1);
         var resData = await axios.get("/api/check/statusBill/" + id + "/" + 3);
         if (!(res.data || resData.data)){
@@ -243,7 +243,7 @@
             toastr.error("Sản phẩm chỉ còn: " + (+quantityOld + (+quantitySP)));
             return false;
         }
-        var a = document.getElementById("updateA");
+        var a = document.getElementById("updateA" + cartDetailId);
         var _href = a.href;
         _href = _href + "/" + quantityNew;
         a.setAttribute("href", _href);
