@@ -93,6 +93,7 @@ public class DatHangController {
             if(x.getProductDetail().getQuantity() == 0){
                 cart.setTotalProduct(cart.getTotalProduct() - 1);
                 cart.setTotalMoney(cart.getTotalMoney() - x.getQuantity() * x.getProductDetail().getPriceSale());
+                cartDetailRepo.deleteById(x.getId());
                 isCheck = false;
             }else{
                 if((x.getQuantity() > x.getProductDetail().getQuantity())){
