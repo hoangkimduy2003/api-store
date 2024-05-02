@@ -12,8 +12,8 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="name" class="form-label">Tên sản phẩm</label>
-                                <input class="form-control"  name="name" id="name">
+                                <label for="nameProduct" class="form-label">Tên sản phẩm</label>
+                                <input class="form-control"  name="name" id="nameProduct">
                                 <label id="nameErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
@@ -41,10 +41,10 @@
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="brand" class="form-label">Thương hiệu</label>
-                                <select class="form-select" name="brand.id" id="brand"
+                                <label for="brandId" class="form-label">Thương hiệu</label>
+                                <select class="form-select" name="brand.id" id="brandId"
                                         aria-label="Default select example">
-                                    <option value="-1">--Thương hiệu--</option>
+                                    <option value="-1" >--Thương hiệu--</option>
                                     <c:forEach items="${brands}" var="x">
                                         <option value="${x.id}">${x.name}</option>
                                     </c:forEach>
@@ -52,8 +52,8 @@
                                 <label id="brandErr" style="color: red "></label>
                             </div>
                             <div class="mb-3">
-                                <label for="category" class="form-label">Loại sản phẩm</label>
-                                <select class="form-select" name="category.id" id="category"
+                                <label for="categoryId" class="form-label">Loại sản phẩm</label>
+                                <select class="form-select" name="category.id" id="categoryId"
                                         onchange="handleOnChange(this)"
                                         aria-label="Default select example">
                                     <option value="-1">--Loại sản phẩm--</option>
@@ -83,7 +83,7 @@
 <script>
 
     var handleOnAction = function () {
-        if(document.getElementById("name").value == "" ){
+        if(document.getElementById("nameProduct").value == "" ){
             var errorMessage = document.getElementById("nameErr");
             errorMessage.innerText = "Vui lòng điền tên ";
             return false;
@@ -112,12 +112,12 @@
             errorMessage.innerText = "Giá bán phải lớn hơn giá nhập ";
             return false;
         }
-        if(document.getElementById("brand").value == -1 ){
+        if(document.getElementById("brandId").value == -1 ){
             var errorMessage = document.getElementById("brandErr");
             errorMessage.innerText = "Vui lòng chọn thương hiệu ";
             return false;
         }
-        if(document.getElementById("category").value == -1 ){
+        if(document.getElementById("categoryId").value == -1 ){
             var errorMessage = document.getElementById("categoryErr");
             errorMessage.innerText = "Vui lòng chọn loại sản phẩm";
             return false;
@@ -138,11 +138,15 @@
     // }
 
     var preAction = function (id, name, brandId, categoryId, price, priceImport, description, files,status) {
+        console.log("name: " + name);
+        console.log("brandId: " + brandId);
+        console.log("categoryId: " + categoryId);
+
         document.getElementById("id").value = id;
-        document.getElementById("name").value = name;
+        document.getElementById("nameProduct").value = name;
         document.getElementById("description").value = description;
-        document.getElementById("brand").value = brandId;
-        document.getElementById("category").value = categoryId;
+        document.getElementById("brandId").value = brandId;
+        document.getElementById("categoryId").value = categoryId;
         document.getElementById("price").value = price;
         document.getElementById("importPrice").value = priceImport;
         document.getElementById("filesUpload").value = files;

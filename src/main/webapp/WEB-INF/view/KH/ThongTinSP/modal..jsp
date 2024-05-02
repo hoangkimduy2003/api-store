@@ -27,6 +27,10 @@
             toastr.error("Vui lòng nhập số lượng");
             return false;
         }
+        if(document.getElementById("quantity").value.includes(".") || document.getElementById("quantity").value.includes(",")){
+            toastr.error("Số lượng phải là số nguyên");
+            return false;
+        }
         await axios.get('/CTSP/checkQuantity/'+ document.getElementById("productDetailId").value)
             .then(function (response) {
                 // Xử lý dữ liệu trả về nếu yêu cầu thành công
