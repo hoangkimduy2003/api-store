@@ -184,7 +184,7 @@ public class BillServiceIplm implements BillService {
             bill.setOrderDateFinal(new Date());
             if(voucher != null){
                 if (voucher.getVoucherType() == 1) {
-                    double gia = bill.getTotalMoney() * voucher.getPromotionalLevel();
+                    double gia = bill.getTotalMoney() * (voucher.getPromotionalLevel()/100);
                     if (gia > voucher.getMaximumPromotion()) {
                         gia = voucher.getMaximumPromotion();
                     }
