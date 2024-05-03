@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://rawgit.com/cozmo/jsQR/master/dist/jsQR.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css   ">
-    <title>Hello, world!</title>
+    <title>OMAN</title>
     <style type="text/css">
         body {
             background: #eee;
